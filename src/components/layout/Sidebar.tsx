@@ -49,20 +49,21 @@ export default function Sidebar() {
       <aside
         className={`
           ${sidebarOpen ? 'w-60' : 'w-16'}
-          flex-shrink-0 bg-white border-r border-slate-200
+          flex-shrink-0 bg-navy-900 border-r border-navy-700
           flex flex-col transition-all duration-300 ease-in-out
-          fixed md:relative z-40 h-full shadow-sm
+          fixed md:relative z-40 h-full
+          ${demoMode ? 'pt-6' : ''}
         `}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200 min-h-[60px]">
-          <div className="flex-shrink-0 w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center shadow-sm">
-            <Leaf size={16} className="text-white" />
+        <div className="flex items-center gap-3 px-4 py-4 border-b border-navy-700 min-h-[64px]">
+          <div className="flex-shrink-0 w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/30">
+            <Leaf size={16} className="text-navy-950" />
           </div>
           {sidebarOpen && (
             <div className="overflow-hidden">
-              <div className="text-slate-900 font-extrabold text-sm leading-tight">PollutionMitra</div>
-              <div className="text-emerald-700 text-xs font-semibold">Street-by-Street Air IQ</div>
+              <div className="text-white font-bold text-sm leading-tight">PollutionMitra</div>
+              <div className="text-emerald-400 text-xs">Air Quality, Street by Street</div>
             </div>
           )}
           <button
@@ -96,8 +97,8 @@ export default function Sidebar() {
                         flex items-center gap-3 px-2 py-2 rounded-lg mb-0.5
                         text-sm font-medium transition-all duration-150
                         ${isActive
-                          ? 'bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200 shadow-sm'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-navy-800'
                         }
                         ${!sidebarOpen ? 'justify-center' : ''}
                       `}

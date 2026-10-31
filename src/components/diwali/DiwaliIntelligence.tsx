@@ -508,7 +508,7 @@ export default function DiwaliIntelligence() {
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
               <XAxis dataKey="period" tick={{ fill: '#64748b', fontSize: 11 }} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
               <Tooltip contentStyle={{ background: '#0f2044', border: '1px solid #162d5e', borderRadius: '8px', fontSize: '12px' }} />
@@ -527,7 +527,7 @@ export default function DiwaliIntelligence() {
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={multiYearData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
               <XAxis dataKey="year" tick={{ fill: '#64748b', fontSize: 11 }} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
               <Tooltip contentStyle={{ background: '#0f2044', border: '1px solid #162d5e', borderRadius: '8px', fontSize: '12px' }} />
@@ -582,31 +582,12 @@ export default function DiwaliIntelligence() {
           </div>
 
           <div>
-            <div className="flex justify-between items-center text-xs text-slate-700 font-bold mb-1.5">
-              <span>Night Wind Velocity Telemetry:</span>
-              <span className="font-mono text-cyan-700 font-bold">{windSpeed} km/h</span>
-            </div>
-            {/* Live Presets instead of range slider */}
-            <div className="grid grid-cols-4 gap-1.5">
-              {[
-                { label: 'Stagnant', v: 1.5 },
-                { label: 'Calm', v: 3.5 },
-                { label: 'Moderate', v: 7.0 },
-                { label: 'Cleansing', v: 12.0 },
-              ].map(w => (
-                <button
-                  key={w.label}
-                  onClick={() => setWindSpeed(w.v)}
-                  className={`py-1.5 rounded-lg text-xs font-semibold transition-all border text-center ${
-                    windSpeed === w.v
-                      ? 'border-cyan-500 bg-cyan-50 text-cyan-800 font-bold shadow-sm'
-                      : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'
-                  }`}
-                >
-                  {w.label} ({w.v})
-                </button>
-              ))}
-            </div>
+            <label className="text-xs text-slate-400 block mb-1">Night Wind Velocity: {windSpeed} km/h</label>
+            <input
+              type="range" min={1} max={15} step={0.2} value={windSpeed}
+              onChange={e => setWindSpeed(Number(e.target.value))}
+              className="w-full accent-cyan-400 cursor-pointer"
+            />
           </div>
 
           <div>

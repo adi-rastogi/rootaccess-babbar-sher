@@ -16,25 +16,25 @@ export default function TopNav() {
   ];
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 flex items-center gap-4 px-4 flex-shrink-0 z-20 shadow-sm">
+    <header className="h-16 bg-navy-900 border-b border-navy-700 flex items-center gap-4 px-4 flex-shrink-0 z-20">
       {/* Mobile menu */}
       <button
-        className="md:hidden text-slate-600 hover:text-slate-900"
+        className="md:hidden text-slate-400 hover:text-white"
         onClick={() => setSidebarOpen(true)}
       >
         <Menu size={20} />
       </button>
 
       {/* Neighborhood selector */}
-      <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5 cursor-pointer hover:border-emerald-500/50 transition-colors shadow-sm">
-        <MapPin size={14} className="text-emerald-600 flex-shrink-0" />
+      <div className="flex items-center gap-2 bg-navy-800 border border-navy-600 rounded-lg px-3 py-1.5 cursor-pointer hover:border-emerald-500/40 transition-colors">
+        <MapPin size={14} className="text-emerald-400 flex-shrink-0" />
         <select
           value={selectedNeighborhood}
           onChange={e => setSelectedNeighborhood(e.target.value as any)}
-          className="bg-transparent text-slate-800 font-semibold text-sm focus:outline-none cursor-pointer pr-1"
+          className="bg-transparent text-slate-200 text-sm focus:outline-none cursor-pointer pr-1"
         >
           {NEIGHBORHOODS.map(n => (
-            <option key={n.id} value={n.id} className="bg-white text-slate-800">
+            <option key={n.id} value={n.id} className="bg-navy-800">
               {n.name}
             </option>
           ))}
@@ -48,14 +48,14 @@ export default function TopNav() {
       <button
         onClick={() => setDemoMode(!demoMode)}
         className={`
-          flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border shadow-sm
+          flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border
           ${demoMode
-            ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100'
-            : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900'
+            ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
+            : 'bg-navy-800 border-navy-600 text-slate-400 hover:text-slate-200'
           }
         `}
       >
-        <span className={`w-2 h-2 rounded-full ${demoMode ? 'bg-blue-600 animate-pulse' : 'bg-slate-400'}`} />
+        <span className={`w-2 h-2 rounded-full ${demoMode ? 'bg-cyan-400 animate-pulse' : 'bg-slate-600'}`} />
         {demoMode ? 'DEMO MODE' : 'Live Mode'}
       </button>
 
@@ -72,36 +72,36 @@ export default function TopNav() {
       <div className="relative">
         <button
           onClick={() => setShowNotifs(!showNotifs)}
-          className="relative p-2 text-slate-600 hover:text-slate-900 transition-colors"
+          className="relative p-2 text-slate-400 hover:text-white transition-colors"
         >
           <Bell size={18} />
           {notifications > 0 && (
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full critical-sonar" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full notif-pulse" />
           )}
         </button>
 
         {showNotifs && (
-          <div className="absolute right-0 top-full mt-1 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
-            <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <span className="text-sm font-bold text-slate-900">Notifications</span>
+          <div className="absolute right-0 top-full mt-1 w-80 bg-navy-800 border border-navy-600 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
+            <div className="px-4 py-3 border-b border-navy-700 flex items-center justify-between">
+              <span className="text-sm font-semibold text-white">Notifications</span>
               <span className="badge badge-demo">{notifications} new</span>
             </div>
             {notifList.map((n, i) => (
-              <div key={i} className="px-4 py-3 border-b border-slate-100 flex items-start gap-3 hover:bg-slate-50 cursor-pointer">
+              <div key={i} className="px-4 py-3 border-b border-navy-700/50 flex items-start gap-3 hover:bg-navy-700/30 cursor-pointer">
                 <span className="text-lg">{n.icon}</span>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-xs font-semibold ${n.color}`}>{n.msg}</p>
+                  <p className={`text-xs font-medium ${n.color}`}>{n.msg}</p>
                   <p className="text-xs text-slate-500 mt-0.5">{n.time}</p>
                 </div>
               </div>
             ))}
-            <div className="px-4 py-2 text-xs text-slate-500 text-center bg-slate-50">DEMO alerts — not real environmental data</div>
+            <div className="px-4 py-2 text-xs text-slate-500 text-center">DEMO alerts — not real environmental data</div>
           </div>
         )}
       </div>
 
       {/* User avatar */}
-      <div className="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-xs font-bold text-emerald-800 shadow-sm">
+      <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xs font-bold text-emerald-400">
         DE
       </div>
     </header>

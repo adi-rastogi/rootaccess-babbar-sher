@@ -192,24 +192,18 @@ export default function AdminDashboard() {
               { label: 'PM10 Alert Threshold (µg/m³)', value: pm10Threshold, setter: setPm10Threshold, min: 50, max: 500 },
               { label: 'AQI Alert Threshold', value: aqiThreshold, setter: setAqiThreshold, min: 50, max: 500 },
             ].map(item => (
-              <div key={item.label} className="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <div className="flex justify-between items-center text-sm">
-                  <label className="text-slate-800 font-bold">{item.label}</label>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => item.setter(Math.max(item.min, item.value - 10))}
-                      className="w-7 h-7 rounded-lg bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
-                    >
-                      -
-                    </button>
-                    <span className="font-mono text-emerald-700 font-black text-sm w-12 text-center">{item.value}</span>
-                    <button
-                      onClick={() => item.setter(Math.min(item.max, item.value + 10))}
-                      className="w-7 h-7 rounded-lg bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
-                    >
-                      +
-                    </button>
-                  </div>
+              <div key={item.label}>
+                <div className="flex justify-between text-sm mb-2">
+                  <label className="text-slate-300">{item.label}</label>
+                  <span className="text-emerald-400 font-bold">{item.value}</span>
+                </div>
+                <input
+                  type="range" min={item.min} max={item.max} value={item.value}
+                  onChange={e => item.setter(Number(e.target.value))}
+                  className="w-full accent-emerald-500"
+                />
+                <div className="flex justify-between text-xs text-slate-600 mt-1">
+                  <span>{item.min}</span><span>{item.max}</span>
                 </div>
               </div>
             ))}

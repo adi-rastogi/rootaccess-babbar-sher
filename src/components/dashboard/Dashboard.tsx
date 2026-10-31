@@ -27,7 +27,7 @@ function AQIGauge({ aqi }: { aqi: number }) {
         <svg viewBox="0 0 140 115" className="w-full h-full">
           <path
             d="M 20 95 A 50 50 0 1 1 120 95"
-            fill="none" stroke="#e2e8f0" strokeWidth="11" strokeLinecap="round"
+            fill="none" stroke="#162d5e" strokeWidth="11" strokeLinecap="round"
           />
           <path
             d="M 20 95 A 50 50 0 1 1 120 95"
@@ -36,10 +36,10 @@ function AQIGauge({ aqi }: { aqi: number }) {
             strokeWidth="11"
             strokeLinecap="round"
             strokeDasharray={`${dash * 2.09} ${(stroke - dash) * 2.09}`}
-            style={{ transition: 'stroke-dasharray 1.2s ease' }}
+            style={{ transition: 'stroke-dasharray 1.2s ease', filter: `drop-shadow(0 0 8px ${cat.color}66)` }}
           />
-          <text x="70" y="80" textAnchor="middle" fill="#0f172a" fontSize="26" fontWeight="900" fontFamily="monospace">{aqi}</text>
-          <text x="70" y="100" textAnchor="middle" fill={cat.color} fontSize="11" fontWeight="800">{cat.label.toUpperCase()}</text>
+          <text x="70" y="80" textAnchor="middle" fill="#ffffff" fontSize="26" fontWeight="900" fontFamily="monospace">{aqi}</text>
+          <text x="70" y="100" textAnchor="middle" fill={cat.color} fontSize="10" fontWeight="700">{cat.label.toUpperCase()}</text>
         </svg>
       </div>
     </div>
@@ -48,19 +48,19 @@ function AQIGauge({ aqi }: { aqi: number }) {
 
 function MetricCard({ icon: Icon, label, value, unit, color, sub, alert }: any) {
   return (
-    <div className="card p-4 flex items-start gap-3 hover:border-slate-300 transition-all shadow-sm">
-      <div className="p-2.5 rounded-xl flex-shrink-0" style={{ background: color + '18' }}>
+    <div className="hud-panel p-4 flex items-start gap-3 hover:border-cyan-500/40 transition-all">
+      <div className="p-2.5 rounded-xl flex-shrink-0" style={{ background: color + '1c' }}>
         <Icon size={19} style={{ color }} />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-xs text-slate-600 font-bold tracking-wide flex items-center justify-between">
+        <div className="text-[11px] text-slate-400 font-medium tracking-wide flex items-center justify-between">
           <span>{label}</span>
           {alert && <span className="w-2 h-2 rounded-full bg-red-500 critical-blink" />}
         </div>
-        <div className="text-2xl font-black text-slate-900 font-mono mt-0.5">
-          {value}<span className="text-xs font-semibold text-slate-500 ml-1">{unit}</span>
+        <div className="text-xl font-black text-white font-mono mt-0.5">
+          {value}<span className="text-xs font-normal text-slate-400 ml-1">{unit}</span>
         </div>
-        {sub && <div className="text-xs text-slate-600 mt-0.5 truncate font-medium">{sub}</div>}
+        {sub && <div className="text-[11px] text-slate-500 mt-0.5 truncate">{sub}</div>}
       </div>
     </div>
   );
@@ -69,14 +69,14 @@ function MetricCard({ icon: Icon, label, value, unit, color, sub, alert }: any) 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload?.length) {
     return (
-      <div className="bg-white p-3 text-xs border border-slate-300 rounded-xl shadow-lg">
-        <p className="text-slate-500 mb-1 font-mono font-bold">{label}</p>
+      <div className="hud-panel p-3 text-xs border border-cyan-500/30">
+        <p className="text-slate-400 mb-1 font-mono">{label}</p>
         {payload.map((p: any) => (
-          <p key={p.name} style={{ color: p.color }} className="font-mono font-bold">
-            {p.name}: <span className="font-black text-slate-900">{Math.round(p.value)}</span>
+          <p key={p.name} style={{ color: p.color }} className="font-mono">
+            {p.name}: <span className="font-bold text-white">{Math.round(p.value)}</span>
           </p>
         ))}
-        <p className="text-slate-400 text-[10px] mt-1 border-t border-slate-100 pt-1">DEMO telemetry stream</p>
+        <p className="text-slate-600 text-[10px] mt-1 border-t border-navy-700 pt-1">DEMO telemetry stream</p>
       </div>
     );
   }
@@ -219,50 +219,49 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* 🚀 REFINED HERO SECTION: MODERN LIGHT & HUMAN ENVIRONMENTAL COMMAND CENTER */}
-      <div className="card p-6 sm:p-8 relative overflow-hidden border border-slate-200 bg-white shadow-card">
-        {/* Subtle warm ambient accents */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-50/60 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-blue-50/50 rounded-full blur-3xl pointer-events-none" />
+      {/* 🚀 UPGRADED HERO SECTION: SMART CITY ENVIRONMENTAL COMMAND CENTER */}
+      <div className="hud-panel p-6 sm:p-8 relative overflow-hidden border-cyan-500/40 bg-gradient-to-r from-navy-950 via-navy-900 to-navy-950 shadow-2xl">
+        {/* Background glow effects */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div className="space-y-4 max-w-2xl">
             {/* Live Status Tickers */}
             <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="hud-badge bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs">
-                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+              <span className="hud-badge bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 NCR AIRSPACE RADAR ACTIVE
               </span>
-              <span className="hud-badge bg-blue-50 text-blue-800 border border-blue-200 text-xs font-mono">
-                <Clock size={12} className="inline mr-1" />
+              <span className="hud-badge bg-navy-900 text-cyan-400 border border-cyan-500/30 text-xs font-mono">
                 IST {currentTime}
               </span>
-              <span className="hud-badge bg-red-50 text-red-800 border border-red-200 text-xs font-semibold critical-blink">
+              <span className="hud-badge bg-red-500/20 text-red-300 border border-red-500/40 text-xs critical-blink">
                 2 CRITICAL EMERGENCY ZONES
               </span>
-              <span className="hud-badge bg-purple-50 text-purple-800 border border-purple-200 text-xs font-mono">
-                <Wind size={12} className="inline mr-1" />
+              <span className="hud-badge bg-purple-500/20 text-purple-300 border border-purple-500/40 text-xs font-mono">
                 NW 6.8 km/h DRIFT
               </span>
             </div>
 
             {/* Hero Main Heading & Subtitle */}
             <div>
-              <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">
-                POLLUTION<span className="text-emerald-600">MITRA</span>
-                <span className="text-cyan-700 text-base sm:text-lg font-bold ml-3 font-mono">
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                POLLUTION<span className="text-emerald-400">MITRA</span>
+                <span className="text-cyan-400 text-base sm:text-xl font-normal ml-3 font-mono">
                   // Street-by-Street Environmental Defense
                 </span>
               </h1>
-              <p className="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
+              <p className="text-slate-300 text-sm sm:text-base mt-2 leading-relaxed">
                 Hyper-local environmental intelligence analyzing wind-aware particulate plume dispersion, Diwali smog impact, real-time IoT calibration, and low-exposure eco-mobility routes for Delhi-NCR.
               </p>
             </div>
 
             {/* Quick Sector Selector Chips in Hero */}
             <div className="space-y-1.5 pt-1">
-              <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                <MapPin size={12} className="text-emerald-600" />
+              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                <MapPin size={12} className="text-cyan-400" />
                 Fast Sector Switcher:
               </div>
               <div className="flex items-center gap-1.5 flex-wrap">
@@ -274,15 +273,15 @@ export default function Dashboard() {
                     <button
                       key={n.id}
                       onClick={() => setSelectedNeighborhood(n.id)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all border flex items-center gap-1.5 shadow-sm ${
+                      className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all border flex items-center gap-1.5 ${
                         isCur
-                          ? 'bg-slate-900 border-slate-900 text-white'
-                          : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                          ? 'bg-cyan-500/25 border-cyan-400 text-white shadow-lg shadow-cyan-500/20'
+                          : 'bg-navy-950/80 border-navy-800 text-slate-400 hover:text-slate-200'
                       }`}
                     >
-                      <span className="w-2 h-2 rounded-full" style={{ background: c.color }} />
-                      <span className={isCur ? 'text-white' : 'text-slate-800'}>{n.name.split(' ')[0]}</span>
-                      <span className="font-black" style={{ color: isCur ? '#34d399' : c.color }}>{s.aqi}</span>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: c.color }} />
+                      {n.name.split(' ')[0]}
+                      <span style={{ color: c.color }}>{s.aqi}</span>
                     </button>
                   );
                 })}
@@ -290,11 +289,11 @@ export default function Dashboard() {
             </div>
 
             {/* Dynamic Health Advisory Bar */}
-            <div className="p-3.5 rounded-xl bg-amber-50/80 border border-amber-200 flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-amber-100 text-amber-800 flex-shrink-0">
-                <AlertTriangle size={17} />
+            <div className="p-3 rounded-xl bg-navy-950/80 border border-amber-500/40 flex items-center gap-3">
+              <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-400 flex-shrink-0">
+                <AlertTriangle size={16} />
               </div>
-              <div className="text-xs text-amber-900 leading-tight">
+              <div className="text-xs text-amber-200/90 leading-tight">
                 <strong>Advisory ({neighborhood.name}):</strong> {sensor.aqi > 250
                   ? 'Severe Inversion Trap. Vulnerable groups stay indoors, N95 respirators required for outdoor transit.'
                   : sensor.aqi > 150
@@ -307,49 +306,49 @@ export default function Dashboard() {
             <div className="flex items-center gap-2.5 flex-wrap pt-1">
               <button
                 onClick={() => navigate('/map')}
-                className="btn-primary text-xs py-2 px-3.5 shadow-sm flex items-center gap-2 font-bold"
+                className="btn-primary text-xs py-2.5 px-4 shadow-lg shadow-emerald-500/25 flex items-center gap-2 font-bold"
               >
-                <Compass size={14} className="text-white" />
-                <span className="text-white">Live GIS Flow Heatmap</span>
+                <Compass size={14} />
+                Live GIS Flow Heatmap
               </button>
               <button
                 onClick={() => setTourActive(true)}
-                className="btn-secondary text-xs py-2 px-3.5 flex items-center gap-2 font-bold"
+                className="btn-secondary text-xs py-2.5 px-4 border-cyan-500/40 text-cyan-300 hover:text-white flex items-center gap-2 font-bold"
               >
-                <Play size={13} className="text-slate-700" />
-                <span>Voice Guided Tour</span>
+                <Play size={13} />
+                Voice Guided Tour
               </button>
               <button
                 onClick={() => navigate('/critical-zones')}
-                className="btn-secondary text-xs py-2 px-3.5 border-red-200 text-red-700 hover:bg-red-50 flex items-center gap-2 font-bold"
+                className="btn-secondary text-xs py-2.5 px-4 border-red-500/40 text-red-300 hover:text-white flex items-center gap-2 font-bold"
               >
                 <AlertTriangle size={13} />
-                <span>Critical Radar</span>
+                Critical Radar
               </button>
               <button
                 onClick={() => navigate('/simulator')}
-                className="btn-secondary text-xs py-2 px-3.5 border-purple-200 text-purple-700 hover:bg-purple-50 flex items-center gap-2 font-bold"
+                className="btn-secondary text-xs py-2.5 px-4 border-purple-500/40 text-purple-300 hover:text-white flex items-center gap-2 font-bold"
               >
                 <Sparkles size={13} />
-                <span>Policy Simulator</span>
+                Policy Simulator
               </button>
             </div>
           </div>
 
           {/* Hero Quick Telemetry HUD Card */}
-          <div className="w-full lg:w-80 bg-slate-50/90 p-5 rounded-2xl border border-slate-200 flex flex-col justify-between space-y-4 shadow-sm flex-shrink-0">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div className="w-full lg:w-80 bg-navy-950/90 p-5 rounded-2xl border border-cyan-500/40 flex flex-col justify-between space-y-4 shadow-2xl flex-shrink-0">
+            <div className="flex items-center justify-between border-b border-navy-800 pb-2.5">
               <div className="flex items-center gap-1.5">
-                <Activity size={14} className="text-emerald-600" />
-                <span className="text-[11px] font-mono text-slate-600 font-bold uppercase">Focus Telemetry</span>
+                <Activity size={14} className="text-cyan-400" />
+                <span className="text-[11px] font-mono text-slate-300 font-bold uppercase">Focus Telemetry</span>
               </div>
-              <span className="badge bg-white border border-slate-200 text-slate-800 text-xs font-bold">{neighborhood.name}</span>
+              <span className="badge bg-cyan-500/20 text-cyan-400 text-xs font-bold">{neighborhood.name}</span>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-4xl font-black font-mono text-slate-900 tracking-tight">{sensor.pm25}</div>
-                <div className="text-[11px] text-slate-500 font-medium">µg/m³ PM2.5</div>
+                <div className="text-4xl font-black font-mono text-white tracking-tight">{sensor.pm25}</div>
+                <div className="text-[11px] text-slate-400 font-medium">µg/m³ PM2.5</div>
               </div>
               <div className="text-right">
                 <div className="text-3xl font-black font-mono" style={{ color: aqiCat.color }}>{sensor.aqi}</div>
@@ -364,20 +363,21 @@ export default function Dashboard() {
                 <span>200 (Poor)</span>
                 <span>500 (Hazardous)</span>
               </div>
-              <div className="h-2 bg-slate-200 rounded-full overflow-hidden flex">
+              <div className="h-2 bg-navy-900 rounded-full overflow-hidden flex">
                 <div
                   className="h-full rounded-full transition-all duration-1000"
                   style={{
                     width: `${Math.min(100, (sensor.aqi / 500) * 100)}%`,
                     background: aqiCat.color,
+                    boxShadow: `0 0 10px ${aqiCat.color}`,
                   }}
                 />
               </div>
             </div>
 
-            <div className="pt-2.5 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
-              <span className="flex items-center gap-1 font-mono"><Wind size={12} className="text-cyan-700" />NW 6.8 km/h</span>
-              <span className="text-emerald-700 font-mono font-bold">8/8 Nodes Synced</span>
+            <div className="pt-2.5 border-t border-navy-800 text-[11px] text-slate-400 flex items-center justify-between">
+              <span className="flex items-center gap-1 font-mono"><Wind size={12} className="text-cyan-400" />NW 6.8 km/h</span>
+              <span className="text-emerald-400 font-mono font-bold">8/8 Nodes Synced</span>
             </div>
           </div>
         </div>
@@ -465,7 +465,7 @@ export default function Dashboard() {
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={hourlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
               <XAxis dataKey="hour" tick={{ fill: '#64748b', fontSize: 10 }} interval={3} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
               <Tooltip content={<CustomTooltip />} />
