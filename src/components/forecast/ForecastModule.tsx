@@ -155,15 +155,31 @@ export default function ForecastModule() {
           </div>
         </div>
 
-        {/* Scrubber slider */}
-        <input
-          type="range"
-          min="1"
-          max={Math.min(horizon, forecast.length - 1)}
-          value={scrubberHour}
-          onChange={e => setScrubberHour(parseInt(e.target.value))}
-          className="w-full accent-cyan-400 h-2 bg-navy-950 rounded-lg cursor-pointer my-2"
-        />
+        {/* Live Horizon Telemetry Selector (NO SLIDER) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 my-2">
+          {[1, 2, 3, 6, 12, 24, 48].filter(h => h <= horizon).map(h => {
+            const pt = forecast[Math.min(h, forecast.length - 1)] || forecast[0];
+            const ptCat = getAQICategory(pt.aqi);
+            const isSel = scrubberHour === h;
+            return (
+              <button
+                key={h}
+                onClick={() => setScrubberHour(h)}
+                className={`p-2 rounded-xl border text-center transition-all ${
+                  isSel
+                    ? 'border-cyan-400 bg-cyan-500/20 shadow-lg shadow-cyan-500/20 text-white'
+                    : 'border-navy-700 bg-navy-950/80 hover:bg-navy-900 text-slate-400 hover:text-white'
+                }`}
+              >
+                <div className="text-[10px] font-mono font-bold">+{h}h Window</div>
+                <div className="text-sm font-black font-mono mt-0.5" style={{ color: ptCat.color }}>
+                  {pt.aqi}
+                </div>
+                <div className="text-[9px] font-medium" style={{ color: ptCat.color }}>{ptCat.label}</div>
+              </button>
+            );
+          })}
+        </div>
 
         {/* Dynamic Scrubbed Telemetry Result */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-3">

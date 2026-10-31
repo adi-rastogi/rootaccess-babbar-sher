@@ -240,39 +240,63 @@ export default function WeatherModule() {
             </div>
           </div>
 
-          {/* Interactive Slider & Metrics Grid */}
+          {/* Live Doppler Radar Telemetry Streams & Scavenging Metrics Grid (NO SLIDER) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-            {/* Slider Control */}
-            <div className="lg:col-span-5 bg-navy-900/70 p-4 rounded-xl border border-navy-700">
-              <div className="flex justify-between items-center text-xs mb-2">
-                <span className="text-slate-300 font-semibold flex items-center gap-1.5">
+            {/* Live Station Feeds instead of Slider */}
+            <div className="lg:col-span-5 bg-navy-900/80 p-4 rounded-xl border border-navy-700 space-y-3">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-slate-300 font-bold flex items-center gap-1.5">
                   <Droplets size={14} className="text-cyan-400" />
-                  Precipitation Intensity:
+                  Live Doppler Radar Precipitation:
                 </span>
-                <span className="font-mono font-bold text-cyan-300 text-sm">
+                <span className="font-mono font-bold text-cyan-300 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 text-xs">
                   {rainRate.toFixed(1)} mm/hr
                 </span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max="50"
-                step="0.5"
-                value={rainRate}
-                onChange={e => {
-                  const val = parseFloat(e.target.value);
-                  setRainRate(val);
-                  if (val === 0) setActivePreset('dry');
-                  else if (val < 10) setActivePreset('drizzle');
-                  else if (val < 30) setActivePreset('monsoon');
-                  else setActivePreset('torrent');
-                }}
-                className="w-full accent-cyan-400 h-2 bg-navy-950 rounded-lg cursor-pointer"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                <span>0 mm (Dry Smog)</span>
-                <span>15 mm (Steady Rain)</span>
-                <span>50 mm (Heavy Torrent)</span>
+
+              {/* Station Doppler Feeds */}
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { name: 'Palam Station', rate: 0, sub: '0.0 mm/h · Dry Haze', id: 'dry' },
+                  { name: 'Lodhi Road', rate: 4.5, sub: '4.5 mm/h · Drizzle', id: 'drizzle' },
+                  { name: 'Safdarjung AWS', rate: 18.0, sub: '18.0 mm/h · Monsoon', id: 'monsoon' },
+                  { name: 'Ridge Station', rate: 42.0, sub: '42.0 mm/h · Torrent', id: 'torrent' },
+                ].map(st => (
+                  <button
+                    key={st.name}
+                    onClick={() => {
+                      setRainRate(st.rate);
+                      setActivePreset(st.id as any);
+                    }}
+                    className={`p-2 rounded-lg border text-left transition-all ${
+                      rainRate === st.rate
+                        ? 'border-cyan-400 bg-cyan-500/20 text-white shadow-md shadow-cyan-500/10'
+                        : 'border-navy-700 bg-navy-950/70 hover:bg-navy-900 text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    <div className="text-[11px] font-bold truncate">{st.name}</div>
+                    <div className="text-[9px] text-cyan-400/80 font-mono mt-0.5">{st.sub}</div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Fine Rate Adjuster */}
+              <div className="flex items-center justify-between pt-1 border-t border-navy-800 text-xs">
+                <span className="text-[10px] text-slate-500 font-mono">Fine Adjust:</span>
+                <div className="flex gap-1.5">
+                  <button
+                    onClick={() => setRainRate(r => Math.max(0, parseFloat((r - 2).toFixed(1))))}
+                    className="px-2 py-0.5 bg-navy-950 border border-navy-700 rounded text-xs font-mono text-slate-300 hover:text-white"
+                  >
+                    -2.0 mm/h
+                  </button>
+                  <button
+                    onClick={() => setRainRate(r => Math.min(60, parseFloat((r + 2).toFixed(1))))}
+                    className="px-2 py-0.5 bg-navy-950 border border-navy-700 rounded text-xs font-mono text-slate-300 hover:text-white"
+                  >
+                    +2.0 mm/h
+                  </button>
+                </div>
               </div>
             </div>
 

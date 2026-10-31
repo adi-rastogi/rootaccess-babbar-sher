@@ -582,12 +582,31 @@ export default function DiwaliIntelligence() {
           </div>
 
           <div>
-            <label className="text-xs text-slate-400 block mb-1">Night Wind Velocity: {windSpeed} km/h</label>
-            <input
-              type="range" min={1} max={15} step={0.2} value={windSpeed}
-              onChange={e => setWindSpeed(Number(e.target.value))}
-              className="w-full accent-cyan-400 cursor-pointer"
-            />
+            <div className="flex justify-between items-center text-xs text-slate-400 mb-1.5">
+              <span>Night Wind Velocity Telemetry:</span>
+              <span className="font-mono text-cyan-400 font-bold">{windSpeed} km/h</span>
+            </div>
+            {/* Live Presets instead of range slider */}
+            <div className="grid grid-cols-4 gap-1.5">
+              {[
+                { label: 'Stagnant', v: 1.5 },
+                { label: 'Calm', v: 3.5 },
+                { label: 'Moderate', v: 7.0 },
+                { label: 'Cleansing', v: 12.0 },
+              ].map(w => (
+                <button
+                  key={w.label}
+                  onClick={() => setWindSpeed(w.v)}
+                  className={`py-1.5 rounded-lg text-xs font-semibold transition-all border text-center ${
+                    windSpeed === w.v
+                      ? 'border-cyan-400 bg-cyan-500/20 text-white font-bold shadow-md shadow-cyan-500/10'
+                      : 'border-navy-700 bg-navy-900 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {w.label} ({w.v})
+                </button>
+              ))}
+            </div>
           </div>
 
           <div>
