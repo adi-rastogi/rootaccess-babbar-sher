@@ -508,7 +508,7 @@ export default function DiwaliIntelligence() {
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={comparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="period" tick={{ fill: '#64748b', fontSize: 11 }} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
               <Tooltip contentStyle={{ background: '#0f2044', border: '1px solid #162d5e', borderRadius: '8px', fontSize: '12px' }} />
@@ -527,7 +527,7 @@ export default function DiwaliIntelligence() {
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={multiYearData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="year" tick={{ fill: '#64748b', fontSize: 11 }} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
               <Tooltip contentStyle={{ background: '#0f2044', border: '1px solid #162d5e', borderRadius: '8px', fontSize: '12px' }} />

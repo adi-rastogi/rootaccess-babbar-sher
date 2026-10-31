@@ -52,33 +52,35 @@ export default function App() {
       notifications,
     }}>
       <BrowserRouter>
-        <div className="flex h-screen bg-navy-950 overflow-hidden">
+        <div className="flex flex-col h-screen bg-slate-100 overflow-hidden">
           {demoMode && <DemoBanner />}
 
-          <Sidebar />
+          <div className="flex flex-1 min-h-0 overflow-hidden relative">
+            <Sidebar />
 
-          <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${demoMode ? 'pt-6' : ''}`}>
-            <TopNav />
+            <div className="flex-1 flex flex-col min-w-0">
+              <TopNav />
 
-            <main className="flex-1 overflow-y-auto p-4 md:p-6">
-              <Routes>
-                <Route path="/" element={<Navigate to="/dashboard" replace />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/map" element={<PollutionMap />} />
-                <Route path="/sensors" element={<SensorNetwork />} />
-                <Route path="/critical-zones" element={<CriticalZones />} />
-                <Route path="/diwali" element={<DiwaliIntelligence />} />
-                <Route path="/weather" element={<WeatherModule />} />
-                <Route path="/community" element={<CommunityReports />} />
-                <Route path="/rewards" element={<RewardsModule />} />
-                <Route path="/forecast" element={<ForecastModule />} />
-                <Route path="/simulator" element={<SimulatorModule />} />
-                <Route path="/copilot" element={<CopilotModule />} />
-                <Route path="/routes" element={<EcoRoutes />} />
-                <Route path="/innovations" element={<Innovations />} />
-                <Route path="/admin" element={<AdminDashboard />} />
-              </Routes>
-            </main>
+              <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-slate-100">
+                <Routes>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/map" element={<PollutionMap />} />
+                  <Route path="/sensors" element={<SensorNetwork />} />
+                  <Route path="/critical-zones" element={<CriticalZones />} />
+                  <Route path="/diwali" element={<DiwaliIntelligence />} />
+                  <Route path="/weather" element={<WeatherModule />} />
+                  <Route path="/community" element={<CommunityReports />} />
+                  <Route path="/rewards" element={<RewardsModule />} />
+                  <Route path="/forecast" element={<ForecastModule />} />
+                  <Route path="/simulator" element={<SimulatorModule />} />
+                  <Route path="/copilot" element={<CopilotModule />} />
+                  <Route path="/routes" element={<EcoRoutes />} />
+                  <Route path="/innovations" element={<Innovations />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
+                </Routes>
+              </main>
+            </div>
           </div>
 
           {tourActive && <GuidedTour onClose={() => setTourActive(false)} />}

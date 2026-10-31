@@ -27,7 +27,7 @@ function AQIGauge({ aqi }: { aqi: number }) {
         <svg viewBox="0 0 140 115" className="w-full h-full">
           <path
             d="M 20 95 A 50 50 0 1 1 120 95"
-            fill="none" stroke="#162d5e" strokeWidth="11" strokeLinecap="round"
+            fill="none" stroke="#e2e8f0" strokeWidth="11" strokeLinecap="round"
           />
           <path
             d="M 20 95 A 50 50 0 1 1 120 95"
@@ -36,10 +36,10 @@ function AQIGauge({ aqi }: { aqi: number }) {
             strokeWidth="11"
             strokeLinecap="round"
             strokeDasharray={`${dash * 2.09} ${(stroke - dash) * 2.09}`}
-            style={{ transition: 'stroke-dasharray 1.2s ease', filter: `drop-shadow(0 0 8px ${cat.color}66)` }}
+            style={{ transition: 'stroke-dasharray 1.2s ease' }}
           />
-          <text x="70" y="80" textAnchor="middle" fill="#ffffff" fontSize="26" fontWeight="900" fontFamily="monospace">{aqi}</text>
-          <text x="70" y="100" textAnchor="middle" fill={cat.color} fontSize="10" fontWeight="700">{cat.label.toUpperCase()}</text>
+          <text x="70" y="80" textAnchor="middle" fill="#0f172a" fontSize="26" fontWeight="900" fontFamily="monospace">{aqi}</text>
+          <text x="70" y="100" textAnchor="middle" fill={cat.color} fontSize="11" fontWeight="800">{cat.label.toUpperCase()}</text>
         </svg>
       </div>
     </div>
@@ -48,19 +48,19 @@ function AQIGauge({ aqi }: { aqi: number }) {
 
 function MetricCard({ icon: Icon, label, value, unit, color, sub, alert }: any) {
   return (
-    <div className="hud-panel p-4 flex items-start gap-3 hover:border-cyan-500/40 transition-all">
-      <div className="p-2.5 rounded-xl flex-shrink-0" style={{ background: color + '1c' }}>
+    <div className="card p-4 flex items-start gap-3 hover:border-slate-300 transition-all shadow-sm">
+      <div className="p-2.5 rounded-xl flex-shrink-0" style={{ background: color + '18' }}>
         <Icon size={19} style={{ color }} />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-[11px] text-slate-400 font-medium tracking-wide flex items-center justify-between">
+        <div className="text-xs text-slate-600 font-bold tracking-wide flex items-center justify-between">
           <span>{label}</span>
           {alert && <span className="w-2 h-2 rounded-full bg-red-500 critical-blink" />}
         </div>
-        <div className="text-xl font-black text-white font-mono mt-0.5">
-          {value}<span className="text-xs font-normal text-slate-400 ml-1">{unit}</span>
+        <div className="text-2xl font-black text-slate-900 font-mono mt-0.5">
+          {value}<span className="text-xs font-semibold text-slate-500 ml-1">{unit}</span>
         </div>
-        {sub && <div className="text-[11px] text-slate-500 mt-0.5 truncate">{sub}</div>}
+        {sub && <div className="text-xs text-slate-600 mt-0.5 truncate font-medium">{sub}</div>}
       </div>
     </div>
   );
@@ -69,14 +69,14 @@ function MetricCard({ icon: Icon, label, value, unit, color, sub, alert }: any) 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload?.length) {
     return (
-      <div className="hud-panel p-3 text-xs border border-cyan-500/30">
-        <p className="text-slate-400 mb-1 font-mono">{label}</p>
+      <div className="bg-white p-3 text-xs border border-slate-300 rounded-xl shadow-lg">
+        <p className="text-slate-500 mb-1 font-mono font-bold">{label}</p>
         {payload.map((p: any) => (
-          <p key={p.name} style={{ color: p.color }} className="font-mono">
-            {p.name}: <span className="font-bold text-white">{Math.round(p.value)}</span>
+          <p key={p.name} style={{ color: p.color }} className="font-mono font-bold">
+            {p.name}: <span className="font-black text-slate-900">{Math.round(p.value)}</span>
           </p>
         ))}
-        <p className="text-slate-600 text-[10px] mt-1 border-t border-navy-700 pt-1">DEMO telemetry stream</p>
+        <p className="text-slate-400 text-[10px] mt-1 border-t border-slate-100 pt-1">DEMO telemetry stream</p>
       </div>
     );
   }
@@ -465,7 +465,7 @@ export default function Dashboard() {
           </div>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={hourlyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="hour" tick={{ fill: '#64748b', fontSize: 10 }} interval={3} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
               <Tooltip content={<CustomTooltip />} />

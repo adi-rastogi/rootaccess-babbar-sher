@@ -16,10 +16,10 @@ export default function TopNav() {
   ];
 
   return (
-    <header className="h-16 bg-navy-900 border-b border-navy-700 flex items-center gap-4 px-4 flex-shrink-0 z-20">
+    <header className="h-16 bg-white border-b border-slate-200 flex items-center gap-4 px-4 flex-shrink-0 z-20 shadow-sm">
       {/* Mobile menu */}
       <button
-        className="md:hidden text-slate-400 hover:text-white"
+        className="md:hidden text-slate-600 hover:text-slate-900"
         onClick={() => setSidebarOpen(true)}
       >
         <Menu size={20} />
@@ -72,36 +72,36 @@ export default function TopNav() {
       <div className="relative">
         <button
           onClick={() => setShowNotifs(!showNotifs)}
-          className="relative p-2 text-slate-400 hover:text-white transition-colors"
+          className="relative p-2 text-slate-600 hover:text-slate-900 transition-colors"
         >
           <Bell size={18} />
           {notifications > 0 && (
-            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full notif-pulse" />
+            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full critical-sonar" />
           )}
         </button>
 
         {showNotifs && (
-          <div className="absolute right-0 top-full mt-1 w-80 bg-navy-800 border border-navy-600 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
-            <div className="px-4 py-3 border-b border-navy-700 flex items-center justify-between">
-              <span className="text-sm font-semibold text-white">Notifications</span>
+          <div className="absolute right-0 top-full mt-1 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
+            <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <span className="text-sm font-bold text-slate-900">Notifications</span>
               <span className="badge badge-demo">{notifications} new</span>
             </div>
             {notifList.map((n, i) => (
-              <div key={i} className="px-4 py-3 border-b border-navy-700/50 flex items-start gap-3 hover:bg-navy-700/30 cursor-pointer">
+              <div key={i} className="px-4 py-3 border-b border-slate-100 flex items-start gap-3 hover:bg-slate-50 cursor-pointer">
                 <span className="text-lg">{n.icon}</span>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-xs font-medium ${n.color}`}>{n.msg}</p>
+                  <p className={`text-xs font-semibold ${n.color}`}>{n.msg}</p>
                   <p className="text-xs text-slate-500 mt-0.5">{n.time}</p>
                 </div>
               </div>
             ))}
-            <div className="px-4 py-2 text-xs text-slate-500 text-center">DEMO alerts — not real environmental data</div>
+            <div className="px-4 py-2 text-xs text-slate-500 text-center bg-slate-50">DEMO alerts — not real environmental data</div>
           </div>
         )}
       </div>
 
       {/* User avatar */}
-      <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xs font-bold text-emerald-400">
+      <div className="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-300 flex items-center justify-center text-xs font-bold text-emerald-800 shadow-sm">
         DE
       </div>
     </header>

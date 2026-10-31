@@ -25,8 +25,8 @@ function WindCompass({ deg, speed }: { deg: number; speed: number }) {
     <div className="flex flex-col items-center gap-3">
       <div className="relative w-32 h-32">
         <svg viewBox="0 0 120 120" className="w-full h-full">
-          <circle cx="60" cy="60" r="54" fill="#081426" stroke="#162d5e" strokeWidth="2" />
-          <circle cx="60" cy="60" r="42" fill="none" stroke="#162d5e" strokeWidth="1" strokeDasharray="3 3" />
+          <circle cx="60" cy="60" r="54" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="2" />
+          <circle cx="60" cy="60" r="42" fill="none" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
           {dirs.map((d, i) => {
             const angle = (i * 45 - 90) * Math.PI / 180;
             const x = 60 + 44 * Math.cos(angle);
@@ -402,7 +402,7 @@ export default function WeatherModule() {
         </div>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={WEATHER_DATA.hourlyForecast.slice(0, 24)}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="hour" tick={{ fill: '#64748b', fontSize: 10 }} interval={2} />
             <YAxis yAxisId="temp" orientation="left" tick={{ fill: '#06b6d4', fontSize: 10 }} domain={['dataMin - 2', 'dataMax + 2']} />
             <YAxis yAxisId="humid" orientation="right" tick={{ fill: '#8b5cf6', fontSize: 10 }} />
@@ -428,7 +428,7 @@ export default function WeatherModule() {
         </p>
         <ResponsiveContainer width="100%" height={210}>
           <LineChart data={WEATHER_DATA.correlations}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="windSpeed" tick={{ fill: '#64748b', fontSize: 10 }} label={{ value: 'Surface Wind Speed (km/h)', position: 'insideBottom', offset: -4, fill: '#64748b', fontSize: 11 }} />
             <YAxis tick={{ fill: '#ef4444', fontSize: 10 }} label={{ value: 'PM2.5 (µg/m³)', angle: -90, position: 'insideLeft', fill: '#ef4444', fontSize: 11 }} />
             <Tooltip contentStyle={{ background: '#081426', border: '1px solid #162d5e', borderRadius: '10px', fontSize: '12px' }} />

@@ -420,7 +420,7 @@ export default function CriticalZones() {
 
         <ResponsiveContainer width="100%" height={230}>
           <BarChart data={categorizedSensors.map(s => ({ name: s.label.split('-')[0], pm25: s.pm25, aqi: s.aqi }))}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 10 }} />
             <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
             <Tooltip

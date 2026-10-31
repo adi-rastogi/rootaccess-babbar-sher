@@ -49,21 +49,20 @@ export default function Sidebar() {
       <aside
         className={`
           ${sidebarOpen ? 'w-60' : 'w-16'}
-          flex-shrink-0 bg-navy-900 border-r border-navy-700
+          flex-shrink-0 bg-white border-r border-slate-200
           flex flex-col transition-all duration-300 ease-in-out
-          fixed md:relative z-40 h-full
-          ${demoMode ? 'pt-6' : ''}
+          fixed md:relative z-40 h-full shadow-sm
         `}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 py-4 border-b border-navy-700 min-h-[64px]">
-          <div className="flex-shrink-0 w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/30">
-            <Leaf size={16} className="text-navy-950" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200 min-h-[60px]">
+          <div className="flex-shrink-0 w-8 h-8 bg-emerald-600 rounded-lg flex items-center justify-center shadow-sm">
+            <Leaf size={16} className="text-white" />
           </div>
           {sidebarOpen && (
             <div className="overflow-hidden">
-              <div className="text-white font-bold text-sm leading-tight">PollutionMitra</div>
-              <div className="text-emerald-400 text-xs">Air Quality, Street by Street</div>
+              <div className="text-slate-900 font-extrabold text-sm leading-tight">PollutionMitra</div>
+              <div className="text-emerald-700 text-xs font-semibold">Street-by-Street Air IQ</div>
             </div>
           )}
           <button

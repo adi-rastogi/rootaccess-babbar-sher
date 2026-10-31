@@ -242,7 +242,7 @@ export default function ForecastModule() {
                 <stop offset="95%" stopColor="#22d3ee" stopOpacity={0.02} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="hour" tick={{ fill: '#64748b', fontSize: 10 }} interval={horizon > 24 ? 3 : 1} />
             <YAxis tick={{ fill: '#64748b', fontSize: 10 }} domain={['dataMin - 15', 'dataMax + 20']} />
             <Tooltip
@@ -302,7 +302,7 @@ export default function ForecastModule() {
 
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={boundaryLayerData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#162d5e" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="time" tick={{ fill: '#64748b', fontSize: 10 }} />
               <YAxis tick={{ fill: '#64748b', fontSize: 10 }} label={{ value: 'Mixing Height (m)', angle: -90, position: 'insideLeft', fill: '#64748b', fontSize: 10 }} />
               <Tooltip
