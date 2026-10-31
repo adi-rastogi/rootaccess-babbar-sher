@@ -165,27 +165,48 @@ export default function DiwaliIntelligence() {
 
   // Initialize Leaflet Map for Diwali Smog Geographic Distribution
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
+    if (!mapRef.current) return;
 
-    const map = L.map(mapRef.current, {
-      center: [28.66, 77.18],
-      zoom: 11,
-      zoomControl: false,
-    });
+    if ((mapRef.current as any)._leaflet_id) {
+      (mapRef.current as any)._leaflet_id = null;
+    }
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(map);
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {}
+      mapInstanceRef.current = null;
+    }
 
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    mapInstanceRef.current = map;
+    try {
+      if (typeof L !== 'undefined') {
+        const map = L.map(mapRef.current, {
+          center: [28.66, 77.18],
+          zoom: 11,
+          zoomControl: false,
+        });
 
-    renderSmogLayers(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors',
+          maxZoom: 19,
+        }).addTo(map);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        mapInstanceRef.current = map;
+
+        renderSmogLayers(map);
+      }
+    } catch (err) {
+      console.error('Diwali Map Leaflet error:', err);
+    }
 
     return () => {
-      map.remove();
-      mapInstanceRef.current = null;
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {}
+        mapInstanceRef.current = null;
+      }
     };
   }, []);
 

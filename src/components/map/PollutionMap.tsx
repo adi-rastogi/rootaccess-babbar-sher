@@ -28,34 +28,54 @@ export default function PollutionMap() {
 
   // Wind speed factors based on selection
   const windSpeedMap = {
-    stagnant: { speed: 2.4, label: 'Stagnant (2.4 km/h)', dispersionText: 'Severe Particulate Accumulation' },
-    normal: { speed: 6.8, label: 'Moderate (6.8 km/h)', dispersionText: 'Typical Urban Dispersion' },
-    gusty: { speed: 14.5, label: 'High (14.5 km/h)', dispersionText: 'Accelerated Downwind Dilution' },
+    stagnant: { speed: 2.4, label: 'Stagnant (2.4 km/h)', dispersionText: 'Severe Particulate Accumulation', effectiveness: 24, spreadArea: 86, plumeWidth: 2.2 },
+    normal: { speed: 6.8, label: 'Moderate (6.8 km/h)', dispersionText: 'Typical Urban Dispersion', effectiveness: 68, spreadArea: 164, plumeWidth: 4.8 },
+    gusty: { speed: 14.5, label: 'High (14.5 km/h)', dispersionText: 'Accelerated Downwind Dilution', effectiveness: 94, spreadArea: 310, plumeWidth: 8.4 },
   };
 
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
+    if (!mapRef.current) return;
 
-    // Initialize Leaflet map
-    const map = L.map(mapRef.current, {
-      center: [28.65, 77.16],
-      zoom: 11,
-      zoomControl: false,
-    });
+    if ((mapRef.current as any)._leaflet_id) {
+      (mapRef.current as any)._leaflet_id = null;
+    }
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(map);
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {}
+      mapInstanceRef.current = null;
+    }
 
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    mapInstanceRef.current = map;
+    try {
+      if (typeof L !== 'undefined') {
+        const map = L.map(mapRef.current, {
+          center: [28.65, 77.16],
+          zoom: 11,
+          zoomControl: false,
+        });
 
-    renderAllLayers(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors',
+          maxZoom: 19,
+        }).addTo(map);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        mapInstanceRef.current = map;
+
+        renderAllLayers(map);
+      }
+    } catch (err) {
+      console.error('PollutionMap Leaflet error:', err);
+    }
 
     return () => {
-      map.remove();
-      mapInstanceRef.current = null;
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {}
+        mapInstanceRef.current = null;
+      }
     };
   }, []);
 
@@ -569,6 +589,73 @@ export default function PollutionMap() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Atmospheric Dispersion Effectiveness & Spread Analytics */}
+      <div className="hud-panel p-5 border-cyan-500/30">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <div className="flex items-center gap-2">
+            <Sparkles size={16} className="text-cyan-400" />
+            <h2 className="text-sm font-bold text-white">
+              Pollution Spread Effectiveness & Ground Dispersion Modeling
+            </h2>
+          </div>
+          <span className="text-xs text-slate-400 font-mono">
+            Downwind Vector: 135° (NW → SE Corridor)
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-navy-950/70 p-4 rounded-xl border border-navy-800">
+            <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
+              <span>Dispersion Dilution Efficiency</span>
+              <span className="font-mono font-bold text-cyan-400">{windSpeedMap[windSimulationSpeed].effectiveness}%</span>
+            </div>
+            <div className="h-2 bg-navy-900 rounded-full overflow-hidden mt-2">
+              <div
+                className="h-full rounded-full transition-all duration-700 bg-gradient-to-r from-red-500 via-yellow-500 to-emerald-400"
+                style={{ width: `${windSpeedMap[windSimulationSpeed].effectiveness}%` }}
+              />
+            </div>
+            <p className="text-[10px] text-slate-500 mt-2">
+              {windSimulationSpeed === 'stagnant'
+                ? 'Critically low ground mixing traps toxic particles in urban canyons.'
+                : windSimulationSpeed === 'normal'
+                ? 'Standard advection dilution across the 25km NCR corridor.'
+                : 'Rapid boundary layer flushing clears local particulate accumulation.'}
+            </p>
+          </div>
+
+          <div className="bg-navy-950/70 p-4 rounded-xl border border-navy-800">
+            <div className="text-xs text-slate-400 mb-1">Downwind Plume Spread Area</div>
+            <div className="text-2xl font-black font-mono text-white mt-1">
+              ~{windSpeedMap[windSimulationSpeed].spreadArea} <span className="text-xs font-normal text-slate-400">km²</span>
+            </div>
+            <div className="text-[11px] text-slate-500 mt-1">
+              Modeled plume lateral boundary: {windSpeedMap[windSimulationSpeed].plumeWidth} km
+            </div>
+          </div>
+
+          <div className="bg-navy-950/70 p-4 rounded-xl border border-navy-800">
+            <div className="text-xs text-slate-400 mb-1">Ground Concentration Drop-off</div>
+            <div className="text-xs text-slate-300 space-y-1 font-mono mt-2">
+              <div className="flex justify-between"><span>Source (0 km):</span><span className="text-red-400">224 µg/m³</span></div>
+              <div className="flex justify-between"><span>Mid-Stream (8 km):</span><span className="text-orange-400">168 µg/m³</span></div>
+              <div className="flex justify-between"><span>Downwind Tail (20 km):</span><span className="text-yellow-400">92 µg/m³</span></div>
+            </div>
+          </div>
+
+          <div className="bg-navy-950/70 p-4 rounded-xl border border-navy-800 flex flex-col justify-between">
+            <div>
+              <div className="text-xs text-slate-400 mb-1">Atmospheric Inversion</div>
+              <div className="text-sm font-bold text-amber-400 mt-1">Shallow Nocturnal Inversion</div>
+              <div className="text-[11px] text-slate-500 mt-0.5">Mixing Height: ~420 meters</div>
+            </div>
+            <div className="text-[10px] text-cyan-400/80 pt-2 border-t border-navy-800 mt-2">
+              ✓ Heatmap contours actively conform to real-time wind vector velocity
             </div>
           </div>
         </div>

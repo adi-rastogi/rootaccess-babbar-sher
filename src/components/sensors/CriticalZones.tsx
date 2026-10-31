@@ -7,12 +7,8 @@ declare const L: any;
 
 export default function CriticalZones() {
   const [filterCondition, setFilterCondition] = useState<'all' | 'critical' | 'moderate' | 'normal'>('all');
-  const [selectedZone, setSelectedZone] = useState<any>(SENSORS[3]); // Default Narela
-  const mapRef = useRef<any>(null);
-  const mapInstanceRef = useRef<any>(null);
-  const zoneLayersRef = useRef<any[]>([]);
-
-  // Categorize sensors into Critical, Moderate, and Normal
+  
+  // Categorize sensors into Critical, Moderate, and Normal with explicit condition property
   const categorizedSensors = SENSORS.map(s => {
     let condition: 'critical' | 'moderate' | 'normal' = 'normal';
     if (s.pm25 > 150 || s.aqi > 200) {
@@ -22,6 +18,14 @@ export default function CriticalZones() {
     }
     return { ...s, condition };
   });
+
+  // Safely initialize with the highest PM2.5 sensor (Narela) with condition attached
+  const initialZone = categorizedSensors.find(s => s.id === 'S004') || categorizedSensors[0];
+  const [selectedZone, setSelectedZone] = useState<any>(initialZone);
+
+  const mapRef = useRef<any>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const zoneLayersRef = useRef<any[]>([]);
 
   const displayedSensors = categorizedSensors.filter(s => {
     if (filterCondition === 'all') return true;
@@ -33,27 +37,53 @@ export default function CriticalZones() {
   const normalCount = categorizedSensors.filter(s => s.condition === 'normal').length;
 
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
+    if (!mapRef.current) return;
 
-    const map = L.map(mapRef.current, {
-      center: [28.65, 77.16],
-      zoom: 11,
-      zoomControl: false,
-    });
+    // Safety check: if container already initialized in Leaflet, reset it
+    if ((mapRef.current as any)._leaflet_id) {
+      (mapRef.current as any)._leaflet_id = null;
+    }
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 19,
-    }).addTo(map);
+    if (mapInstanceRef.current) {
+      try {
+        mapInstanceRef.current.remove();
+      } catch (e) {
+        // ignore cleanup error
+      }
+      mapInstanceRef.current = null;
+    }
 
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-    mapInstanceRef.current = map;
+    try {
+      if (typeof L !== 'undefined') {
+        const map = L.map(mapRef.current, {
+          center: [28.65, 77.16],
+          zoom: 11,
+          zoomControl: false,
+        });
 
-    renderMapZones(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors',
+          maxZoom: 19,
+        }).addTo(map);
+
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        mapInstanceRef.current = map;
+
+        renderMapZones(map);
+      }
+    } catch (err) {
+      console.error('CriticalZones Leaflet initialization error:', err);
+    }
 
     return () => {
-      map.remove();
-      mapInstanceRef.current = null;
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.remove();
+        } catch (e) {
+          // ignore
+        }
+        mapInstanceRef.current = null;
+      }
     };
   }, []);
 
@@ -63,7 +93,15 @@ export default function CriticalZones() {
   }, [filterCondition]);
 
   function renderMapZones(map: any) {
-    zoneLayersRef.current.forEach(l => l.remove());
+    if (!map || typeof L === 'undefined') return;
+
+    zoneLayersRef.current.forEach(l => {
+      try {
+        l.remove();
+      } catch (e) {
+        // ignore
+      }
+    });
     zoneLayersRef.current = [];
 
     displayedSensors.forEach(sensor => {
@@ -141,7 +179,7 @@ export default function CriticalZones() {
       circle.bindTooltip(`
         <div style="font-family:Inter,sans-serif; padding:5px;">
           <div style="font-weight:800; color:${zoneColor}; font-size:12px;">
-            ${sensor.condition.toUpperCase()} CONDITION
+            ${(sensor.condition || 'ALERT').toUpperCase()} CONDITION
           </div>
           <div style="font-weight:700; color:#fff; font-size:13px; margin-top:2px;">${sensor.label}</div>
           <div style="font-size:11px; color:#cbd5e1; margin-top:2px;">
@@ -156,6 +194,8 @@ export default function CriticalZones() {
       zoneLayersRef.current.push(circle);
     });
   }
+
+  const currentCondition = selectedZone?.condition || (selectedZone?.pm25 > 150 ? 'critical' : selectedZone?.pm25 > 80 ? 'moderate' : 'normal');
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -263,55 +303,57 @@ export default function CriticalZones() {
         </div>
 
         {/* Selected Zone Deep Dive */}
-        <div className="hud-panel p-4 flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between border-b border-navy-700/60 pb-2 mb-3">
-              <div>
-                <span className="text-[10px] text-cyan-400 font-mono tracking-wider">ZONE INSPECTION</span>
-                <h3 className="font-bold text-white text-base leading-tight">{selectedZone.label}</h3>
-              </div>
-              <span className={`badge ${
-                selectedZone.condition === 'critical' ? 'bg-red-500/20 text-red-400 border border-red-500/50 critical-blink' :
-                selectedZone.condition === 'moderate' ? 'bg-yellow-500/20 text-yellow-400' :
-                'bg-emerald-500/20 text-emerald-400'
-              }`}>
-                {selectedZone.condition.toUpperCase()}
-              </span>
-            </div>
-
-            <div className="space-y-2 text-xs">
-              <div className="bg-navy-950/60 p-3 rounded-xl border border-navy-800">
-                <div className="text-slate-400 text-[11px]">Primary Telemetry Reading</div>
-                <div className="text-3xl font-black mt-1 font-mono" style={{ color: getAQICategory(selectedZone.aqi).color }}>
-                  {selectedZone.pm25} <span className="text-sm font-normal text-slate-400">µg/m³ PM2.5</span>
+        {selectedZone && (
+          <div className="hud-panel p-4 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between border-b border-navy-700/60 pb-2 mb-3">
+                <div>
+                  <span className="text-[10px] text-cyan-400 font-mono tracking-wider">ZONE INSPECTION</span>
+                  <h3 className="font-bold text-white text-base leading-tight">{selectedZone.label}</h3>
                 </div>
-                <div className="text-xs text-slate-400 mt-1">
-                  AQI: <strong>{selectedZone.aqi}</strong> · Status: <span className="font-semibold text-slate-200">{getAQICategory(selectedZone.aqi).label}</span>
-                </div>
+                <span className={`badge ${
+                  currentCondition === 'critical' ? 'bg-red-500/20 text-red-400 border border-red-500/50 critical-blink' :
+                  currentCondition === 'moderate' ? 'bg-yellow-500/20 text-yellow-400' :
+                  'bg-emerald-500/20 text-emerald-400'
+                }`}>
+                  {currentCondition.toUpperCase()}
+                </span>
               </div>
 
-              <div className="space-y-1.5 pt-1">
-                {[
-                  { label: 'Standard Exceedance', value: `+${Math.max(0, Math.round(((selectedZone.pm25 - 60) / 60) * 100))}% above NAAQS`, color: '#ef4444' },
-                  { label: 'PM10 Concentration', value: `${selectedZone.pm10} µg/m³` },
-                  { label: 'Ambient Temperature', value: `${selectedZone.temp}°C` },
-                  { label: 'Relative Humidity', value: `${selectedZone.humidity}%` },
-                  { label: 'Node Hardware', value: `${selectedZone.health.toUpperCase()} (${selectedZone.battery}% battery)` },
-                  { label: 'Last Calibration', value: selectedZone.calibrated },
-                ].map(r => (
-                  <div key={r.label} className="flex justify-between py-1 border-b border-navy-800/40 text-[11px]">
-                    <span className="text-slate-400">{r.label}</span>
-                    <span className="font-mono text-slate-200" style={{ color: (r as any).color }}>{r.value}</span>
+              <div className="space-y-2 text-xs">
+                <div className="bg-navy-950/60 p-3 rounded-xl border border-navy-800">
+                  <div className="text-slate-400 text-[11px]">Primary Telemetry Reading</div>
+                  <div className="text-3xl font-black mt-1 font-mono" style={{ color: getAQICategory(selectedZone.aqi).color }}>
+                    {selectedZone.pm25} <span className="text-sm font-normal text-slate-400">µg/m³ PM2.5</span>
                   </div>
-                ))}
+                  <div className="text-xs text-slate-400 mt-1">
+                    AQI: <strong>{selectedZone.aqi}</strong> · Status: <span className="font-semibold text-slate-200">{getAQICategory(selectedZone.aqi).label}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 pt-1">
+                  {[
+                    { label: 'Standard Exceedance', value: `+${Math.max(0, Math.round(((selectedZone.pm25 - 60) / 60) * 100))}% above NAAQS`, color: '#ef4444' },
+                    { label: 'PM10 Concentration', value: `${selectedZone.pm10} µg/m³` },
+                    { label: 'Ambient Temperature', value: `${selectedZone.temp}°C` },
+                    { label: 'Relative Humidity', value: `${selectedZone.humidity}%` },
+                    { label: 'Node Hardware', value: `${selectedZone.health ? selectedZone.health.toUpperCase() : 'ACTIVE'} (${selectedZone.battery}% battery)` },
+                    { label: 'Last Calibration', value: selectedZone.calibrated || '2024-10-15' },
+                  ].map(r => (
+                    <div key={r.label} className="flex justify-between py-1 border-b border-navy-800/40 text-[11px]">
+                      <span className="text-slate-400">{r.label}</span>
+                      <span className="font-mono text-slate-200" style={{ color: (r as any).color }}>{r.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="mt-4 p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-[11px] text-red-300/90 leading-tight">
-            <strong>Advisory:</strong> {selectedZone.condition === 'critical' ? 'High particulate density detected. Sensitive groups should wear N95 respirators and avoid outdoor exertion.' : 'Ambient conditions are acceptable for typical activities.'}
+            <div className="mt-4 p-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-[11px] text-red-300/90 leading-tight">
+              <strong>Advisory:</strong> {currentCondition === 'critical' ? 'High particulate density detected. Sensitive groups should wear N95 respirators and avoid outdoor exertion.' : 'Ambient conditions are acceptable for typical activities.'}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Blinking Critical Alert Cards */}
