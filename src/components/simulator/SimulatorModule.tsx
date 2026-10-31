@@ -453,60 +453,122 @@ export default function SimulatorModule() {
             <div className="hud-panel p-5 space-y-4">
               <div className="text-xs font-bold text-slate-300 uppercase tracking-wider">Meteorological & Source Knobs</div>
 
-              {/* Wind Speed */}
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-400">Wind Velocity</span>
-                  <span className="font-mono text-cyan-400 font-bold">{scenario.windSpeed} km/h</span>
+              {/* Live Station Telemetry Feeds (NO SLIDERS) */}
+              <div className="space-y-3">
+                <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+                  Live Meteorological Sensor Feeds:
                 </div>
-                <input
-                  type="range" min="0.5" max="30" step="0.5"
-                  value={scenario.windSpeed}
-                  onChange={e => setScenario(s => ({ ...s, windSpeed: parseFloat(e.target.value) }))}
-                  className="w-full accent-cyan-400 h-1.5 bg-navy-950 rounded cursor-pointer"
-                />
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: 'CPCB Anand Vihar', wind: 3.5, hum: 72, ind: 45, fest: 10 },
+                    { label: 'Safdarjung AWS', wind: 12.0, hum: 58, ind: 20, fest: 0 },
+                    { label: 'Okhla Industrial', wind: 2.2, hum: 65, ind: 80, fest: 15 },
+                    { label: 'Diwali Peak Trapper', wind: 1.8, hum: 78, ind: 25, fest: 90 },
+                  ].map(f => (
+                    <button
+                      key={f.label}
+                      onClick={() => setScenario(s => ({
+                        ...s,
+                        windSpeed: f.wind,
+                        humidity: f.hum,
+                        industrial: f.ind,
+                        festival: f.fest,
+                      }))}
+                      className="p-2.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300 text-left transition-all"
+                    >
+                      <div className="text-xs font-bold text-slate-900">{f.label}</div>
+                      <div className="text-[10px] text-slate-500 font-mono mt-0.5">{f.wind} km/h · {f.hum}% RH</div>
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Humidity */}
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-400">Relative Humidity</span>
-                  <span className="font-mono text-purple-400 font-bold">{scenario.humidity}%</span>
+              {/* Wind Speed Stepper */}
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <div className="flex justify-between items-center text-xs mb-1">
+                  <span className="text-slate-700 font-bold">Wind Velocity:</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, windSpeed: Math.max(0.5, parseFloat((s.windSpeed - 0.5).toFixed(1))) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      -
+                    </button>
+                    <span className="font-mono text-cyan-700 font-bold text-sm w-16 text-center">{scenario.windSpeed} km/h</span>
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, windSpeed: Math.min(35, parseFloat((s.windSpeed + 0.5).toFixed(1))) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-                <input
-                  type="range" min="20" max="100" step="1"
-                  value={scenario.humidity}
-                  onChange={e => setScenario(s => ({ ...s, humidity: parseInt(e.target.value) }))}
-                  className="w-full accent-purple-400 h-1.5 bg-navy-950 rounded cursor-pointer"
-                />
               </div>
 
-              {/* Industrial Activity */}
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-400">Industrial Boiler Output</span>
-                  <span className="font-mono text-amber-400 font-bold">{scenario.industrial}%</span>
+              {/* Humidity Stepper */}
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <div className="flex justify-between items-center text-xs mb-1">
+                  <span className="text-slate-700 font-bold">Relative Humidity:</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, humidity: Math.max(20, s.humidity - 5) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      -
+                    </button>
+                    <span className="font-mono text-purple-700 font-bold text-sm w-16 text-center">{scenario.humidity}%</span>
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, humidity: Math.min(100, s.humidity + 5) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-                <input
-                  type="range" min="0" max="100" step="5"
-                  value={scenario.industrial}
-                  onChange={e => setScenario(s => ({ ...s, industrial: parseInt(e.target.value) }))}
-                  className="w-full accent-amber-400 h-1.5 bg-navy-950 rounded cursor-pointer"
-                />
               </div>
 
-              {/* Firecracker / Festival Activity */}
-              <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-slate-400">Pyrotechnic Burst Factor</span>
-                  <span className="font-mono text-red-400 font-bold">{scenario.festival}%</span>
+              {/* Industrial Activity Stepper */}
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <div className="flex justify-between items-center text-xs mb-1">
+                  <span className="text-slate-700 font-bold">Industrial Boiler Output:</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, industrial: Math.max(0, s.industrial - 10) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      -
+                    </button>
+                    <span className="font-mono text-amber-700 font-bold text-sm w-16 text-center">{scenario.industrial}%</span>
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, industrial: Math.min(100, s.industrial + 10) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-                <input
-                  type="range" min="0" max="100" step="5"
-                  value={scenario.festival}
-                  onChange={e => setScenario(s => ({ ...s, festival: parseInt(e.target.value) }))}
-                  className="w-full accent-red-400 h-1.5 bg-navy-950 rounded cursor-pointer"
-                />
+              </div>
+
+              {/* Firecracker / Festival Activity Stepper */}
+              <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                <div className="flex justify-between items-center text-xs mb-1">
+                  <span className="text-slate-700 font-bold">Pyrotechnic Burst Factor:</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, festival: Math.max(0, s.festival - 10) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      -
+                    </button>
+                    <span className="font-mono text-red-700 font-bold text-sm w-16 text-center">{scenario.festival}%</span>
+                    <button
+                      onClick={() => setScenario(s => ({ ...s, festival: Math.min(100, s.festival + 10) }))}
+                      className="w-6 h-6 rounded bg-white border border-slate-300 text-slate-700 font-bold hover:bg-slate-100"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* Traffic Density & Rainfall */}

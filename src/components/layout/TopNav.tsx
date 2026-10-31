@@ -26,15 +26,15 @@ export default function TopNav() {
       </button>
 
       {/* Neighborhood selector */}
-      <div className="flex items-center gap-2 bg-navy-800 border border-navy-600 rounded-lg px-3 py-1.5 cursor-pointer hover:border-emerald-500/40 transition-colors">
-        <MapPin size={14} className="text-emerald-400 flex-shrink-0" />
+      <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-1.5 cursor-pointer hover:border-emerald-500/50 transition-colors shadow-sm">
+        <MapPin size={14} className="text-emerald-600 flex-shrink-0" />
         <select
           value={selectedNeighborhood}
           onChange={e => setSelectedNeighborhood(e.target.value as any)}
-          className="bg-transparent text-slate-200 text-sm focus:outline-none cursor-pointer pr-1"
+          className="bg-transparent text-slate-800 font-semibold text-sm focus:outline-none cursor-pointer pr-1"
         >
           {NEIGHBORHOODS.map(n => (
-            <option key={n.id} value={n.id} className="bg-navy-800">
+            <option key={n.id} value={n.id} className="bg-white text-slate-800">
               {n.name}
             </option>
           ))}
@@ -48,14 +48,14 @@ export default function TopNav() {
       <button
         onClick={() => setDemoMode(!demoMode)}
         className={`
-          flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border
+          flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border shadow-sm
           ${demoMode
-            ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
-            : 'bg-navy-800 border-navy-600 text-slate-400 hover:text-slate-200'
+            ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100'
+            : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900'
           }
         `}
       >
-        <span className={`w-2 h-2 rounded-full ${demoMode ? 'bg-cyan-400 animate-pulse' : 'bg-slate-600'}`} />
+        <span className={`w-2 h-2 rounded-full ${demoMode ? 'bg-blue-600 animate-pulse' : 'bg-slate-400'}`} />
         {demoMode ? 'DEMO MODE' : 'Live Mode'}
       </button>
 

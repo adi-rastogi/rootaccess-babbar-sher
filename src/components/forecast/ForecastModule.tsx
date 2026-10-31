@@ -141,61 +141,77 @@ export default function ForecastModule() {
         </div>
       </div>
 
-      {/* INTERACTIVE TIME SCRUBBER CARD (UNIQUE FEATURE) */}
-      <div className="hud-panel p-5 border border-cyan-500/40 bg-gradient-to-r from-navy-950 via-navy-900 to-navy-950">
+      {/* LIVE FORECAST HORIZON TELEMETRY SELECTOR (NO SLIDER) */}
+      <div className="card p-5 border border-slate-200 bg-white">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
           <div className="flex items-center gap-2">
-            <Clock size={16} className="text-cyan-400 animate-spin" style={{ animationDuration: '8s' }} />
-            <span className="text-xs font-bold text-white uppercase tracking-wider">
-              Interactive Time-Scrubber: Preview Any Future Hour
+            <Clock size={16} className="text-emerald-600" />
+            <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+              Live Projected Time-Window Telemetry
             </span>
           </div>
-          <div className="text-xs font-mono text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/30">
-            Selected Window: <span className="font-bold text-white">{scrubbedPoint?.hour} from now</span>
+          <div className="text-xs font-mono text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            Selected Horizon: <span className="font-bold text-slate-900">{scrubbedPoint?.hour} Ahead</span>
           </div>
         </div>
 
-        {/* Scrubber slider */}
-        <input
-          type="range"
-          min="1"
-          max={Math.min(horizon, forecast.length - 1)}
-          value={scrubberHour}
-          onChange={e => setScrubberHour(parseInt(e.target.value))}
-          className="w-full accent-cyan-400 h-2 bg-navy-950 rounded-lg cursor-pointer my-2"
-        />
+        {/* Live Horizon Selector Buttons instead of Range Slider */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 my-2">
+          {[1, 2, 3, 6, 12, 24, 48].filter(h => h <= horizon).map(h => {
+            const pt = forecast[Math.min(h, forecast.length - 1)] || forecast[0];
+            const ptCat = getAQICategory(pt.aqi);
+            const isSel = scrubberHour === h;
+            return (
+              <button
+                key={h}
+                onClick={() => setScrubberHour(h)}
+                className={`p-2.5 rounded-xl border text-center transition-all ${
+                  isSel
+                    ? 'border-emerald-500 bg-emerald-50/70 shadow-sm ring-1 ring-emerald-400'
+                    : 'border-slate-200 bg-slate-50/60 hover:bg-slate-100/80 hover:border-slate-300'
+                }`}
+              >
+                <div className="text-[11px] font-bold text-slate-600">+{h} Hours</div>
+                <div className="text-base font-black font-mono mt-0.5" style={{ color: ptCat.color }}>
+                  {pt.aqi}
+                </div>
+                <div className="text-[10px] text-slate-500 font-medium truncate">{ptCat.label}</div>
+              </button>
+            );
+          })}
+        </div>
 
         {/* Dynamic Scrubbed Telemetry Result */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-3">
-          <div className="bg-navy-950/80 p-3 rounded-xl border border-navy-700 text-center">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wide">Projected AQI</div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mt-4">
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-center">
+            <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Projected AQI</div>
             <div className="text-2xl font-black font-mono mt-0.5" style={{ color: scrubbedCat.color }}>
               {scrubbedPoint.aqi}
             </div>
-            <div className="text-[10px] font-semibold" style={{ color: scrubbedCat.color }}>
+            <div className="text-[10px] font-bold" style={{ color: scrubbedCat.color }}>
               {scrubbedCat.label}
             </div>
           </div>
 
-          <div className="bg-navy-950/80 p-3 rounded-xl border border-navy-700 text-center">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wide">Projected PM2.5</div>
-            <div className="text-2xl font-black font-mono text-amber-400 mt-0.5">
-              {scrubbedPoint.pm25} <span className="text-xs text-slate-400 font-normal">µg/m³</span>
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-center">
+            <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Projected PM2.5</div>
+            <div className="text-2xl font-black font-mono text-amber-600 mt-0.5">
+              {scrubbedPoint.pm25} <span className="text-xs text-slate-500 font-normal">µg/m³</span>
             </div>
             <div className="text-[10px] text-slate-500">Fine respirable matter</div>
           </div>
 
-          <div className="bg-navy-950/80 p-3 rounded-xl border border-navy-700 text-center">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wide">Confidence Band</div>
-            <div className="text-2xl font-black font-mono text-cyan-300 mt-0.5">
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-center">
+            <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Confidence Band</div>
+            <div className="text-2xl font-black font-mono text-cyan-700 mt-0.5">
               {Math.round(scrubbedPoint.confidence)}%
             </div>
             <div className="text-[10px] text-slate-500">Uncertainty ±{Math.round((scrubbedPoint.upper - scrubbedPoint.lower) / 2)} AQI</div>
           </div>
 
-          <div className="bg-navy-950/80 p-3 rounded-xl border border-navy-700 text-left flex flex-col justify-center">
-            <div className="text-[10px] text-slate-400 uppercase tracking-wide">Health Recommendation</div>
-            <div className="text-xs text-slate-200 mt-1 font-medium leading-snug">
+          <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-left flex flex-col justify-center">
+            <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Health Recommendation</div>
+            <div className="text-xs text-slate-800 mt-1 font-medium leading-snug">
               {scrubbedPoint.aqi > 250
                 ? '⚠️ Avoid strenuous outdoor activity. Keep windows shut.'
                 : scrubbedPoint.aqi > 150

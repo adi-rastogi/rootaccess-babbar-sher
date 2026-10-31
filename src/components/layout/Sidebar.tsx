@@ -97,8 +97,8 @@ export default function Sidebar() {
                         flex items-center gap-3 px-2 py-2 rounded-lg mb-0.5
                         text-sm font-medium transition-all duration-150
                         ${isActive
-                          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                          : 'text-slate-400 hover:text-slate-200 hover:bg-navy-800'
+                          ? 'bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200 shadow-sm'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                         }
                         ${!sidebarOpen ? 'justify-center' : ''}
                       `}

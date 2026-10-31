@@ -240,69 +240,102 @@ export default function WeatherModule() {
             </div>
           </div>
 
-          {/* Interactive Slider & Metrics Grid */}
+          {/* Live Doppler Radar Telemetry Streams & Scavenging Metrics Grid (NO SLIDER) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-            {/* Slider Control */}
-            <div className="lg:col-span-5 bg-navy-900/70 p-4 rounded-xl border border-navy-700">
-              <div className="flex justify-between items-center text-xs mb-2">
-                <span className="text-slate-300 font-semibold flex items-center gap-1.5">
-                  <Droplets size={14} className="text-cyan-400" />
-                  Precipitation Intensity:
+            {/* Live Station Feeds instead of Slider */}
+            <div className="lg:col-span-6 bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-slate-800 font-bold flex items-center gap-1.5">
+                  <Droplets size={15} className="text-cyan-600" />
+                  Live Doppler Radar Stations Feed:
                 </span>
-                <span className="font-mono font-bold text-cyan-300 text-sm">
+                <span className="font-mono font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 text-xs">
                   {rainRate.toFixed(1)} mm/hr
                 </span>
               </div>
-              <input
-                type="range"
-                min="0"
-                max="50"
-                step="0.5"
-                value={rainRate}
-                onChange={e => {
-                  const val = parseFloat(e.target.value);
-                  setRainRate(val);
-                  if (val === 0) setActivePreset('dry');
-                  else if (val < 10) setActivePreset('drizzle');
-                  else if (val < 30) setActivePreset('monsoon');
-                  else setActivePreset('torrent');
-                }}
-                className="w-full accent-cyan-400 h-2 bg-navy-950 rounded-lg cursor-pointer"
-              />
-              <div className="flex justify-between text-[10px] text-slate-500 mt-1 font-mono">
-                <span>0 mm (Dry Smog)</span>
-                <span>15 mm (Steady Rain)</span>
-                <span>50 mm (Heavy Torrent)</span>
+
+              {/* Station Buttons */}
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { name: 'Palam Observatory', rate: 0, sub: '0.0 mm/h · Dry Haze', id: 'dry' },
+                  { name: 'Lodhi Road Doppler', rate: 4.5, sub: '4.5 mm/h · Drizzle', id: 'drizzle' },
+                  { name: 'Safdarjung Station', rate: 18.0, sub: '18.0 mm/h · Monsoon', id: 'monsoon' },
+                  { name: 'Ridge Cleansing Node', rate: 42.0, sub: '42.0 mm/h · Torrent', id: 'torrent' },
+                ].map(st => (
+                  <button
+                    key={st.name}
+                    onClick={() => {
+                      setRainRate(st.rate);
+                      setActivePreset(st.id as any);
+                    }}
+                    className={`p-2.5 rounded-xl border text-left transition-all ${
+                      rainRate === st.rate
+                        ? 'border-cyan-500 bg-cyan-50/80 shadow-sm ring-1 ring-cyan-400'
+                        : 'border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className="text-xs font-bold text-slate-800">{st.name}</div>
+                    <div className="text-[10px] text-slate-500 font-mono mt-0.5">{st.sub}</div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Live Increment / Decrement Stepper Buttons */}
+              <div className="flex items-center justify-between pt-1 border-t border-slate-200/80 text-xs">
+                <span className="text-[11px] text-slate-500 font-medium">Fine Adjustment:</span>
+                <div className="flex gap-1.5">
+                  <button
+                    onClick={() => setRainRate(r => Math.max(0, parseFloat((r - 2).toFixed(1))))}
+                    className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100"
+                  >
+                    -2.0 mm/h
+                  </button>
+                  <button
+                    onClick={() => setRainRate(r => Math.min(60, parseFloat((r + 2).toFixed(1))))}
+                    className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:bg-slate-100"
+                  >
+                    +2.0 mm/h
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRainRate(0);
+                      setActivePreset('dry');
+                    }}
+                    className="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-500 hover:bg-slate-100"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Live Scavenging Telemetry */}
-            <div className="lg:col-span-7 grid grid-cols-3 gap-3">
-              <div className="bg-navy-900/70 p-3.5 rounded-xl border border-navy-700 text-center">
-                <div className="text-[11px] text-slate-400 uppercase tracking-wide">PM Washout Rate</div>
-                <div className="text-2xl font-black font-mono text-emerald-400 mt-1">
+            <div className="lg:col-span-6 grid grid-cols-3 gap-3">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">PM Washout Rate</div>
+                <div className="text-2xl font-black font-mono text-emerald-600 mt-1">
                   -{scavengingPct}%
                 </div>
-                <div className="text-[10px] text-slate-500 mt-0.5">Scavenging efficiency</div>
+                <div className="text-[10px] text-slate-500 mt-0.5 font-medium">Scavenging efficiency</div>
               </div>
 
-              <div className="bg-navy-900/70 p-3.5 rounded-xl border border-navy-700 text-center">
-                <div className="text-[11px] text-slate-400 uppercase tracking-wide">Baseline PM2.5</div>
-                <div className="text-2xl font-black font-mono text-amber-400 mt-1">
+              <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+                <div className="text-[10px] text-slate-500 uppercase tracking-wide font-bold">Baseline PM2.5</div>
+                <div className="text-2xl font-black font-mono text-amber-600 mt-1">
                   {baselinePM}
-                  <span className="text-xs text-slate-400 font-normal ml-0.5">µg</span>
+                  <span className="text-xs text-slate-500 font-normal ml-0.5">µg</span>
                 </div>
-                <div className="text-[10px] text-slate-500 mt-0.5">Pre-precipitation</div>
+                <div className="text-[10px] text-slate-500 mt-0.5 font-medium">Pre-precipitation</div>
               </div>
 
-              <div className="bg-navy-900/70 p-3.5 rounded-xl border border-emerald-500/40 text-center bg-emerald-500/5">
-                <div className="text-[11px] text-emerald-300 uppercase tracking-wide">Post-Rain PM2.5</div>
-                <div className="text-2xl font-black font-mono text-emerald-300 mt-1">
+              <div className="bg-emerald-50/80 p-4 rounded-xl border border-emerald-300 text-center">
+                <div className="text-[10px] text-emerald-800 uppercase tracking-wide font-bold">Post-Rain PM2.5</div>
+                <div className="text-2xl font-black font-mono text-emerald-700 mt-1">
                   {washedPM}
-                  <span className="text-xs text-slate-400 font-normal ml-0.5">µg</span>
+                  <span className="text-xs text-emerald-600 font-normal ml-0.5">µg</span>
                 </div>
-                <div className="text-[10px] text-emerald-400/80 mt-0.5">
-                  {rainRate > 0 ? '✨ Air Cleaned' : 'Normal Haze'}
+                <div className="text-[10px] text-emerald-800 font-semibold mt-0.5">
+                  {rainRate > 0 ? '✨ Air Scavenged' : 'Dry Smog'}
                 </div>
               </div>
             </div>
