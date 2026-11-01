@@ -1,4 +1,4 @@
-# 🌿 POLLUTIONMITRA
+# POLLUTIONMITRA
 > **"Air Quality, Street by Street."**  
 > *Hyper-Local Environmental Intelligence, 3D Aerodynamic Micro-Canyon Modeling & Real-Time OpenAQ / WAQI Telemetry for Delhi NCR.*
 
@@ -12,7 +12,7 @@
 
 ---
 
-## ⚡ Quick Reference for Hackathon Judges
+## Quick Reference for Hackathon Judges
 
 ### 1. 💻 Coding Languages & Frameworks
 * **TypeScript (`.ts`, `.tsx`):** Strict type safety across telemetry schemas, GIS vector transforms, and predictive math engines.
@@ -21,7 +21,7 @@
 * **Tailwind CSS & CSS3:** Hardware-accelerated UI animations, glassmorphism slate-graphite HUD themes, and responsive design.
 * **Python (Tooling & Data Verification):** API validation scripts, geospatial bounding box queries, and test runners.
 
-### 2. 🗄️ Database, Caching & Data Streaming Architecture
+### 2. Database, Caching & Data Streaming Architecture
 * **Live Telemetry Providers:**
   * **OpenAQ v3 API:** CPCB (Central Pollution Control Board) & DPCC regulatory reference monitors (`Anand Vihar`, `Punjabi Bagh`, `R K Puram`, `ITO`, `DTU`).
   * **WAQI (World Air Quality Index) Stream:** Continuous real-time Delhi NCR station feeds (`ITI Jahangirpuri`, `Wazirpur`, `Major Dhyan Chand Stadium / CP`, `Patparganj`, `Mandir Marg`, `Sonia Vihar`).
@@ -29,7 +29,7 @@
 * **Browser Persistent Storage (`localStorage` / `sessionStorage`):** Stores user settings, verified citizen report upvotes, and custom simulator configurations.
 * **Data Interchange Format:** Normalized JSON time-series telemetry schema (ISO 8601 timestamps, geospatial coordinates, and multi-gas IAQI vectors).
 
-### 3. 🧠 AI, Mathematical & Physical Models
+### 3. AI, Mathematical & Physical Models
 
 | Model Category | Scientific Model / Formula | Purpose in PollutionMitra |
 | :--- | :--- | :--- |
@@ -44,7 +44,7 @@
 
 ---
 
-## 🌟 Key Platform Innovations
+## Key Platform Innovations
 
 ### 1. 🏙️ 3D LiDAR Micro-Canyon Dispersion (`/canyon`)
 Standard air quality apps only report rooftop monitoring data, missing street-level reality. Grounded in **Oke (1988) urban meteorology**, our 3D wind-tunnel simulator models how high-rise buildings trap vehicular emissions at pedestrian sidewalk level:
@@ -53,38 +53,38 @@ Standard air quality apps only report rooftop monitoring data, missing street-le
 * **Skimming Flow ($H/W \ge 0.7$):** Wind skims across rooftops, creating a stationary recirculating eddy that traps vehicle exhaust at pedestrian sidewalk level — resulting in air up to **$5\times$ more toxic** than rooftop measurements!
 * Includes interactive aspect ratio sliders, wind velocity controls, and real Delhi presets (*Connaught Place Radial*, *Nehru Place Canyon*, *Gurgaon Cyber City Tower Corridor*).
 
-### 2. 🫁 Precision Predictive Health Engine (`/health`)
+### 2. Precision Predictive Health Engine (`/health`)
 * **Cohort Vulnerability Engine:** Tailored clinical advisories for Pediatric, Asthma/Respiratory, Cardiac, Geriatric, and Athletic demographics.
 * **ICRP Pulmonary Deposition Depth:** Interactive cross-section visualizing particle penetration depth ($\text{PM}_{10}$, $\text{PM}_{2.5}$, and ultrafine $\text{PM}_{0.1}$).
 * **Diurnal Hourly Safety Windows:** Optimal outdoor activity schedule identifying peak thermal inversion hazards vs. afternoon mixing layer windows.
 * **Respirator Filtration Matrix:** Objective clinical comparison of Cloth ($<15\%$), Surgical ($35\%$), N95 ($95\%$), and N99 ($99\%$) filtration.
 * **Indoor HEPA CADR Calculator:** Computes CFM/CADR air turnover rate based on room dimensions.
 
-### 3. 🎆 Diwali Chemical Speciation & Acoustic Shockwave Detector (`/diwali`)
+### 3. Diwali Chemical Speciation & Acoustic Shockwave Detector (`/diwali`)
 * Traditional optical sensors cannot distinguish firecracker smoke from diesel truck emissions.
 * **Dual-Modality Source Apportionment:**
   * **Chemical Speciation:** Diagnostic Barium ($\text{Ba}^{2+}$, $+840\%$) and Strontium ($\text{Sr}^{2+}$, $+610\%$) tracers paired with flat Carbon Monoxide ($+6\%$).
   * **Acoustic Shockwave DSP:** Captures deflagration acoustic shockwaves exceeding $95\text{ dB}$ with rapid transient rise-times ($<15\text{ ms}$).
 * Includes interactive **💥 Trigger Burst Simulation** with dynamic UI shockwaves, Web Audio frequency thump, and automated incident audit logging.
 
-### 4. 👥 Citizen Reporting & Balcony Sensor Host Hub (`/community`)
+### 4. Citizen Reporting & Balcony Sensor Host Hub (`/community`)
 * **Balcony Host Pledge:** Community members can register residential balconies (`PM-CITIZEN-069`) to host micro-optical IoT air sensors.
 * **Multi-Citizen Verification:** Interactive upvoting (+1 citizen confirmations) to validate ground-level garbage burning, dust, and industrial smoke.
 * **Municipal Action Tracking:** Dispatches municipal rapid-response units (anti-smog water guns, mechanical road sweepers) with real-time audit trails.
 
-### 5. 🗺️ Wind-Aware Pollution Flow GIS Map (`/map`)
+### 5. Wind-Aware Pollution Flow GIS Map (`/map`)
 * OpenStreetMap integration with dynamic particulate heatmap overlays.
 * Vectorized wind flow streamlines showing regional dispersion corridors across Delhi NCR.
 * Clickable monitoring stations with real-time AQI telemetry.
 
-### 6. 🎧 Bilingual Audio Guided Tour (`Top Navigation`)
+### 6. Bilingual Audio Guided Tour (`Top Navigation`)
 * **100% Native Pure Hindi & English Narration:** High-fidelity studio voice playback for all 14 feature walkthroughs.
 * **Event-Synchronized Playback:** Progress bar and slide transitions dynamically bound to audio `onTimeUpdate` and `onEnded` events.
 * **Multi-Tier Voice Fallback:** Byte-0 uncompressed WAV audio $\rightarrow$ AAC M4A $\rightarrow$ Web Speech API.
 
 ---
 
-## 📦 Complete Route Directory
+## Complete Route Directory
 
 | Module | Route | Key Capabilities |
 | :--- | :--- | :--- |
@@ -107,7 +107,7 @@ Standard air quality apps only report rooftop monitoring data, missing street-le
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 * **Node.js**: v18.0.0 or later (tested on v26.13)
@@ -136,7 +136,7 @@ npm run preview
 
 ---
 
-## 🔑 Configured API Keys & Data Provenance
+## Configured API Keys & Data Provenance
 
 * **WAQI (World Air Quality Index) API:**
   * **Token:** `d630856ce71a4b52b1ce93759a064fc7d61958b8`
@@ -148,5 +148,5 @@ npm run preview
 
 ---
 
-## 📄 License
+## License
 This project is licensed under the **MIT License** — feel free to use and build upon it for environmental research and public health initiatives.
