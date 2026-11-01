@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Map, Radio, AlertTriangle, Sparkles,
   Cloud, Users, Trophy, TrendingUp, FlaskConical, Bot,
   Route, Lightbulb, ShieldCheck, X, ChevronLeft, ChevronRight,
-  Leaf, Satellite
+  Leaf, Satellite, Stethoscope
 } from 'lucide-react';
 import { useApp } from '../../App';
 
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { to: '/critical-zones', icon: AlertTriangle, label: 'Critical Zones', section: 'core' },
   { to: '/satellite', icon: Satellite, label: 'Satellite India Radar', section: 'analytics' },
   { to: '/diwali', icon: Sparkles, label: 'Diwali Analytics', section: 'analytics' },
+  { to: '/health', icon: Stethoscope, label: 'Precision Health', section: 'analytics' },
   { to: '/weather', icon: Cloud, label: 'Weather Intel', section: 'analytics' },
   { to: '/forecast', icon: TrendingUp, label: 'Forecasting', section: 'analytics' },
   { to: '/simulator', icon: FlaskConical, label: 'Env Simulator', section: 'analytics' },

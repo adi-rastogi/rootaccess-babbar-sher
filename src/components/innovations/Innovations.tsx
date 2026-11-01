@@ -193,6 +193,216 @@ export default function Innovations() {
   // 3. Exposure route simulator
   const [selectedRoute, setSelectedRoute] = useState<'standard' | 'mitra'>('mitra');
 
+  // 4. 3D LiDAR Micro-Canyon Simulator States
+  const canyonCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [canyonAspectRatio, setCanyonAspectRatio] = useState<number>(1.0);
+  const [canyonWindSpeed, setCanyonWindSpeed] = useState<number>(3.8);
+
+  // 3D Canyon Aerodynamic Wind-Tunnel Simulation Loop
+  useEffect(() => {
+    if (!selectedConcept || selectedConcept.id !== '3d-sim') return;
+    const canvas = canyonCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number;
+    canvas.width = canvas.parentElement?.clientWidth || 560;
+    canvas.height = 260;
+
+    const groundY = 220;
+    const bldgWidth = 110;
+    const leftBldgX = 25;
+    const canyonWidth = Math.max(140, canvas.width - (leftBldgX + bldgWidth * 2) - 40);
+    const rightBldgX = leftBldgX + bldgWidth + canyonWidth;
+
+    // Height based on aspect ratio H/W
+    const canyonH = Math.min(160, Math.max(70, Math.round(90 * canyonAspectRatio)));
+    const roofY = groundY - canyonH;
+    const centerX = leftBldgX + bldgWidth + canyonWidth / 2;
+    const centerY = roofY + canyonH / 2;
+
+    // Aerodynamic particles
+    interface FlowParticle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      angle: number;
+      radius: number;
+      isVortex: boolean;
+      color: string;
+      size: number;
+    }
+
+    const particles: FlowParticle[] = Array.from({ length: 90 }, (_, i) => {
+      const isVortex = i < 55;
+      return {
+        x: isVortex ? centerX : Math.random() * canvas.width,
+        y: isVortex ? centerY : Math.random() * roofY,
+        vx: 1.5 + Math.random() * 2,
+        vy: 0,
+        angle: Math.random() * Math.PI * 2,
+        radius: 20 + Math.random() * (canyonWidth * 0.42),
+        isVortex,
+        color: isVortex ? (Math.random() > 0.4 ? '#ef4444' : '#f59e0b') : '#38bdf8',
+        size: 1.5 + Math.random() * 2,
+      };
+    });
+
+    const renderCanyon = () => {
+      ctx.fillStyle = '#060f1e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Draw wind vector arrows above rooftops
+      ctx.strokeStyle = '#1e3a5f';
+      ctx.lineWidth = 1;
+      for (let y = 20; y < roofY; y += 35) {
+        ctx.beginPath();
+        ctx.moveTo(10, y);
+        ctx.lineTo(canvas.width - 20, y);
+        ctx.stroke();
+
+        // Arrowheads
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - 20, y);
+        ctx.lineTo(canvas.width - 28, y - 3);
+        ctx.lineTo(canvas.width - 28, y + 3);
+        ctx.fill();
+      }
+
+      // 2. Draw Left Building (Leeward Wall)
+      ctx.fillStyle = '#1a273e';
+      ctx.fillRect(leftBldgX, roofY, bldgWidth, canyonH);
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(leftBldgX, roofY, bldgWidth, canyonH);
+
+      // Building A Windows Grid
+      ctx.fillStyle = '#fef08a';
+      for (let wx = leftBldgX + 12; wx < leftBldgX + bldgWidth - 15; wx += 22) {
+        for (let wy = roofY + 14; wy < groundY - 14; wy += 24) {
+          ctx.fillRect(wx, wy, 12, 14);
+        }
+      }
+
+      // 3. Draw Right Building (Windward Wall)
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(rightBldgX, roofY, bldgWidth, canyonH);
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(rightBldgX, roofY, bldgWidth, canyonH);
+
+      // Building B Windows Grid
+      ctx.fillStyle = '#67e8f9';
+      for (let wx = rightBldgX + 12; wx < rightBldgX + bldgWidth - 15; wx += 22) {
+        for (let wy = roofY + 14; wy < groundY - 14; wy += 24) {
+          ctx.fillRect(wx, wy, 12, 14);
+        }
+      }
+
+      // 4. Ground / Road Line
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.lineTo(canvas.width, groundY);
+      ctx.stroke();
+
+      // Road lane divider
+      ctx.setLineDash([8, 8]);
+      ctx.strokeStyle = '#64748b';
+      ctx.beginPath();
+      ctx.moveTo(leftBldgX + bldgWidth, groundY + 18);
+      ctx.lineTo(rightBldgX, groundY + 18);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 5. Simulated Vehicles on Street emitting tailpipe soot
+      const car1X = leftBldgX + bldgWidth + 25;
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(car1X, groundY + 8, 28, 14);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(car1X + 5, groundY + 4, 16, 7);
+
+      const car2X = leftBldgX + bldgWidth + 85;
+      ctx.fillStyle = '#06b6d4';
+      ctx.fillRect(car2X, groundY + 8, 24, 12);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(car2X + 4, groundY + 4, 14, 6);
+
+      // Trapped smog gradient blob at pedestrian level
+      const smogGrad = ctx.createRadialGradient(
+        leftBldgX + bldgWidth + 30, groundY - 15, 5,
+        centerX, groundY - 20, canyonWidth * 0.6
+      );
+      smogGrad.addColorStop(0, 'rgba(239, 68, 68, 0.45)');
+      smogGrad.addColorStop(0.5, 'rgba(245, 158, 11, 0.25)');
+      smogGrad.addColorStop(1, 'rgba(15, 23, 42, 0)');
+      ctx.fillStyle = smogGrad;
+      ctx.fillRect(leftBldgX + bldgWidth, roofY, canyonWidth, canyonH);
+
+      // 6. Update and Draw Particles
+      particles.forEach(p => {
+        if (p.isVortex) {
+          // Counter-clockwise recirculating back-eddy vortex inside canyon cavity
+          p.angle -= 0.015 * canyonWindSpeed;
+          p.x = centerX + Math.cos(p.angle) * p.radius;
+          p.y = centerY + Math.sin(p.angle) * (p.radius * (canyonH / canyonWidth));
+
+          // Draw circulating particle
+          ctx.fillStyle = p.y > centerY ? '#ef4444' : '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Skimming flow across roof level
+          p.x += p.vx * (canyonWindSpeed * 0.45);
+          if (p.x > canvas.width) p.x = 0;
+          ctx.fillStyle = '#38bdf8';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      // 7. On-Canvas Stratified PM2.5 Telemetry Tags
+      // Rooftop Dispersed Sensor
+      ctx.fillStyle = '#22c55e';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('● ROOFTOP: 48 µg/m³ (Clean Convection)', leftBldgX + 5, roofY - 8);
+
+      // Ground Trapped Sidewalk Sensor
+      ctx.fillStyle = '#ef4444';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('● SIDEWALK: 285 µg/m³ (VORTEX TRAP)', leftBldgX + bldgWidth + 8, groundY - 8);
+
+      // Vortex Flow Label
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 9px monospace';
+      ctx.fillText('↺ RECIRCULATING EDDY', centerX - 42, centerY - 8);
+
+      // Top Header HUD
+      ctx.fillStyle = '#06b6d4';
+      ctx.font = 'bold 9px monospace';
+      ctx.fillText(
+        `WIND TUNNEL SIM // H/W: ${canyonAspectRatio.toFixed(1)} // U_roof: ${canyonWindSpeed} m/s // REGIME: ${
+          canyonAspectRatio >= 0.7 ? 'SKIMMING FLOW (TRAPPED)' : 'WAKE INTERFERENCE'
+        }`,
+        12, 16
+      );
+
+      animId = requestAnimationFrame(renderCanyon);
+    };
+
+    renderCanyon();
+
+    return () => cancelAnimationFrame(animId);
+  }, [selectedConcept, canyonAspectRatio, canyonWindSpeed]);
+
   // CCTV Simulation Loop
   useEffect(() => {
     if (!selectedConcept || selectedConcept.id !== 'cctv') return;
@@ -568,8 +778,77 @@ export default function Innovations() {
                 </div>
               )}
 
+              {/* 4. 3D LiDAR Urban Micro-Canyon Interactive Simulator */}
+              {selectedConcept.id === '3d-sim' && (
+                <div className="space-y-4">
+                  {/* Canvas Container */}
+                  <div className="relative rounded-2xl overflow-hidden border border-amber-500/40 bg-navy-950 shadow-2xl">
+                    <canvas
+                      ref={canyonCanvasRef}
+                      className="w-full h-[260px] block"
+                    />
+                  </div>
+
+                  {/* Canyon Simulator Interactive Controls */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3.5 bg-navy-900 rounded-xl border border-navy-800 text-xs">
+                    {/* Aspect Ratio H/W Selector */}
+                    <div>
+                      <div className="flex justify-between text-slate-300 font-bold mb-1.5">
+                        <span>Canyon Aspect Ratio (H/W):</span>
+                        <span className="font-mono text-amber-400">H/W = {canyonAspectRatio.toFixed(1)}</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[
+                          { val: 0.5, label: 'Wide (0.5)' },
+                          { val: 1.0, label: 'Standard (1.0)' },
+                          { val: 1.8, label: 'Deep (1.8)' },
+                        ].map((btn) => (
+                          <button
+                            key={btn.val}
+                            onClick={() => setCanyonAspectRatio(btn.val)}
+                            className={`py-1 px-2 rounded-lg text-center font-bold text-[11px] transition-all cursor-pointer ${
+                              canyonAspectRatio === btn.val
+                                ? 'bg-amber-500 text-navy-950 shadow'
+                                : 'bg-navy-950 border border-navy-700 text-slate-400 hover:text-white'
+                            }`}
+                          >
+                            {btn.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Wind Speed Slider */}
+                    <div>
+                      <div className="flex justify-between text-slate-300 font-bold mb-1.5">
+                        <span>Rooftop Wind Speed (U_roof):</span>
+                        <span className="font-mono text-cyan-300">{canyonWindSpeed.toFixed(1)} m/s</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="1.5"
+                        max="7.5"
+                        step="0.5"
+                        value={canyonWindSpeed}
+                        onChange={(e) => setCanyonWindSpeed(Number(e.target.value))}
+                        className="w-full accent-cyan-400 cursor-pointer"
+                      />
+                      <div className="flex justify-between text-[10px] text-slate-500 mt-1">
+                        <span>Stagnant (1.5 m/s)</span>
+                        <span>Brisk Wind (7.5 m/s)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Flow Dynamics Clinical Callout */}
+                  <div className="p-3 bg-navy-900/90 rounded-xl border border-amber-500/30 text-xs text-slate-300 leading-relaxed">
+                    <strong className="text-amber-400">Oke (1988) Micro-Meteorology Rule:</strong> When building height exceeds street width (<code className="text-cyan-300">H/W &gt; 0.7</code>), wind enters the <strong>Skimming Flow Regime</strong>. An enclosed stationary back-eddy forms between buildings, trapping vehicle tailpipe exhaust at pedestrian level (<strong className="text-red-400">285 µg/m³</strong>) while rooftop air remains cleaner (<strong className="text-emerald-400">48 µg/m³</strong>).
+                  </div>
+                </div>
+              )}
+
               {/* Fallback for other concepts */}
-              {['3d-sim', 'city-intel', 'alerts'].includes(selectedConcept.id) && (
+              {['city-intel', 'alerts'].includes(selectedConcept.id) && (
                 <div className="space-y-3">
                   <div className="bg-navy-900 p-4 rounded-xl border border-navy-800">
                     <div className="text-xs font-bold text-white mb-2">Simulated Architectural Workflow</div>

@@ -19,6 +19,7 @@ import EcoRoutes from './components/routes/EcoRoutes';
 import Innovations from './components/innovations/Innovations';
 import AdminDashboard from './components/admin/AdminDashboard';
 import SatelliteIntelligence from './components/satellite/SatelliteIntelligence';
+import PrecisionHealthAlerts from './components/health/PrecisionHealthAlerts';
 import { NEIGHBORHOODS, type NeighborhoodId } from './data/demoData';
 
 // Global app context
@@ -70,6 +71,7 @@ export default function App() {
                 <Route path="/critical-zones" element={<CriticalZones />} />
                 <Route path="/satellite" element={<SatelliteIntelligence />} />
                 <Route path="/diwali" element={<DiwaliIntelligence />} />
+                <Route path="/health" element={<PrecisionHealthAlerts />} />
                 <Route path="/weather" element={<WeatherModule />} />
                 <Route path="/community" element={<CommunityReports />} />
                 <Route path="/rewards" element={<RewardsModule />} />

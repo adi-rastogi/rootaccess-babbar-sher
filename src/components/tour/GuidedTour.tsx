@@ -6,8 +6,11 @@ interface TourStep {
   id: number;
   route: string;
   title: string;
+  titleHi: string;
   caption: string;
+  captionHi: string;
   narration: string;
+  narrationHi: string;
   duration: number;
 }
 
@@ -15,107 +18,142 @@ const TOUR_STEPS: TourStep[] = [
   {
     id: 1, route: '/dashboard',
     title: '🌿 Welcome to PollutionMitra',
+    titleHi: '🌿 पॉल्यूशनमित्र में आपका स्वागत है',
     caption: 'Air Quality, Street by Street',
+    captionHi: 'वायु गुणवत्ता, हर गली और चौराहे पर',
     narration: 'Welcome to PollutionMitra — your AI-powered neighborhood environmental intelligence platform. PollutionMitra helps citizens understand air quality at the street level, track pollution patterns, and make healthier decisions. This guided tour will walk you through all major features. All data shown is simulated for this demonstration.',
+    narrationHi: 'पॉल्यूशनमित्र में आपका स्वागत है — आपका एआई-संचालित मोहल्ला पर्यावरण इंटेलिजेंस प्लेटफॉर्म। पॉल्यूशनमित्र नागरिकों को गली स्तर पर वायु गुणवत्ता समझने, प्रदूषण पैटर्न ट्रैक करने और स्वस्थ निर्णय लेने में मदद करता है। यह गाइडेड टूर आपको सभी प्रमुख फीचर्स से परिचित कराएगा।',
     duration: 8000,
   },
   {
     id: 2, route: '/dashboard',
     title: '📊 Environmental Dashboard',
+    titleHi: '📊 पर्यावरण डैशबोर्ड और लाइव एक्यूआई',
     caption: 'Real-time AQI, PM2.5, PM10 and sensor network status',
+    captionHi: 'रीयल-टाइम एक्यूआई, पीएम2.5, पीएम10 और सेंसर नेटवर्क स्थिति',
     narration: 'The main dashboard shows a real-time command center for environmental data. You can see the Air Quality Index, PM2.5, PM10, temperature, humidity, and wind speed. The neighborhood selector at the top updates all values for your chosen area. All values here are demo data — clearly marked as simulated.',
+    narrationHi: 'मुख्य डैशबोर्ड रीयल-टाइम पर्यावरण कमांड सेंटर दिखाता है। आप एयर क्वालिटी इंडेक्स, पीएम2.5, पीएम10, तापमान, नमी और हवा की गति देख सकते हैं। ऊपर दिए गए एरिया सेलेक्टर से आप अपने पसंदीदा इलाके का डेटा देख सकते हैं।',
     duration: 9000,
   },
   {
     id: 3, route: '/map',
     title: '🗺️ Wind-Aware Pollution Flow Map',
+    titleHi: '🗺️ वायु-प्रवाह प्रदूषण फैलाव मानचित्र',
     caption: 'Our primary innovation — interactive GIS pollution visualization',
-    narration: 'This is one of our two primary innovations — Wind-Aware Pollution Flow Mapping. The interactive map shows real OpenStreetMap tiles with pollution heatmap overlays, sensor markers, and illustrative wind direction vectors. Each sensor marker shows live PM2.5 values. Click any sensor for detailed readings. Wind arrows show meteorological direction — they indicate potential dispersion patterns, though actual pollutant trajectories require validated dispersion modelling.',
+    captionHi: 'हमारा मुख्य नवाचार — इंटरैक्टिव जीआईएस प्रदूषण विज़ुअलाइज़ेशन',
+    narration: 'This is one of our two primary innovations — Wind-Aware Pollution Flow Mapping. The interactive map shows real OpenStreetMap tiles with pollution heatmap overlays, sensor markers, and illustrative wind direction vectors. Each sensor marker shows live PM2.5 values. Click any sensor for detailed readings.',
+    narrationHi: 'यह हमारा प्रमुख नवाचार है — हवा के रुख के साथ प्रदूषण का फैलाव नक्शा। यह इंटरैक्टिव जीआईएस मैप प्रदूषण का हीटमैप, सेंसर मार्कर्स और हवा की दिशा दिखाता है। हर सेंसर पर क्लिक करके आप उस गली का विस्तृत पीएम2.5 डेटा देख सकते हैं।',
     duration: 11000,
   },
   {
     id: 4, route: '/sensors',
     title: '📡 Smart Sensor Network',
+    titleHi: '📡 स्मार्ट आईओटी सेंसर नेटवर्क',
     caption: 'Our second primary innovation — IoT environmental monitoring',
-    narration: 'Our second core innovation is the Smart Sensor Network. Each sensor in the network reports PM2.5, PM10, temperature, humidity, battery status, and calibration information. Sensors are classified as Online, Offline, Suspected Malfunction, or Needs Calibration. The architecture supports real IoT hardware connectivity through MQTT protocol. Currently showing eight demo sensors across Delhi neighborhoods.',
+    captionHi: 'हमारा दूसरा मुख्य नवाचार — आईओटी पर्यावरणीय निगरानी',
+    narration: 'Our second core innovation is the Smart Sensor Network. Each sensor in the network reports PM2.5, PM10, temperature, humidity, battery status, and calibration information. Sensors are classified as Online, Offline, Suspected Malfunction, or Needs Calibration.',
+    narrationHi: 'हमारा दूसरा मुख्य नवाचार है स्मार्ट सेंसर नेटवर्क। नेटवर्क का हर सेंसर पीएम2.5, पीएम10, तापमान, नमी, बैटरी और कैलिब्रेशन स्थिति रिपोर्ट करता है। इससे फॉल्टी या ऑफलाइन सेंसर तुरंत पहचाने जा सकते हैं।',
     duration: 9000,
   },
   {
     id: 5, route: '/critical-zones',
     title: '🚨 Critical Pollution Zones',
+    titleHi: '🚨 क्रिटिकल प्रदूषण हॉटस्पॉट क्षेत्र',
     caption: 'Automated zone identification with transparent alert rationale',
-    narration: 'The Critical Zones module automatically identifies areas requiring environmental attention. Every alert includes the measured value, the threshold it exceeded, the timestamp, severity level, and the reason for the alert. The system provides transparent rationale — never labelling an area critical without supporting sensor data. The bar chart shows PM2.5 versus Indian air quality standards.',
+    captionHi: 'पारदर्शी अलर्ट कारणों के साथ स्वचालित अति-संवेदनशील क्षेत्र पहचान',
+    narration: 'The Critical Zones module automatically identifies areas requiring environmental attention. Every alert includes the measured value, the threshold it exceeded, the timestamp, severity level, and the reason for the alert.',
+    narrationHi: 'क्रिटिकल ज़ोन मॉड्यूल स्वचालित रूप से उन इलाकों की पहचान करता है जहां प्रदूषण खतरनाक स्तर पर है। हर चेतावनी में मापा गया मान, सुरक्षित सीमा, समय और अलर्ट का ठोस वैज्ञानिक कारण पारदर्शी रूप से दर्ज होता है।',
     duration: 9000,
   },
   {
-    id: 6, route: '/diwali',
-    title: '🎆 Diwali Pollution Analytics',
-    caption: 'Before / During / After comparison with scientific honesty',
-    narration: 'The Diwali Intelligence module analyzes pollution patterns around the festival. You can compare Before, During, and After periods across years and neighborhoods. Critically, we include a scientific honesty notice: PM2.5 sensors measure total concentration — they cannot attribute increases specifically to firecrackers. Traffic, industry, biomass burning, and meteorology all contribute. The Firecracker Smog Visualizer is explicitly labelled as educational and hypothetical.',
-    duration: 11000,
-  },
-  {
-    id: 7, route: '/weather',
-    title: '🌤️ Weather Intelligence',
-    caption: 'Meteorological integration and pollution correlation',
-    narration: 'The Weather Intelligence module integrates real meteorological data with pollution monitoring. The interactive wind compass shows current wind direction and speed. We display correlations between wind speed and PM2.5 levels — noting these are illustrative associations, not proven causal relationships. A 7-day forecast and hourly temperature charts help contextualize environmental conditions. In production, this connects to WeatherAPI or OpenWeather.',
-    duration: 9000,
-  },
-  {
-    id: 8, route: '/community',
-    title: '👥 Community Pollution Reporting',
-    caption: 'Citizen environmental monitoring with moderation',
-    narration: 'Citizens can report visible pollution sources including smoke, dust, construction, and industrial emissions. Each report goes through a moderation workflow: Submitted, Under Review, Verified, or Rejected. Community observations are clearly distinguished from air quality measurements. Location is approximate to protect privacy. Verified reports earn reward points.',
-    duration: 9000,
-  },
-  {
-    id: 9, route: '/rewards',
-    title: '🏆 PollutionMitra Rewards',
-    caption: 'Quality-weighted gamification for environmental participation',
-    narration: 'The Rewards system incentivizes quality environmental reporting. Contributors earn Experience Points: 10 XP for a valid report, an additional 40 XP when verified, 15 XP for useful photo evidence, and 50 XP for verified community cleanups. The system rewards quality and verification — not report volume. A leaderboard shows top contributors by neighborhood.',
-    duration: 9000,
-  },
-  {
-    id: 10, route: '/forecast',
-    title: '📈 Neighborhood Forecasting',
-    caption: 'Pollution forecasts with uncertainty and confidence intervals',
-    narration: 'The Forecasting module shows predicted pollution levels up to 48 hours ahead. Crucially, we show confidence intervals that widen with the forecast horizon — representing genuine uncertainty. Forecast outputs are clearly labelled SIMULATED in this demo. In production, this would use a trained scikit-learn or LSTM model evaluated on historical data, with reported accuracy metrics including R-squared and mean absolute error.',
+    id: 6, route: '/satellite',
+    title: '🛰️ Pan-India Satellite Intelligence',
+    titleHi: '🛰️ अखिल भारतीय उपग्रह खुफिया नक्शा',
+    caption: 'ISRO INSAT-3DR AOD, Sentinel-5P NO2 & Farm Fires',
+    captionHi: 'इसरो उपग्रह एरोसोल धुंध, नाइट्रोजन डाइऑक्साइड और पराली की आग',
+    narration: 'The Pan-India Satellite section combines ISRO INSAT-3DR geostationary scans with Copernicus Sentinel-5P TROPOMI and NASA VIIRS fire anomaly detectors, tracking regional smog across the entire Indo-Gangetic Plain.',
+    narrationHi: 'उपग्रह खुफिया सेक्शन इसरो के इनसैट-3डीआर और यूरोपियन सेंटिनल-5पी डेटा को मिलाकर पूरे भारत में फैले स्मॉग, औद्योगिक गैसों और पंजाब-हरियाणा में पराली जलाने की थर्मल हॉटस्पॉट्स को लाइव ट्रैक करता है।',
     duration: 10000,
   },
   {
-    id: 11, route: '/simulator',
-    title: '⚗️ Environmental Scenario Lab',
-    caption: 'Interactive pollution simulation laboratory',
-    narration: 'The Environmental Scenario Lab lets users explore hypothetical pollution conditions. Adjust wind speed, direction, temperature, humidity, rainfall, traffic, industrial and festival emissions. Click Run Simulation to see estimated PM2.5, PM10, and AQI results. The output is an educational approximation — not a validated atmospheric dispersion model. Save multiple scenarios and compare them side by side.',
+    id: 7, route: '/diwali',
+    title: '🎆 Diwali Smog & Acoustic Detector',
+    titleHi: '🎆 दिवाली स्मॉग व पटाखे धमाका डिटेक्टर',
+    caption: 'Chemical Speciation & Acoustic Shockwave Forensic Intelligence',
+    captionHi: 'रासायनिक स्पेक्ट्रोस्कोपी और अल्ट्रासोनिक ध्वनि शॉकवेव डिटेक्टर',
+    narration: 'The Diwali Intelligence module features our unique AI Pyrotechnic Chemical & Acoustic Burst Detector. It differentiates illegal fireworks from traffic exhaust by detecting Barium (+840%) and Strontium surges paired with >95 dB acoustic shockwaves.',
+    narrationHi: 'दिवाली इंटेलिजेंस सेक्शन में हमारा अनूठा एआई पायरोटेक्निक केमिकल और साउंड शॉकवेव डिटेक्टर है। यह बेरियम और स्ट्रॉन्शियम केमिकल तथा 95 डेसिबल से अधिक के धमाकों को पकड़कर पटाखों के प्रदूषण को सामान्य ट्रैफिक से अलग करता है।',
+    duration: 11000,
+  },
+  {
+    id: 8, route: '/weather',
+    title: '🌤️ Weather Intelligence & Inversion',
+    titleHi: '🌤️ मौसम विज्ञान और तापमान उलटाव (इनवर्जन)',
+    caption: 'Meteorological integration and pollution correlation',
+    captionHi: 'मौसम डेटा और प्रदूषण फैलाव का सहसंबंध',
+    narration: 'The Weather Intelligence module integrates meteorological telemetry. The interactive wind compass shows direction and speed, illustrating how winter thermal inversion traps cold air and fine particulates near ground level.',
+    narrationHi: 'मौसम इंटेलिजेंस सेक्शन हवा की रफ्तार और तापमान दिखाता है। यह समझाता है कि कैसे सर्दियों में थर्मल इनवर्जन की वजह से ठंडी हवा जमीन के पास भारी होकर जहरीले धुएं को जमा कर देती है।',
+    duration: 9000,
+  },
+  {
+    id: 9, route: '/community',
+    title: '👥 Community Pollution Reporting',
+    titleHi: '👥 जनभागीदारी व नागरिक प्रदूषण रिपोर्टिंग',
+    caption: 'Citizen environmental monitoring with moderation',
+    captionHi: 'सत्यापित नागरिक निगरानी और त्वरित समाधान कार्रवाई',
+    narration: 'Citizens can report visible pollution sources including garbage burning, construction dust, and industrial smoke. Reports go through transparent moderation workflows to mobilize municipal enforcement.',
+    narrationHi: 'नागरिक कूड़ा जलाने, निर्माण धूल और औद्योगिक धुएं की तुरंत फोटो और जीपीएस लोकेशन के साथ रिपोर्ट कर सकते हैं। सत्यापित रिपोर्टों पर नगर निगम द्वारा एंटी-स्मॉग गन और जांच दल भेजे जाते हैं।',
+    duration: 9000,
+  },
+  {
+    id: 10, route: '/rewards',
+    title: '🏆 PollutionMitra Rewards & XP',
+    titleHi: '🏆 पॉल्यूशनमित्र रिवॉर्ड्स और ग्रीन पॉइंट्स',
+    caption: 'Quality-weighted gamification for environmental participation',
+    captionHi: 'पर्यावरण सुधार में भागीदारी के लिए ग्रीन रिवॉर्ड्स',
+    narration: 'The Rewards system incentivizes quality environmental reporting. Contributors earn XP points, level up badges, and climb their ward leaderboard for verified civic contributions.',
+    narrationHi: 'रिवॉर्ड्स सिस्टम नागरिकों को सकारात्मक योगदान के लिए प्रोत्साहित करता है। सही प्रदूषण रिपोर्टिंग और वृक्षारोपण पर एक्सपी पॉइंट्स और ग्रीन वार्ड बैज मिलते हैं।',
+    duration: 9000,
+  },
+  {
+    id: 11, route: '/routes',
+    title: '🚲 Smart Eco-Mobility Routes',
+    titleHi: '🚲 स्मार्ट इको-मोबिलिटी स्वच्छ मार्ग',
+    caption: 'Minimize cumulative inhaled particulate dosage',
+    captionHi: 'फेफड़ों में जाने वाले जहरीले कणों की मात्रा को कम करें',
+    narration: 'Smart Eco-Routes calculates walking and cycling corridors that reduce cumulative inhaled particulate dosage by up to 58%, routing commuters through tree-lined green paths rather than congested highways.',
+    narrationHi: 'स्मार्ट इको-रूट्स पैदल और साइकिल चलने वालों के लिए ऐसे रास्ते चुनता है जहां सांस में जाने वाला प्रदूषण 58% तक कम हो जाता है, जिससे अस्थमा और हृदय रोगियों की सुरक्षा होती है।',
     duration: 10000,
   },
   {
     id: 12, route: '/copilot',
     title: '🤖 AI Environmental Copilot',
-    caption: 'Data-grounded environmental analyst',
-    narration: 'The AI Environmental Copilot answers questions about current conditions, sensor readings, Diwali patterns, weather effects, and eco-routes — using this platform\'s data. In this demo, it uses a deterministic database-grounded response system, not an external AI API. In production, it would connect to a server-side LLM with secure API key management. You can also speak your questions using the microphone button if your browser supports speech recognition.',
+    titleHi: '🤖 एआई पर्यावरण कोपायलट',
+    caption: 'Intelligent atmospheric and clinical health assistant',
+    captionHi: 'बुद्धिमान वायु गुणवत्ता और स्वास्थ्य सलाहकार',
+    narration: 'The AI Copilot answers questions about live sensor readings, clinical N95 mask advice, morning exercise safety, and Diwali forensics with natural conversation and voice interaction.',
+    narrationHi: 'हमारा एआई कोपायलट आपके सभी सवालों का उत्तर देता है — जैसे आज कौन सा मास्क पहनें, सुबह दौड़ना सुरक्षित है या नहीं, और दिवाली डिटेक्टर कैसे काम करता है।',
     duration: 10000,
   },
   {
-    id: 13, route: '/routes',
-    title: '🚲 Smart Eco-Routes',
-    caption: 'Pollution-aware walking and cycling routes',
-    narration: 'Smart Eco-Routes helps citizens find lower-exposure walking and cycling paths. The system compares three route options: a lower estimated exposure green route, a moderate amber route, and a higher exposure red route. Exposure estimates are calculated by interpolating nearby sensor readings along the route — clearly labelled as illustrative indicators, not measurements of inhaled dose. In production, this connects to OSRM or GraphHopper for real road-network routing.',
-    duration: 10000,
-  },
-  {
-    id: 14, route: '/innovations',
-    title: '💡 Upcoming Innovations',
-    caption: 'PLANNED future capabilities — clearly labelled as future scope',
-    narration: 'The Upcoming Innovations page shows six planned capabilities: AI CCTV Traffic Intelligence using YOLO and OpenCV, Advanced Multilingual Voice Assistant in Hindi and Punjabi, Advanced 3D Pollution Simulation with urban modelling, Advanced Smart Mobility with detailed cycling infrastructure, City-Wide Environmental Intelligence at city scale, and Intelligent Environmental Alerts with personalized notifications. Every item is clearly labelled PLANNED — none are implemented in the current demo.',
+    id: 13, route: '/innovations',
+    title: '💡 Upcoming Innovations & 3D Canyon',
+    titleHi: '💡 3डी लिडार शहरी कैन्यन और नवाचार',
+    caption: 'Computer vision, acoustic intelligence, and urban aerodynamics',
+    captionHi: 'कंप्यूटर विज़न, ध्वनि विश्लेषण और 3डी बिल्डिंग वायु-भंवर मॉडल',
+    narration: 'Explore our cutting-edge prototypes including YOLOv8 traffic CCTV emission quantification, multilingual voice interaction, and 3D LiDAR urban micro-canyon vortex simulations.',
+    narrationHi: 'यहां आप हमारे उन्नत प्रोटोटाइप देख सकते हैं — जैसे एआई ट्रैफिक कैमरा विश्लेषण, बहुभाषी वॉयस और ऊंची इमारतों के बीच फंसे धुएं का 3डी लिडार वायु-भंवर सिमुलेशन।',
     duration: 11000,
   },
   {
-    id: 15, route: '/dashboard',
+    id: 14, route: '/dashboard',
     title: '🌿 PollutionMitra — Summary',
+    titleHi: '🌿 पॉल्यूशनमित्र — निष्कर्ष एवं विज़न',
     caption: 'Air Quality, Street by Street',
-    narration: 'Thank you for exploring PollutionMitra. This platform demonstrates two primary environmental innovations: Wind-Aware Pollution Flow Mapping and Smart Sensor Network with Critical Zone Identification — supported by Diwali analytics, weather intelligence, community reporting, rewards, forecasting, simulation, AI Copilot, and eco-routing. All current data is clearly labelled DEMO. The full-stack vision includes FastAPI backend, PostgreSQL with PostGIS, real IoT sensor connectivity, and validated AI models. PollutionMitra — Air Quality, Street by Street.',
-    duration: 13000,
+    captionHi: 'वायु गुणवत्ता, हर गली और चौराहे पर',
+    narration: 'Thank you for exploring PollutionMitra. By combining street-level IoT, satellite remote sensing, chemical speciation, and clean-air mobility routing, we make clean air actionable for every citizen.',
+    narrationHi: 'पॉल्यूशनमित्र का दौरा करने के लिए धन्यवाद। जमीनी आईओटी सेंसर, उपग्रह डेटा, केमिकल स्पेक्ट्रोस्कोपी और स्वच्छ मार्ग नेविगेशन को जोड़कर हम हर नागरिक के लिए स्वच्छ हवा को सुलभ बनाते हैं।',
+    duration: 12000,
   },
 ];
 
@@ -124,6 +162,7 @@ interface GuidedTourProps {
 }
 
 export default function GuidedTour({ onClose }: GuidedTourProps) {
+  const [lang, setLang] = useState<'en' | 'hi'>('en');
   const [stepIndex, setStepIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
@@ -138,13 +177,17 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
   const currentStep = TOUR_STEPS[stepIndex];
   const voiceAvailable = 'speechSynthesis' in window;
 
+  const currentTitle = lang === 'hi' ? currentStep.titleHi : currentStep.title;
+  const currentCaption = lang === 'hi' ? currentStep.captionHi : currentStep.caption;
+  const currentNarration = lang === 'hi' ? currentStep.narrationHi : currentStep.narration;
+
   const speak = (text: string) => {
     if (!voiceAvailable || muted) return;
     window.speechSynthesis.cancel();
     const utt = new SpeechSynthesisUtterance(text);
     utt.rate = speed;
     utt.pitch = 1;
-    utt.lang = 'en-IN';
+    utt.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
     utteranceRef.current = utt;
     window.speechSynthesis.speak(utt);
   };
@@ -153,7 +196,7 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
     const step = TOUR_STEPS[idx];
     if (!step) return;
     navigate(step.route);
-    speak(step.narration);
+    speak(lang === 'hi' ? step.narrationHi : step.narration);
     setProgress(0);
 
     // Progress bar
@@ -172,6 +215,19 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
         }
       }
     }, interval);
+  };
+
+  // Re-speak if language changes while playing
+  const handleLanguageChange = (newLang: 'en' | 'hi') => {
+    setLang(newLang);
+    if (voiceAvailable && !muted && playing) {
+      window.speechSynthesis.cancel();
+      const textToSpeak = newLang === 'hi' ? currentStep.narrationHi : currentStep.narration;
+      const utt = new SpeechSynthesisUtterance(textToSpeak);
+      utt.rate = speed;
+      utt.lang = newLang === 'hi' ? 'hi-IN' : 'en-IN';
+      window.speechSynthesis.speak(utt);
+    }
   };
 
   useEffect(() => {
@@ -250,13 +306,39 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span className="badge badge-demo">GUIDED TOUR</span>
-                  <span className="text-xs text-slate-500">Step {stepIndex + 1} of {TOUR_STEPS.length}</span>
+                  <span className="text-xs text-slate-400">Step {stepIndex + 1} of {TOUR_STEPS.length}</span>
+
+                  {/* Language Selector: English / Hindi */}
+                  <div className="flex items-center bg-navy-800 rounded-lg p-0.5 border border-navy-700 ml-2">
+                    <button
+                      onClick={() => handleLanguageChange('en')}
+                      className={`px-2.5 py-0.5 rounded text-xs font-bold transition-all ${
+                        lang === 'en'
+                          ? 'bg-cyan-500 text-white shadow'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                      title="Switch to English"
+                    >
+                      EN
+                    </button>
+                    <button
+                      onClick={() => handleLanguageChange('hi')}
+                      className={`px-2.5 py-0.5 rounded text-xs font-bold transition-all ${
+                        lang === 'hi'
+                          ? 'bg-amber-500 text-white shadow'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                      title="हिन्दी में समझें"
+                    >
+                      हिन्दी
+                    </button>
+                  </div>
                 </div>
-                <h2 className="text-xl font-bold text-white">{currentStep.title}</h2>
+                <h2 className="text-xl font-bold text-white">{currentTitle}</h2>
                 {showCaptions && (
-                  <p className="text-sm text-cyan-400 mt-1">{currentStep.caption}</p>
+                  <p className="text-sm text-cyan-400 mt-1">{currentCaption}</p>
                 )}
               </div>
               <button onClick={onClose} className="text-slate-500 hover:text-slate-300 ml-4 flex-shrink-0 p-1">
@@ -266,8 +348,8 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
 
             {/* Narration text (captions) */}
             {showCaptions && (
-              <div className="bg-navy-800 rounded-xl p-3 mb-4 max-h-24 overflow-y-auto">
-                <p className="text-sm text-slate-300 leading-relaxed">{currentStep.narration}</p>
+              <div className="bg-navy-800 rounded-xl p-3 mb-4 max-h-24 overflow-y-auto border border-navy-700">
+                <p className="text-sm text-slate-200 leading-relaxed font-normal">{currentNarration}</p>
               </div>
             )}
 

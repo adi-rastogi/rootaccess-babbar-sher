@@ -209,13 +209,59 @@ export default function DiwaliIntelligence() {
   const [activeWardKey, setActiveWardKey] = useState<'anand_vihar' | 'narela' | 'cp' | 'dwarka'>('anand_vihar');
   const [isPulsing, setIsPulsing] = useState<boolean>(false);
   const [burstCount, setBurstCount] = useState<number>(4);
+  const [recentIncidents, setRecentIncidents] = useState<Array<{ id: string; time: string; ward: string; db: number; verdict: string }>>([
+    { id: 'inc-1', time: '22:42:10', ward: 'Anand Vihar Ward', db: 96.4, verdict: 'Aerial Skyshot Burst' },
+    { id: 'inc-2', time: '22:38:05', ward: 'Narela Fringe', db: 101.2, verdict: 'Heavy Firecracker Chain' },
+    { id: 'inc-3', time: '22:29:44', ward: 'Dwarka Sec 10', db: 86.5, verdict: 'Ground Cracker Pulse' },
+  ]);
 
   const activeWard = PYRO_WARD_DATA[activeWardKey];
 
+  // Synthesize realistic acoustic shockwave sound using Web Audio API
+  const playShockwaveSound = () => {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      
+      // Low sub-bass explosion thump
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(160, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(28, ctx.currentTime + 0.45);
+      
+      gain.gain.setValueAtTime(0.5, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.45);
+      
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.5);
+    } catch {
+      // Audio context error or autoplay policy
+    }
+  };
+
   const handleSimulateBurst = () => {
     setIsPulsing(true);
+    playShockwaveSound();
     setBurstCount(c => c + 1);
-    setTimeout(() => setIsPulsing(false), 2400);
+
+    const now = new Date();
+    const timeStr = now.toTimeString().split(' ')[0];
+    const newIncident = {
+      id: `inc-${Date.now()}`,
+      time: timeStr,
+      ward: activeWard.name.split(' (')[0],
+      db: Number((activeWard.decibels + (Math.random() * 8 + 6)).toFixed(1)),
+      verdict: activeWard.alertType === 'danger' ? 'Illegal Skyshot Combustion Detected' : 'Transient Noise Pulse Detected',
+    };
+    setRecentIncidents(prev => [newIncident, ...prev.slice(0, 4)]);
+
+    setTimeout(() => {
+      setIsPulsing(false);
+    }, 2800);
   };
 
   const mapRef = useRef<any>(null);
@@ -543,10 +589,31 @@ export default function DiwaliIntelligence() {
       <div className="hud-panel p-6 border-2 border-amber-500/40 relative overflow-hidden bg-gradient-to-br from-navy-900/90 via-navy-950 to-navy-900">
         {/* Glow ambient background effect */}
         <div className={`absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none transition-all duration-700 ${
-          isPulsing ? 'bg-red-500/20 scale-125' : 'bg-amber-500/10'
+          isPulsing ? 'bg-red-500/40 scale-150 animate-pulse' : 'bg-amber-500/10'
         }`} />
 
         <div className="relative z-10">
+          {/* Active Burst Alarm Banner */}
+          {isPulsing && (
+            <div className="mb-4 p-3.5 rounded-xl bg-red-600/30 border-2 border-red-500 text-white flex items-center justify-between animate-pulse shadow-xl shadow-red-900/50">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl animate-bounce">💥</span>
+                <div>
+                  <div className="text-xs font-black tracking-wide text-red-200 uppercase flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-400 animate-ping inline-block" />
+                    LIVE SHOCKWAVE PULSE DETECTED · MUNICIPAL AUDIT LOGGED
+                  </div>
+                  <div className="text-sm font-bold text-white mt-0.5">
+                    {(activeWard.decibels + 11.4).toFixed(1)} dB SPL Acoustic Spike at {activeWard.name.split(' (')[0]} · Barium Surge +{activeWard.barium + 640}% Registered!
+                  </div>
+                </div>
+              </div>
+              <span className="px-3 py-1 rounded-lg bg-red-600 font-mono text-xs font-black text-white uppercase tracking-wider">
+                ACTIVE BURST
+              </span>
+            </div>
+          )}
+
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-navy-700">
             <div>
@@ -572,15 +639,21 @@ export default function DiwaliIntelligence() {
             <div className="flex items-center gap-3">
               <div className="text-right">
                 <div className="text-[10px] uppercase font-bold text-slate-400">Recorded Bursts</div>
-                <div className="text-xl font-black font-mono text-amber-400">{burstCount} Events</div>
+                <div className={`text-xl font-black font-mono transition-all ${isPulsing ? 'text-red-400 scale-110' : 'text-amber-400'}`}>
+                  {burstCount} Events
+                </div>
               </div>
               <button
                 onClick={handleSimulateBurst}
                 disabled={isPulsing}
-                className="px-4 py-2.5 rounded-xl font-bold text-xs bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white shadow-lg shadow-red-900/40 border border-amber-400/30 flex items-center gap-2 transition-all transform active:scale-95 disabled:opacity-60 cursor-pointer"
+                className={`px-5 py-3 rounded-xl font-bold text-xs text-white shadow-lg border flex items-center gap-2 transition-all transform active:scale-95 cursor-pointer ${
+                  isPulsing
+                    ? 'bg-red-600 border-red-300 animate-pulse shadow-red-500/50'
+                    : 'bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 shadow-red-900/40 border-amber-400/30'
+                }`}
               >
-                <Zap className={`w-4 h-4 ${isPulsing ? 'animate-bounce text-yellow-200' : 'text-yellow-300'}`} />
-                {isPulsing ? 'Detecting Shockwave...' : '💥 Trigger Burst Simulation'}
+                <Zap className={`w-4 h-4 ${isPulsing ? 'animate-spin text-yellow-200' : 'text-yellow-300'}`} />
+                {isPulsing ? '⚡ Recording Shockwave (+104.8 dB)...' : '💥 Trigger Burst Simulation'}
               </button>
             </div>
           </div>
@@ -639,15 +712,21 @@ export default function DiwaliIntelligence() {
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-slate-300 font-medium flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+                      <span className={`w-2 h-2 rounded-full inline-block ${isPulsing ? 'bg-red-400 animate-ping' : 'bg-emerald-400'}`} />
                       Barium (Ba) <span className="text-[10px] text-slate-400">(Green Flame Oxidizer)</span>
                     </span>
-                    <span className="font-mono font-bold text-emerald-300">+{activeWard.barium}% surge</span>
+                    <span className={`font-mono font-bold transition-all ${isPulsing ? 'text-red-400 text-sm font-black' : 'text-emerald-300'}`}>
+                      +{isPulsing ? activeWard.barium + 640 : activeWard.barium}% surge {isPulsing && '⚡ SPIKING'}
+                    </span>
                   </div>
                   <div className="w-full h-2.5 bg-navy-800 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-emerald-500 to-green-300 rounded-full transition-all duration-700"
-                      style={{ width: `${Math.min(100, (activeWard.barium / 1200) * 100)}%` }}
+                      className={`h-full rounded-full transition-all duration-300 ${
+                        isPulsing
+                          ? 'bg-gradient-to-r from-red-500 to-amber-300 animate-pulse'
+                          : 'bg-gradient-to-r from-emerald-500 to-green-300'
+                      }`}
+                      style={{ width: `${Math.min(100, ((isPulsing ? activeWard.barium + 640 : activeWard.barium) / 1600) * 100)}%` }}
                     />
                   </div>
                 </div>
@@ -656,15 +735,17 @@ export default function DiwaliIntelligence() {
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-slate-300 font-medium flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-red-400 inline-block" />
+                      <span className={`w-2 h-2 rounded-full inline-block ${isPulsing ? 'bg-red-400 animate-ping' : 'bg-red-400'}`} />
                       Strontium (Sr) <span className="text-[10px] text-slate-400">(Red Pyrotechnic Spark)</span>
                     </span>
-                    <span className="font-mono font-bold text-red-400">+{activeWard.strontium}% surge</span>
+                    <span className={`font-mono font-bold transition-all ${isPulsing ? 'text-red-400 text-sm font-black' : 'text-red-400'}`}>
+                      +{isPulsing ? activeWard.strontium + 420 : activeWard.strontium}% surge {isPulsing && '⚡'}
+                    </span>
                   </div>
                   <div className="w-full h-2.5 bg-navy-800 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full transition-all duration-700"
-                      style={{ width: `${Math.min(100, (activeWard.strontium / 1200) * 100)}%` }}
+                      className="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min(100, ((isPulsing ? activeWard.strontium + 420 : activeWard.strontium) / 1400) * 100)}%` }}
                     />
                   </div>
                 </div>
@@ -711,24 +792,32 @@ export default function DiwaliIntelligence() {
             {/* Right Column: Acoustic Shockwave & Verdict (4 cols) */}
             <div className="lg:col-span-4 flex flex-col justify-between gap-3">
               {/* Acoustic Decibel Meter */}
-              <div className="bg-navy-950/70 p-4 rounded-2xl border border-navy-700 flex-1">
+              <div className={`p-4 rounded-2xl border transition-all flex-1 ${
+                isPulsing
+                  ? 'bg-red-950/80 border-red-500 ring-2 ring-red-500/40'
+                  : 'bg-navy-950/70 border-navy-700'
+              }`}>
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-white">
-                    <Mic className="w-4 h-4 text-pink-400" />
+                    <Mic className={`w-4 h-4 ${isPulsing ? 'text-red-400 animate-bounce' : 'text-pink-400'}`} />
                     Acoustic Shockwave
                   </div>
                   <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                    activeWard.decibels > 90 ? 'bg-red-500/20 text-red-300' : 'bg-emerald-500/20 text-emerald-300'
+                    isPulsing || activeWard.decibels > 90 ? 'bg-red-500/20 text-red-300' : 'bg-emerald-500/20 text-emerald-300'
                   }`}>
-                    {activeWard.decibels > 90 ? 'BLAST LEVEL' : 'AMBIENT'}
+                    {isPulsing ? '💥 PEAK SHOCKWAVE' : activeWard.decibels > 90 ? 'BLAST LEVEL' : 'AMBIENT'}
                   </span>
                 </div>
 
                 <div className="flex items-baseline gap-2 mt-1">
-                  <span className={`text-3xl font-black font-mono ${
-                    activeWard.decibels > 90 ? 'text-red-400' : 'text-emerald-400'
+                  <span className={`text-3xl font-black font-mono transition-all ${
+                    isPulsing
+                      ? 'text-red-400 scale-110 font-black'
+                      : activeWard.decibels > 90
+                      ? 'text-red-400'
+                      : 'text-emerald-400'
                   }`}>
-                    {activeWard.decibels}
+                    {isPulsing ? (activeWard.decibels + 11.4).toFixed(1) : activeWard.decibels}
                   </span>
                   <span className="text-xs text-slate-400 font-bold">dB SPL Peak</span>
                 </div>
@@ -746,7 +835,7 @@ export default function DiwaliIntelligence() {
                           : 'bg-cyan-500/60'
                       }`}
                       style={{
-                        height: isPulsing ? `${Math.min(100, h * 1.2)}%` : `${h * (activeWard.decibels / 100)}%`
+                        height: isPulsing ? `${Math.min(100, h * 1.3)}%` : `${h * (activeWard.decibels / 100)}%`
                       }}
                     />
                   ))}
@@ -754,8 +843,10 @@ export default function DiwaliIntelligence() {
               </div>
 
               {/* AI Attribution Verdict */}
-              <div className={`p-4 rounded-2xl border ${
-                activeWard.alertType === 'danger'
+              <div className={`p-4 rounded-2xl border transition-all ${
+                isPulsing
+                  ? 'bg-red-950/70 border-red-500 ring-2 ring-red-500/40 animate-pulse'
+                  : activeWard.alertType === 'danger'
                   ? 'bg-red-950/40 border-red-500/50'
                   : activeWard.alertType === 'warning'
                   ? 'bg-amber-950/40 border-amber-500/50'
@@ -767,16 +858,41 @@ export default function DiwaliIntelligence() {
                     AI Source Attribution
                   </span>
                   <span className="font-mono font-black text-xs text-cyan-300">
-                    {activeWard.confidence}% Confidence
+                    {isPulsing ? '99.8%' : activeWard.confidence + '%'} Confidence
                   </span>
                 </div>
                 <div className="text-[11px] font-semibold text-white leading-snug">
-                  {activeWard.status}
+                  {isPulsing ? '🚨 CONFIRMED HIGH-ALTITUDE SKYSHOT EXPLOSION' : activeWard.status}
                 </div>
                 <p className="text-[10px] text-slate-300 mt-1 leading-relaxed">
-                  {activeWard.verdict}
+                  {isPulsing ? 'Immediate acoustic pressure rise + stoichiometric Ba/Sr surge confirms commercial firecracker burst.' : activeWard.verdict}
                 </p>
               </div>
+            </div>
+          </div>
+
+          {/* Real-time Pyrotechnic Incident Audit Log */}
+          <div className="mt-4 pt-4 border-t border-navy-700/60">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                Live Incident Audit Log (Last {recentIncidents.length} Telemetry Events)
+              </span>
+              <span className="text-[10px] text-cyan-400 font-mono">Auto-Synced with Municipal Field Unit</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {recentIncidents.map(inc => (
+                <div key={inc.id} className="p-2.5 rounded-xl bg-navy-950/80 border border-navy-800 flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <span className="text-red-400 font-mono">{inc.db} dB</span>
+                      <span className="text-slate-300 truncate">{inc.ward}</span>
+                    </div>
+                    <div className="text-[10px] text-slate-400">{inc.verdict}</div>
+                  </div>
+                  <span className="text-[10px] font-mono text-cyan-300 ml-2">{inc.time}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
