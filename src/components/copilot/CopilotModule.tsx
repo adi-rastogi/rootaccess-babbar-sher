@@ -88,14 +88,14 @@ Please type a meaningful environmental question! For example:
 PollutionMitra integrates two premier global environmental telemetry services:
 
 1. **WAQI (World Air Quality Index) API:**
-   - **Authentication:** Token \`d630856ce71a4b52b1ce93759a064fc7d61958b8\`
+   - **Protocol:** REST JSON feed with token authentication.
    - **Active Feed:** \`https://api.waqi.info/feed/delhi/\` and Delhi NCR station search.
-   - **Coverage:** Comprehensive station network across Delhi including **Jahangirpuri (AQI 412)**, **Wazirpur (AQI 370)**, **RK Puram (AQI 263)**, **Major Dhyan Chand National Stadium / CP (AQI 194)**, and **Anand Vihar (AQI 164)**.
+   - **Coverage:** Comprehensive station network across Delhi including **Jahangirpuri**, **Wazirpur**, **RK Puram**, **Major Dhyan Chand National Stadium / CP**, and **Anand Vihar**.
    - **Telemetry:** Real-time IAQI parameters (PM2.5, PM10, NO₂, SO₂, O₃, CO, Temperature, Humidity, Wind speed & direction).
 
 2. **OpenAQ v3 API:**
-   - **Authentication:** Header \`X-API-Key: 403a161122fecf7a65af501e7f4dd57aa38cd95c679b6f7c1199777b8924547f\`
-   - **Endpoint:** \`https://api.openaq.org/v3/locations?bbox=...\`
+   - **Protocol:** REST API with \`X-API-Key\` header authentication.
+   - **Endpoint:** \`https://api.openaq.org/v3/locations\` (geospatial bounding box query).
    - **Regulatory Verification:** References official government stations operated by **CPCB (Central Pollution Control Board)** and **DPCC (Delhi Pollution Control Committee)**.
    - **Verified Locations:** Anand Vihar (DPCC), Punjabi Bagh (DPCC), RK Puram (DPCC), Income Tax Office (CPCB), and DTU (CPCB).
 

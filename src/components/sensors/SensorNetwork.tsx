@@ -132,7 +132,7 @@ export default function SensorNetwork() {
               </p>
             </div>
             <span className="badge bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-mono">
-              Key: 403a1611...8924547f
+              OpenAQ v3 Verified
             </span>
           </div>
 

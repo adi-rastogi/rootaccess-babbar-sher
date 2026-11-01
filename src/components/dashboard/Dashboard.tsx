@@ -567,7 +567,7 @@ export default function Dashboard() {
               <span className="text-emerald-400">●</span> Token Authenticated
             </div>
             <div className="text-slate-400 text-[11px] mt-1 font-mono">
-              d630856c...fc7d61958b8
+              Live Token Authenticated
             </div>
             <div className="text-cyan-400 text-[10px] mt-1">24 Stations in Delhi NCR</div>
           </div>
@@ -578,7 +578,7 @@ export default function Dashboard() {
               <span className="text-emerald-400">●</span> Key Validated
             </div>
             <div className="text-slate-400 text-[11px] mt-1 font-mono">
-              403a1611...8924547f
+              X-API-Key Active
             </div>
             <div className="text-cyan-400 text-[10px] mt-1">CPCB / DPCC Reference Monitors</div>
           </div>

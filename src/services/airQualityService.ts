@@ -1,13 +1,13 @@
 // ============================================================
 // POLLUTIONMITRA — REAL-TIME AIR QUALITY SERVICE
 // Integrated with:
-// 1. WAQI (World Air Quality Index) API (token: d630856ce71a4b52b1ce93759a064fc7d61958b8)
-// 2. OpenAQ v3 API (API Key: 403a161122fecf7a65af501e7f4dd57aa38cd95c679b6f7c1199777b8924547f)
+// 1. WAQI (World Air Quality Index) API Feed
+// 2. OpenAQ v3 API (CPCB / DPCC Regulatory Reference Stations)
 // Data verified with CPCB (Central Pollution Control Board) & DPCC
 // ============================================================
 
-export const WAQI_TOKEN = 'd630856ce71a4b52b1ce93759a064fc7d61958b8';
-export const OPENAQ_API_KEY = '403a161122fecf7a65af501e7f4dd57aa38cd95c679b6f7c1199777b8924547f';
+export const WAQI_TOKEN: string = (import.meta.env.VITE_WAQI_TOKEN as string) || '';
+export const OPENAQ_API_KEY: string = (import.meta.env.VITE_OPENAQ_API_KEY as string) || '';
 
 export interface LiveAQIStation {
   uid: number;
