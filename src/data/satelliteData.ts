@@ -337,3 +337,4 @@ export const SATELLITE_FIRE_HOTSPOTS = [
   { id: 'f7', lat: 28.9845, lng: 77.7064, district: 'Meerut, Uttar Pradesh', fires: 44, intensity: 'Moderate' },
   { id: 'f8', lat: 27.8974, lng: 78.0880, district: 'Aligarh, Uttar Pradesh', fires: 38, intensity: 'Moderate' },
 ];
+
