@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/layout/Sidebar';
 import TopNav from './components/layout/TopNav';
 import DemoBanner from './components/layout/DemoBanner';
@@ -110,7 +110,7 @@ export default function App() {
       isLiveMode,
       setIsLiveMode,
     }}>
-      <BrowserRouter>
+      <HashRouter>
         <div className="flex h-screen bg-navy-950 overflow-hidden">
           {demoMode && <DemoBanner />}
 
@@ -145,7 +145,7 @@ export default function App() {
 
           {tourActive && <GuidedTour onClose={() => setTourActive(false)} />}
         </div>
-      </BrowserRouter>
+      </HashRouter>
     </AppContext.Provider>
   );
 }
