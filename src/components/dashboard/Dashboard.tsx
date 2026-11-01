@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   RefreshCw, Wind, Droplets, Thermometer, Radio, AlertTriangle, TrendingUp, Users,
   Eye, Activity, ShieldAlert, Sparkles, MapPin, Compass, Navigation, ArrowUpRight,
-  HeartPulse, ShieldCheck, Play, Layers, Clock
+  HeartPulse, ShieldCheck, Play, Layers, Clock, Globe
 } from 'lucide-react';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -324,6 +324,13 @@ export default function Dashboard() {
               >
                 <AlertTriangle size={13} />
                 Critical Radar
+              </button>
+              <button
+                onClick={() => navigate('/satellite')}
+                className="btn-secondary text-xs py-2.5 px-4 border-cyan-500/40 text-cyan-300 hover:text-white flex items-center gap-2 font-bold"
+              >
+                <Globe size={13} />
+                Satellite India View
               </button>
               <button
                 onClick={() => navigate('/simulator')}
