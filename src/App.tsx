@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Sidebar from './components/layout/Sidebar';
 import TopNav from './components/layout/TopNav';
@@ -22,6 +22,11 @@ import SatelliteIntelligence from './components/satellite/SatelliteIntelligence'
 import PrecisionHealthAlerts from './components/health/PrecisionHealthAlerts';
 import MicroCanyonModule from './components/canyon/MicroCanyonModule';
 import { NEIGHBORHOODS, type NeighborhoodId } from './data/demoData';
+import {
+  getUnifiedAirQualityIntelligence,
+  type AirQualityIntelligence,
+  type LiveAQIStation
+} from './services/airQualityService';
 
 // Global app context
 interface AppContextType {
@@ -34,17 +39,60 @@ interface AppContextType {
   tourActive: boolean;
   setTourActive: (v: boolean) => void;
   notifications: number;
+  // Live Real-Time Telemetry (WAQI & OpenAQ)
+  liveData: AirQualityIntelligence | null;
+  isFetchingLive: boolean;
+  liveError: string | null;
+  refreshLiveData: (force?: boolean) => Promise<void>;
+  selectedStation: LiveAQIStation | null;
+  setSelectedStation: (s: LiveAQIStation | null) => void;
+  isLiveMode: boolean;
+  setIsLiveMode: (v: boolean) => void;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 export const useApp = () => useContext(AppContext);
 
 export default function App() {
-  const [demoMode, setDemoMode] = useState(true);
+  const [demoMode, setDemoMode] = useState(false); // Default to Live Real-Time Data Mode!
+  const [isLiveMode, setIsLiveMode] = useState(true);
   const [selectedNeighborhood, setSelectedNeighborhood] = useState<NeighborhoodId>('cp');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [tourActive, setTourActive] = useState(false);
   const notifications = 4;
+
+  // Real-Time Air Quality State
+  const [liveData, setLiveData] = useState<AirQualityIntelligence | null>(null);
+  const [isFetchingLive, setIsFetchingLive] = useState(false);
+  const [liveError, setLiveError] = useState<string | null>(null);
+  const [selectedStation, setSelectedStation] = useState<LiveAQIStation | null>(null);
+
+  const refreshLiveData = async (force = true) => {
+    setIsFetchingLive(true);
+    try {
+      const data = await getUnifiedAirQualityIntelligence(force);
+      setLiveData(data);
+      if (!selectedStation && data.stations.length > 0) {
+        // Default to Central Delhi / CP station if available, or first station
+        const cpStation = data.stations.find(s => s.name.toLowerCase().includes('dhyan') || s.name.toLowerCase().includes('delhi')) || data.stations[0];
+        setSelectedStation(cpStation);
+      }
+      setLiveError(null);
+    } catch (err: any) {
+      setLiveError(err.message || 'Live data update failed');
+    } finally {
+      setIsFetchingLive(false);
+    }
+  };
+
+  // Fetch live real-time data upon startup and set recurring poll every 2 minutes
+  useEffect(() => {
+    refreshLiveData(false);
+    const interval = setInterval(() => {
+      refreshLiveData(false);
+    }, 120000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <AppContext.Provider value={{
@@ -53,6 +101,14 @@ export default function App() {
       sidebarOpen, setSidebarOpen,
       tourActive, setTourActive,
       notifications,
+      liveData,
+      isFetchingLive,
+      liveError,
+      refreshLiveData,
+      selectedStation,
+      setSelectedStation,
+      isLiveMode,
+      setIsLiveMode,
     }}>
       <BrowserRouter>
         <div className="flex h-screen bg-navy-950 overflow-hidden">
