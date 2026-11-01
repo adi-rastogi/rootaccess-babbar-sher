@@ -14,7 +14,6 @@ interface TourStep {
   captionHi: string;
   narration: string;
   narrationHi: string;
-  narrationHiPhonetic: string;
   duration: number;
 }
 
@@ -27,7 +26,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'वायु गुणवत्ता, हर गली और चौराहे पर',
     narration: 'Welcome to PollutionMitra — your AI-powered neighborhood environmental intelligence platform. PollutionMitra helps citizens understand air quality at the street level, track pollution patterns, and make healthier decisions. This guided tour will walk you through all major features.',
     narrationHi: 'पॉल्यूशनमित्र में आपका स्वागत है — आपका एआई-संचालित मोहल्ला पर्यावरण इंटेलिजेंस प्लेटफॉर्म। पॉल्यूशनमित्र नागरिकों को गली स्तर पर वायु गुणवत्ता समझने, प्रदूषण पैटर्न ट्रैक करने और स्वस्थ निर्णय लेने में मदद करता है। यह गाइडेड टूर आपको सभी मुख्य फीचर्स दिखाएगा।',
-    narrationHiPhonetic: 'PollutionMitra mein aapka swaagat hai — aapka AI sanchalit mohalla paryavaran intelligence platform. PollutionMitra nagrikon ko gali star par vayu gunwatta samajhne aur swasthya nirnay lene mein madad karta hai. Yeh guided tour aapko sabhi mukhya features dikhayega.',
     duration: 8500,
   },
   {
@@ -37,8 +35,7 @@ const TOUR_STEPS: TourStep[] = [
     caption: 'Real-time AQI, PM2.5, PM10 and sensor network status',
     captionHi: 'रीयल-टाइम एक्यूआई, पीएम2.5, पीएम10 और सेंसर नेटवर्क स्थिति',
     narration: 'The main dashboard serves as your environmental command center. You can monitor the Air Quality Index, PM2.5, PM10, temperature, humidity, and wind speed. Selecting any neighborhood updates all metrics instantly.',
-    narrationHi: 'मुख्य डैशबोर्ड रीयल-टाइम पर्यावरण कमांड सेंटर है। आप एयर क्वालिटी इंडेक्स, पीएम2.5, पीएम10, तापमान, नमी और हवा की गति देख सकते हैं। ऊपर दिए गए एरिया सेलेक्टर से आप अपने पसंदीदा इलाके का डेटा तुरंत देख सकते हैं।',
-    narrationHiPhonetic: 'Mukhya dashboard real-time paryavaran command center hai. Yahan aap Air Quality Index, PM 2.5, PM 10, taapmaan, nami aur hawa ki gati dekh sakte hain. Upar diye gaye area selector se aap kisi bhi ilake ka data turant dekh sakte hain.',
+    narrationHi: 'मुख्य डैशबोर्ड रीयल-टाइम पर्यावरण नियंत्रण केंद्र है। आप एयर क्वालिटी इंडेक्स, पीएम 2.5, पीएम 10, तापमान, नमी और हवा की गति देख सकते हैं। ऊपर दिए गए एरिया सेलेक्टर से आप अपने पसंदीदा इलाके का डेटा तुरंत देख सकते हैं।',
     duration: 9000,
   },
   {
@@ -48,8 +45,7 @@ const TOUR_STEPS: TourStep[] = [
     caption: 'Interactive GIS street-level pollution visualization',
     captionHi: 'इंटरैक्टिव जीआईएस सड़क-स्तरीय प्रदूषण मानचित्र',
     narration: 'Our Wind-Aware Pollution Flow Map renders real OpenStreetMap tiles with spatial heatmap overlays, IoT sensor markers, and wind direction vectors showing potential dispersion trajectories across neighborhoods.',
-    narrationHi: 'यह हमारा प्रमुख नवाचार है — हवा के रुख के साथ प्रदूषण का फैलाव नक्शा। यह इंटरैक्टिव जीआईएस मैप प्रदूषण का हीटमैप, सेंसर मार्कर्स और हवा की दिशा दिखाता है। हर सेंसर पर क्लिक करके आप उस गली का विस्तृत पीएम2.5 डेटा देख सकते हैं।',
-    narrationHiPhonetic: 'Yeh hamara mukhya navachar hai — hawa ke rukh ke saath pradushan ka phailav naksha. Yeh interactive map real OpenStreetMap tiles par pradushan heatmap, sensor markers aur hawa ki disha dikhata hai. Har sensor par click karke aap us gali ka PM 2.5 data dekh sakte hain.',
+    narrationHi: 'यह हमारा प्रमुख नवाचार है — हवा के रुख के साथ प्रदूषण का फैलाव नक्शा। यह इंटरैक्टिव जीआईएस मैप प्रदूषण का हीटमैप, सेंसर मार्कर्स और हवा की दिशा दिखाता है। हर सेंसर पर क्लिक करके आप उस गली का विस्तृत पीएम 2.5 डेटा देख सकते हैं।',
     duration: 10000,
   },
   {
@@ -59,8 +55,7 @@ const TOUR_STEPS: TourStep[] = [
     caption: 'IoT environmental monitoring with calibration audits',
     captionHi: 'आईओटी पर्यावरणीय निगरानी व स्वचालित कैलिब्रेशन',
     narration: 'The Smart Sensor Network monitors optical PM2.5, PM10, temperature, humidity, and battery health across all Delhi wards, with automated hygrothermal humidity calibration curves.',
-    narrationHi: 'स्मार्ट सेंसर नेटवर्क दिल्ली के सभी वार्डों में पीएम2.5, पीएम10, तापमान, नमी और बैटरी की स्थिति की निगरानी करता है। सर्दियों के कोहरे में यह ऑटोमैटिक नमी करेक्शन लगाकर सही आंकड़े देता है।',
-    narrationHiPhonetic: 'Smart sensor network Dilli ke sabhi wardon mein optical PM 2.5, PM 10, taapmaan, nami aur battery health ki nigrani karta hai. Sardiyon ke kohre mein yeh automatic humidity calibration curve lagakar sahi aakde deta hai.',
+    narrationHi: 'स्मार्ट सेंसर नेटवर्क दिल्ली के सभी वार्डों में पीएम 2.5, पीएम 10, तापमान, नमी और बैटरी की स्थिति की निगरानी करता है। सर्दियों के कोहरे में यह ऑटोमैटिक नमी करेक्शन लगाकर सही आंकड़े देता है।',
     duration: 9000,
   },
   {
@@ -71,7 +66,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'इमारतों के बीच वायु-भंवर और सड़क स्तर पर जहरीला धुआं',
     narration: 'The 3D LiDAR Micro-Canyon module models urban aerodynamic vortex trapping based on Oke 1988 meteorology. When building height exceeds street width (H/W > 0.7), wind enters the skimming regime, creating a stationary recirculating eddy that traps vehicle exhaust at pedestrian sidewalk level — up to 5x higher than rooftop air.',
     narrationHi: '3डी लिडार शहरी कैन्यन सेक्शन ऊंची इमारतों के बीच हवा के भंवर और धुएं के जमाव को दिखाता है। जब इमारतों की ऊंचाई सड़क की चौड़ाई से ज्यादा होती है, तो हवा छत के ऊपर से निकल जाती है और सड़क स्तर पर एक गोल भंवर बन जाता है, जिससे नीचे चलने वाले नागरिकों को छत के मुकाबले 5 गुना अधिक जहरीली हवा सांस में लेनी पड़ती है।',
-    narrationHiPhonetic: '3D LiDAR shahari canyon section oonchi imaraton ke beech hawa ke bhanwar aur dhuen ke jamav ko dikhata hai. Jab imarat ki oonchai sadak ki chaudai se zyada hoti hai, toh hawa chhat ke upar se nikal jaati hai aur sadak par chalne wale nagrikon ko 5 guna zyada pradushan jhelna padta hai.',
     duration: 12000,
   },
   {
@@ -82,7 +76,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'पारदर्शी अलर्ट कारणों के साथ स्वचालित अति-संवेदनशील क्षेत्र पहचान',
     narration: 'The Critical Zones module automatically identifies areas requiring urgent mitigation. Every alert includes measured values, standard NAAQS thresholds, severity levels, and transparent evidence.',
     narrationHi: 'क्रिटिकल ज़ोन मॉड्यूल स्वचालित रूप से उन इलाकों की पहचान करता है जहां प्रदूषण खतरनाक स्तर पर है। हर चेतावनी में मापा गया मान, सुरक्षित सीमा, समय और अलर्ट का ठोस वैज्ञानिक कारण पारदर्शी रूप से दर्ज होता है।',
-    narrationHiPhonetic: 'Critical zones module swachalit roop se un ilakon ki pehchan karta hai jahan pradushan khatarnak star par hai. Har chetavani mein mapa gaya maan, safe threshold aur alert ka thos vaigyanik kaaran darj hota hai.',
     duration: 9000,
   },
   {
@@ -92,8 +85,7 @@ const TOUR_STEPS: TourStep[] = [
     caption: 'ISRO INSAT-3DR AOD, Sentinel-5P NO2 & Farm Fires',
     captionHi: 'इसरो उपग्रह एरोसोल धुंध, नाइट्रोजन डाइऑक्साइड और पराली की आग',
     narration: 'The Satellite Intelligence section fuses ISRO INSAT-3DR geostationary scans with Copernicus Sentinel-5P TROPOMI and NASA VIIRS thermal fire anomalies, tracking regional smog across India.',
-    narrationHi: 'उपग्रह खुफिया सेक्शन इसरो के इनसैट-3डीआर और यूरोपियन सेंटिनल-5पी डेटा को मिलाकर पूरे भारत में फैले स्मॉग, औद्योगिक गैसों और पंजाब-हरियाणा में पराली जलाने की थर्मल हॉटस्पॉट्स को लाइव ट्रैक करता है।',
-    narrationHiPhonetic: 'Upagrah khufiya section ISRO ke INSAT 3DR aur European Sentinel 5P data ko milakar poore Bharat mein phaile smog, audyogik gas aur Punjab Haryana mein parali ki aag ko live track karta hai.',
+    narrationHi: 'उपग्रह खुफिया सेक्शन इसरो के इनसैट 3डीआर और यूरोपियन सेंटिनल 5पी डेटा को मिलाकर पूरे भारत में फैले स्मॉग, औद्योगिक गैसों और पंजाब-हरियाणा में पराली जलाने की थर्मल हॉटस्पॉट्स को लाइव ट्रैक करता है।',
     duration: 10000,
   },
   {
@@ -104,7 +96,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'रासायनिक स्पेक्ट्रोस्कोपी और अल्ट्रासोनिक ध्वनि शॉकवेव डिटेक्टर',
     narration: 'Our proprietary Diwali detector isolates illegal fireworks from traffic exhaust by identifying stoichiometric surges in Barium (+840%) and Strontium paired with >95 dB acoustic microphone shockwaves.',
     narrationHi: 'दिवाली इंटेलिजेंस सेक्शन में हमारा अनूठा एआई पायरोटेक्निक केमिकल और साउंड शॉकवेव डिटेक्टर है। यह बेरियम और स्ट्रॉन्शियम केमिकल तथा 95 डेसिबल से अधिक के धमाकों को पकड़कर पटाखों के प्रदूषण को सामान्य ट्रैफिक से अलग करता है।',
-    narrationHiPhonetic: 'Diwali intelligence section mein hamara anutha AI pyrotechnic chemical aur sound shockwave detector hai. Yeh Barium aur Strontium chemical tatha 95 decibel se adhik ke dhamakon ko pakadkar patakhon ke pradushan ko traffic se alag karta hai.',
     duration: 11000,
   },
   {
@@ -114,8 +105,7 @@ const TOUR_STEPS: TourStep[] = [
     caption: 'Personalized vulnerability cohorts & diurnal safety windows',
     captionHi: 'व्यक्तिगत स्वास्थ्य जोखिम प्रोफाइल और सुरक्षित व्यायाम समय',
     narration: 'Precision Health alerts tailor advisories for pediatric, asthma, cardiac, and geriatric cohorts. It visualizes particulate deposition depth in lungs, recommends certified N95 masks, and calculates indoor HEPA CADR.',
-    narrationHi: 'सटीक स्वास्थ्य सेक्शन बच्चों, अस्थमा, हृदय रोगियों और बुजुर्गों के लिए अलग-अलग सलाह देता है। यह फेफड़ों में कणों के असर को समझाता है, N95 मास्क की प्रभावशीलता बताता है और कमरे के लिए एयर प्यूरीफायर की क्षमता की गणना करता है।',
-    narrationHiPhonetic: 'Precision Health section bachhon, asthma, hriday rogi aur buzurgo ke liye alag alag salah deta hai. Yeh phephdon mein kano ke asar ko samjhata hai aur N95 mask ki prabhavsheelta batata hai.',
+    narrationHi: 'सटीक स्वास्थ्य सेक्शन बच्चों, अस्थमा, हृदय रोगियों और बुजुर्गों के लिए अलग-अलग सलाह देता है। यह फेफड़ों में कणों के असर को समझाता है, एन 95 मास्क की प्रभावशीलता बताता है और कमरे के लिए एयर प्यूरीफायर की क्षमता की गणना करता है।',
     duration: 11000,
   },
   {
@@ -126,7 +116,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'मौसम डेटा और प्रदूषण फैलाव का सहसंबंध',
     narration: 'The Weather module integrates meteorological wind velocity and temperature, illustrating how winter thermal inversion traps stagnant cold air and fine particulates near ground level.',
     narrationHi: 'मौसम इंटेलिजेंस सेक्शन हवा की रफ्तार और तापमान दिखाता है। यह समझाता है कि कैसे सर्दियों में थर्मल इनवर्जन की वजह से ठंडी हवा जमीन के पास भारी होकर जहरीले धुएं को जमा कर देती है।',
-    narrationHiPhonetic: 'Mausam intelligence section hawa ki raftar aur taapmaan dikhata hai. Yeh samjhata hai ki kaise sardiyon mein thermal inversion ki wajah se thandi hawa zameen ke paas bhari hokar zahreele dhuen ko jama kar deti hai.',
     duration: 9000,
   },
   {
@@ -137,7 +126,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'सत्यापित नागरिक निगरानी और त्वरित समाधान कार्रवाई',
     narration: 'Citizens can report visible pollution sources and pledge residential balconies to host community sensors. Multi-citizen confirmations trigger prioritized municipal anti-smog gun dispatches.',
     narrationHi: 'नागरिक कूड़ा जलाने, निर्माण धूल और औद्योगिक धुएं की तुरंत फोटो और जीपीएस लोकेशन के साथ रिपोर्ट कर सकते हैं और बालकनी सेंसर होस्ट कर सकते हैं। सत्यापित रिपोर्टों पर नगर निगम द्वारा एंटी-स्मॉग गन भेजी जाती है।',
-    narrationHiPhonetic: 'Nagrik kooda jalane, nirmaan dhool aur audyogik dhuen ki turant photo aur GPS location ke saath report kar sakte hain aur balcony sensor host kar sakte hain.',
     duration: 9500,
   },
   {
@@ -147,8 +135,7 @@ const TOUR_STEPS: TourStep[] = [
     caption: 'Minimize cumulative inhaled particulate dosage',
     captionHi: 'फेफड़ों में जाने वाले जहरीले कणों की मात्रा को कम करें',
     narration: 'Smart Eco-Routes calculates walking and cycling corridors that reduce cumulative inhaled particulate dosage by up to 58%, guiding commuters along tree-canopied residential lanes.',
-    narrationHi: 'स्मार्ट इको-रूट्स पैदल और साइकिल चलने वालों के लिए ऐसे रास्ते चुनता है जहां सांस में जाने वाला प्रदूषण 58% तक कम हो जाता है, जिससे अस्थमा और हृदय रोगियों की सुरक्षा होती है।',
-    narrationHiPhonetic: 'Smart Eco Routes paidal aur cycle chalne walon ke liye aise raste chunta hai jahan saans mein jaane wala pradushan 58 percent tak kam ho jaata hai.',
+    narrationHi: 'स्मार्ट इको-रूट्स पैदल और साइकिल चलने वालों के लिए ऐसे रास्ते चुनता है जहां सांस में जाने वाला प्रदूषण 58 प्रतिशत तक कम हो जाता है, जिससे अस्थमा और हृदय रोगियों की सुरक्षा होती है।',
     duration: 10000,
   },
   {
@@ -159,7 +146,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'बुद्धिमान वायु गुणवत्ता और स्वास्थ्य सलाहकार',
     narration: 'The AI Copilot answers questions about live sensor readings, clinical N95 mask advice, morning exercise safety, and Diwali forensics with natural conversation and voice interaction.',
     narrationHi: 'हमारा एआई कोपायलट आपके सभी सवालों का उत्तर देता है — जैसे आज कौन सा मास्क पहनें, सुबह दौड़ना सुरक्षित है या नहीं, और दिवाली डिटेक्टर कैसे काम करता है।',
-    narrationHiPhonetic: 'Hamara AI Copilot aapke sabhi sawalon ka uttar deta hai — jaise aaj kaun sa mask pehnein, subah daudna surakshit hai ya nahi, aur Diwali detector kaise kaam karta hai.',
     duration: 9500,
   },
   {
@@ -170,7 +156,6 @@ const TOUR_STEPS: TourStep[] = [
     captionHi: 'वायु गुणवत्ता, हर गली और चौराहे पर',
     narration: 'Thank you for exploring PollutionMitra. By fusing hyper-local IoT networks, satellite remote sensing, chemical speciation, and micro-canyon CFD modeling, we make clean air actionable for every citizen.',
     narrationHi: 'पॉल्यूशनमित्र का दौरा करने के लिए धन्यवाद। जमीनी आईओटी सेंसर, उपग्रह डेटा, केमिकल स्पेक्ट्रोस्कोपी और 3डी लिडार शहरी मॉडलों को जोड़कर हम हर नागरिक के लिए स्वच्छ हवा को सुलभ बनाते हैं।',
-    narrationHiPhonetic: 'PollutionMitra ka daura karne ke liye dhanyavaad. Ground IoT sensor, upagrah data, chemical speciation aur 3D LiDAR models ko jodkar hum har nagrik ke liye swachh hawa ko sulabh banate hain.',
     duration: 12000,
   },
 ];
@@ -199,7 +184,7 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
   const currentCaption = lang === 'hi' ? currentStep.captionHi : currentStep.caption;
   const currentNarration = lang === 'hi' ? currentStep.narrationHi : currentStep.narration;
 
-  // Initialize and load speech synthesis voices
+  // Pre-load voices immediately
   useEffect(() => {
     if (voiceAvailable) {
       window.speechSynthesis.getVoices();
@@ -213,7 +198,7 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
     }
   }, [voiceAvailable]);
 
-  // Robust speech engine: uses native Hindi voice if installed; otherwise reads phonetic Hindi via Indian/standard voice
+  // Pure Speech Synthesis: speaks authentic Hindi Devanagari text when lang === 'hi'
   const speak = (targetLang: 'en' | 'hi', stepIdx: number = stepIndex) => {
     if (!voiceAvailable || muted) return;
     try {
@@ -221,59 +206,48 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
       const step = TOUR_STEPS[stepIdx];
       if (!step) return;
 
-      const voices = window.speechSynthesis.getVoices();
-      const hasNativeHindi = voices.some(v =>
-        v.lang.startsWith('hi') ||
-        v.name.toLowerCase().includes('hindi') ||
-        v.name.toLowerCase().includes('lekha') ||
-        v.name.toLowerCase().includes('neerja')
-      );
+      // Pure language text: always pure Hindi when Hindi is selected
+      const textToSpeak = targetLang === 'hi' ? step.narrationHi : step.narration;
 
-      // Select proper text: native Hindi script if Hindi voice is present, or romanized Hindi phonetic script
-      let textToSpeak = '';
-      if (targetLang === 'hi') {
-        textToSpeak = hasNativeHindi ? step.narrationHi : step.narrationHiPhonetic;
-      } else {
-        textToSpeak = step.narration;
-      }
-
-      // Small 60ms delay ensures browser audio queue is ready after cancel()
+      // Delay prevents cancel() race-condition in Chrome/macOS
       setTimeout(() => {
         const utt = new SpeechSynthesisUtterance(textToSpeak);
-        utt.rate = targetLang === 'hi' ? 0.95 : speed;
+        utt.rate = targetLang === 'hi' ? 0.9 : speed;
         utt.pitch = 1;
 
+        const voices = window.speechSynthesis.getVoices();
+
         if (targetLang === 'hi') {
-          if (hasNativeHindi) {
-            const hiVoice = voices.find(v => v.lang.startsWith('hi') || v.name.toLowerCase().includes('hindi'));
-            if (hiVoice) utt.voice = hiVoice;
-            utt.lang = 'hi-IN';
-          } else {
-            // Use Indian-English or default system voice to recite phonetic Hindi clearly
-            const inVoice = voices.find(v =>
-              v.lang === 'en-IN' ||
-              v.name.toLowerCase().includes('india') ||
-              v.name.toLowerCase().includes('rishi') ||
-              v.name.toLowerCase().includes('veena')
-            );
-            if (inVoice) utt.voice = inVoice;
-            utt.lang = 'en-IN';
+          utt.lang = 'hi-IN';
+          // Find installed Hindi voice: Lekha (macOS) or Google हिन्दी (Chrome)
+          const hiVoice = voices.find(v =>
+            v.lang === 'hi-IN' ||
+            v.lang === 'hi_IN' ||
+            v.lang.startsWith('hi') ||
+            v.name.includes('Lekha') ||
+            v.name.includes('Google हिन्दी') ||
+            v.name.toLowerCase().includes('hindi')
+          );
+          if (hiVoice) {
+            utt.voice = hiVoice;
           }
         } else {
-          const enVoice = voices.find(v => v.lang === 'en-IN' || v.lang.startsWith('en'));
-          if (enVoice) utt.voice = enVoice;
           utt.lang = 'en-IN';
+          const enVoice = voices.find(v => v.lang === 'en-IN' || v.lang.startsWith('en'));
+          if (enVoice) {
+            utt.voice = enVoice;
+          }
         }
 
         utt.onerror = (e) => {
-          console.warn('TTS narration error (handled cleanly):', e);
+          console.warn('Speech synthesis notification:', e);
         };
 
         utteranceRef.current = utt;
         window.speechSynthesis.speak(utt);
-      }, 60);
+      }, 50);
     } catch {
-      // Audio speech synthesis fallback
+      // Audio speech fallback
     }
   };
 
@@ -377,7 +351,7 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
     <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end">
       {/* 1. UPFRONT LANGUAGE SELECTION MODAL */}
       {!hasChosenLang ? (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 pointer-events-auto">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 pointer-events-auto">
           <div className="bg-navy-900 border-2 border-cyan-500/50 rounded-2xl p-6 sm:p-8 max-w-lg w-full text-center space-y-6 shadow-2xl animate-fade-in">
             <div className="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 mx-auto text-3xl">
               🌿
@@ -387,11 +361,11 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
               <h2 className="text-xl sm:text-2xl font-black text-white">
                 PollutionMitra Guided Tour
               </h2>
-              <p className="text-sm text-cyan-300 font-semibold">
+              <p className="text-sm text-amber-300 font-bold">
                 पॉल्यूशनमित्र गाइडेड टूर में आपका स्वागत है
               </p>
               <p className="text-xs text-slate-400 pt-1">
-                Select your preferred language to begin the interactive walkthrough:
+                Select your preferred tour language / कृपया टूर की भाषा चुनें:
               </p>
             </div>
 
@@ -403,13 +377,13 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-2xl">🇮🇳</span>
-                  <span className="badge bg-amber-500 text-navy-950 font-bold text-[10px]">अनुशंसित</span>
+                  <span className="badge bg-amber-500 text-navy-950 font-bold text-[10px]">शुद्ध हिन्दी</span>
                 </div>
                 <div className="text-base font-black text-white group-hover:text-amber-300">
                   हिन्दी में समझें
                 </div>
                 <div className="text-[11px] text-slate-300 mt-1 leading-snug">
-                  पूरी ऑडियो आवाज और विस्तृत विवरण हिन्दी में सुनें
+                  पूरी आवाज और विवरण शुद्ध हिन्दी में सुनें
                 </div>
               </button>
 
