@@ -174,98 +174,98 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
   const [speed, setSpeed] = useState(1);
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
-  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  // Dedicated Audio Element for guaranteed 100% native speech
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<any>(null);
 
   const currentStep = TOUR_STEPS[stepIndex];
-  const voiceAvailable = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
   const currentTitle = lang === 'hi' ? currentStep.titleHi : currentStep.title;
   const currentCaption = lang === 'hi' ? currentStep.captionHi : currentStep.caption;
   const currentNarration = lang === 'hi' ? currentStep.narrationHi : currentStep.narration;
 
-  // Pre-load voices immediately
-  useEffect(() => {
-    if (voiceAvailable) {
-      window.speechSynthesis.getVoices();
-      const onVoices = () => {
-        window.speechSynthesis.getVoices();
-      };
-      window.speechSynthesis.onvoiceschanged = onVoices;
-      return () => {
-        window.speechSynthesis.onvoiceschanged = null;
-      };
-    }
-  }, [voiceAvailable]);
-
-  // Pure Speech Synthesis: speaks authentic Hindi Devanagari text when lang === 'hi'
-  const speak = (targetLang: 'en' | 'hi', stepIdx: number = stepIndex) => {
-    if (!voiceAvailable || muted) return;
+  // Fallback speech synthesizer if audio tag fails
+  const playSpeechFallback = (targetLang: 'en' | 'hi', stepIdx: number) => {
+    if (!('speechSynthesis' in window)) return;
     try {
       window.speechSynthesis.cancel();
       const step = TOUR_STEPS[stepIdx];
       if (!step) return;
-
-      // Pure language text: always pure Hindi when Hindi is selected
-      const textToSpeak = targetLang === 'hi' ? step.narrationHi : step.narration;
-
-      // Delay prevents cancel() race-condition in Chrome/macOS
-      setTimeout(() => {
-        const utt = new SpeechSynthesisUtterance(textToSpeak);
-        utt.rate = targetLang === 'hi' ? 0.9 : speed;
-        utt.pitch = 1;
-
-        const voices = window.speechSynthesis.getVoices();
-
-        if (targetLang === 'hi') {
-          utt.lang = 'hi-IN';
-          // Find installed Hindi voice: Lekha (macOS) or Google हिन्दी (Chrome)
-          const hiVoice = voices.find(v =>
-            v.lang === 'hi-IN' ||
-            v.lang === 'hi_IN' ||
-            v.lang.startsWith('hi') ||
-            v.name.includes('Lekha') ||
-            v.name.includes('Google हिन्दी') ||
-            v.name.toLowerCase().includes('hindi')
-          );
-          if (hiVoice) {
-            utt.voice = hiVoice;
-          }
-        } else {
-          utt.lang = 'en-IN';
-          const enVoice = voices.find(v => v.lang === 'en-IN' || v.lang.startsWith('en'));
-          if (enVoice) {
-            utt.voice = enVoice;
-          }
-        }
-
-        utt.onerror = (e) => {
-          console.warn('Speech synthesis notification:', e);
-        };
-
-        utteranceRef.current = utt;
-        window.speechSynthesis.speak(utt);
-      }, 50);
+      const text = targetLang === 'hi' ? step.narrationHi : step.narration;
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.rate = speed;
+      utt.lang = targetLang === 'hi' ? 'hi-IN' : 'en-IN';
+      const voices = window.speechSynthesis.getVoices();
+      if (targetLang === 'hi') {
+        const hiVoice = voices.find(v =>
+          v.lang.toLowerCase().startsWith('hi') ||
+          v.name.toLowerCase().includes('lekha') ||
+          v.name.toLowerCase().includes('hindi')
+        );
+        if (hiVoice) utt.voice = hiVoice;
+      } else {
+        const enVoice = voices.find(v =>
+          v.lang.toLowerCase().startsWith('en-in') ||
+          v.name.toLowerCase().includes('rishi') ||
+          v.name.toLowerCase().includes('india')
+        );
+        if (enVoice) utt.voice = enVoice;
+      }
+      window.speechSynthesis.speak(utt);
     } catch {
-      // Audio speech fallback
+      // Speech synthesis error fallback
     }
   };
 
-  const startStep = (idx: number, targetLang: 'en' | 'hi' = lang) => {
-    const step = TOUR_STEPS[idx];
-    if (!step) return;
-    navigate(step.route);
-    speak(targetLang, idx);
-    setProgress(0);
+  // Primary Audio Player: plays crystal-clear native audio files (Lekha for Hindi, Rishi for English)
+  const playAudioVoice = (targetLang: 'en' | 'hi', stepIdx: number) => {
+    if (muted) return;
+    try {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
 
-    // Progress bar
+      const audio = audioRef.current;
+      if (audio) {
+        audio.pause();
+        audio.playbackRate = speed;
+        audio.currentTime = 0;
+        // Prioritize WAV: byte-0 instant playback without range header requirement
+        audio.src = `/audio/step_${stepIdx + 1}_${targetLang}.wav`;
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn('WAV play failed, attempting M4A fallback:', err);
+            audio.src = `/audio/step_${stepIdx + 1}_${targetLang}.m4a`;
+            audio.play().catch((m4aErr) => {
+              console.warn('M4A fallback failed, attempting Web Speech:', m4aErr);
+              playSpeechFallback(targetLang, stepIdx);
+              runFallbackTimer(stepIdx, targetLang);
+            });
+          });
+        }
+      } else {
+        playSpeechFallback(targetLang, stepIdx);
+        runFallbackTimer(stepIdx, targetLang);
+      }
+    } catch (e) {
+      console.warn('Audio play error:', e);
+      playSpeechFallback(targetLang, stepIdx);
+      runFallbackTimer(stepIdx, targetLang);
+    }
+  };
+
+  const runFallbackTimer = (idx: number, targetLang: 'en' | 'hi', customDuration?: number) => {
     clearInterval(progressRef.current);
+    const dur = customDuration || 14000;
     const interval = 100;
     let elapsed = 0;
     progressRef.current = setInterval(() => {
       elapsed += interval;
-      setProgress((elapsed / step.duration) * 100);
-      if (elapsed >= step.duration) {
+      setProgress((elapsed / dur) * 100);
+      if (elapsed >= dur) {
         clearInterval(progressRef.current);
         if (idx + 1 < TOUR_STEPS.length) {
           const nextIdx = idx + 1;
@@ -273,9 +273,45 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
           startStep(nextIdx, targetLang);
         } else {
           setPlaying(false);
+          setProgress(100);
         }
       }
     }, interval);
+  };
+
+  const startStep = (idx: number, targetLang: 'en' | 'hi' = lang) => {
+    const step = TOUR_STEPS[idx];
+    if (!step) return;
+    navigate(step.route);
+    setProgress(0);
+    clearInterval(progressRef.current);
+
+    if (muted) {
+      runFallbackTimer(idx, targetLang, step.duration);
+    } else {
+      playAudioVoice(targetLang, idx);
+    }
+  };
+
+  // Synchronized timeupdate handler
+  const handleTimeUpdate = () => {
+    const audio = audioRef.current;
+    if (audio && audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
+      const pct = (audio.currentTime / audio.duration) * 100;
+      setProgress(pct);
+    }
+  };
+
+  // Advance step when voice track finishes
+  const handleEnded = () => {
+    if (stepIndex + 1 < TOUR_STEPS.length) {
+      const nextIdx = stepIndex + 1;
+      setStepIndex(nextIdx);
+      startStep(nextIdx, lang);
+    } else {
+      setPlaying(false);
+      setProgress(100);
+    }
   };
 
   // Launch tour in selected language
@@ -295,16 +331,23 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
     }
   };
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (voiceAvailable) window.speechSynthesis.cancel();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
       clearInterval(progressRef.current);
     };
-  }, [voiceAvailable]);
+  }, []);
 
   const handlePrev = () => {
     clearInterval(progressRef.current);
-    if (voiceAvailable) window.speechSynthesis.cancel();
+    if (audioRef.current) audioRef.current.pause();
     const newIdx = Math.max(0, stepIndex - 1);
     setStepIndex(newIdx);
     setPlaying(true);
@@ -313,7 +356,7 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
 
   const handleNext = () => {
     clearInterval(progressRef.current);
-    if (voiceAvailable) window.speechSynthesis.cancel();
+    if (audioRef.current) audioRef.current.pause();
     const newIdx = Math.min(TOUR_STEPS.length - 1, stepIndex + 1);
     setStepIndex(newIdx);
     setPlaying(true);
@@ -324,31 +367,57 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
     if (playing) {
       setPlaying(false);
       clearInterval(progressRef.current);
-      if (voiceAvailable) window.speechSynthesis.cancel();
+      if (audioRef.current) audioRef.current.pause();
+      if ('speechSynthesis' in window) window.speechSynthesis.pause();
     } else {
       setPlaying(true);
-      startStep(stepIndex, lang);
+      if (audioRef.current && audioRef.current.src && !audioRef.current.ended) {
+        audioRef.current.play().catch(() => startStep(stepIndex, lang));
+      } else {
+        startStep(stepIndex, lang);
+      }
     }
   };
 
   const handleMute = () => {
     const newMuted = !muted;
     setMuted(newMuted);
-    if (newMuted && voiceAvailable) {
-      window.speechSynthesis.cancel();
-    } else if (!newMuted) {
-      speak(lang, stepIndex);
+    if (audioRef.current) {
+      audioRef.current.muted = newMuted;
+    }
+    if (newMuted) {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      runFallbackTimer(stepIndex, lang);
+    } else {
+      clearInterval(progressRef.current);
+      startStep(stepIndex, lang);
     }
   };
 
   const handleRestart = () => {
+    clearInterval(progressRef.current);
+    if (audioRef.current) audioRef.current.pause();
     setStepIndex(0);
     setPlaying(true);
     startStep(0, lang);
   };
 
+  const handleSpeedChange = (newSpeed: number) => {
+    setSpeed(newSpeed);
+    if (audioRef.current) {
+      audioRef.current.playbackRate = newSpeed;
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end">
+      {/* Hidden dedicated HTML5 Audio element for 100% native speech */}
+      <audio
+        ref={audioRef}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handleEnded}
+        preload="auto"
+      />
       {/* 1. UPFRONT LANGUAGE SELECTION MODAL */}
       {!hasChosenLang ? (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 pointer-events-auto">
@@ -532,10 +601,10 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
                 <button
                   onClick={handleMute}
                   className={`btn-secondary text-xs py-1.5 px-2.5 cursor-pointer ${muted ? 'text-slate-500' : 'text-emerald-400'}`}
-                  title={voiceAvailable ? (muted ? 'Unmute voice narration' : 'Mute narration') : 'Voice not supported in this browser'}
+                  title={muted ? 'Unmute voice narration' : 'Mute narration'}
                 >
                   {muted ? <VolumeX size={13} /> : <Volume2 size={13} />}
-                  {voiceAvailable ? (muted ? 'Unmute' : 'Voice') : 'Captions Only'}
+                  {muted ? 'Unmute' : 'Voice On'}
                 </button>
                 <button
                   onClick={() => setShowCaptions(!showCaptions)}
@@ -545,7 +614,7 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
                 </button>
                 <select
                   value={speed}
-                  onChange={e => setSpeed(Number(e.target.value))}
+                  onChange={e => handleSpeedChange(Number(e.target.value))}
                   className="select-field text-xs py-1 px-1.5 cursor-pointer"
                 >
                   <option value={0.75}>0.75×</option>
