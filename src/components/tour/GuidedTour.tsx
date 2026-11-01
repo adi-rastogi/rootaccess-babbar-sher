@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { X, Play, Pause, SkipForward, SkipBack, RotateCcw, Volume2, VolumeX, ChevronRight } from 'lucide-react';
+import {
+  X, Play, Pause, SkipForward, SkipBack, RotateCcw,
+  Volume2, VolumeX, ChevronRight, Globe, CheckCircle2, Sparkles
+} from 'lucide-react';
 
 interface TourStep {
   id: number;
@@ -21,138 +24,138 @@ const TOUR_STEPS: TourStep[] = [
     titleHi: '🌿 पॉल्यूशनमित्र में आपका स्वागत है',
     caption: 'Air Quality, Street by Street',
     captionHi: 'वायु गुणवत्ता, हर गली और चौराहे पर',
-    narration: 'Welcome to PollutionMitra — your AI-powered neighborhood environmental intelligence platform. PollutionMitra helps citizens understand air quality at the street level, track pollution patterns, and make healthier decisions. This guided tour will walk you through all major features. All data shown is simulated for this demonstration.',
-    narrationHi: 'पॉल्यूशनमित्र में आपका स्वागत है — आपका एआई-संचालित मोहल्ला पर्यावरण इंटेलिजेंस प्लेटफॉर्म। पॉल्यूशनमित्र नागरिकों को गली स्तर पर वायु गुणवत्ता समझने, प्रदूषण पैटर्न ट्रैक करने और स्वस्थ निर्णय लेने में मदद करता है। यह गाइडेड टूर आपको सभी प्रमुख फीचर्स से परिचित कराएगा।',
-    duration: 8000,
+    narration: 'Welcome to PollutionMitra — your AI-powered neighborhood environmental intelligence platform. PollutionMitra helps citizens understand air quality at the street level, track pollution patterns, and make healthier decisions. This guided tour will walk you through all major features.',
+    narrationHi: 'पॉल्यूशनमित्र में आपका स्वागत है — आपका एआई-संचालित मोहल्ला पर्यावरण इंटेलिजेंस प्लेटफॉर्म। पॉल्यूशनमित्र नागरिकों को गली स्तर पर वायु गुणवत्ता समझने, प्रदूषण पैटर्न ट्रैक करने और स्वस्थ निर्णय लेने में मदद करता है। यह गाइडेड टूर आपको सभी मुख्य फीचर्स दिखाएगा।',
+    duration: 8500,
   },
   {
     id: 2, route: '/dashboard',
-    title: '📊 Environmental Dashboard',
-    titleHi: '📊 पर्यावरण डैशबोर्ड और लाइव एक्यूआई',
+    title: '📊 Environmental Dashboard & Live Telemetry',
+    titleHi: '📊 लाइव पर्यावरण डैशबोर्ड और एक्यूआई',
     caption: 'Real-time AQI, PM2.5, PM10 and sensor network status',
     captionHi: 'रीयल-टाइम एक्यूआई, पीएम2.5, पीएम10 और सेंसर नेटवर्क स्थिति',
-    narration: 'The main dashboard shows a real-time command center for environmental data. You can see the Air Quality Index, PM2.5, PM10, temperature, humidity, and wind speed. The neighborhood selector at the top updates all values for your chosen area. All values here are demo data — clearly marked as simulated.',
-    narrationHi: 'मुख्य डैशबोर्ड रीयल-टाइम पर्यावरण कमांड सेंटर दिखाता है। आप एयर क्वालिटी इंडेक्स, पीएम2.5, पीएम10, तापमान, नमी और हवा की गति देख सकते हैं। ऊपर दिए गए एरिया सेलेक्टर से आप अपने पसंदीदा इलाके का डेटा देख सकते हैं।',
+    narration: 'The main dashboard serves as your environmental command center. You can monitor the Air Quality Index, PM2.5, PM10, temperature, humidity, and wind speed. Selecting any neighborhood updates all metrics instantly.',
+    narrationHi: 'मुख्य डैशबोर्ड रीयल-टाइम पर्यावरण कमांड सेंटर है। आप एयर क्वालिटी इंडेक्स, पीएम2.5, पीएम10, तापमान, नमी और हवा की गति देख सकते हैं। ऊपर दिए गए एरिया सेलेक्टर से आप अपने पसंदीदा इलाके का डेटा तुरंत देख सकते हैं।',
     duration: 9000,
   },
   {
     id: 3, route: '/map',
     title: '🗺️ Wind-Aware Pollution Flow Map',
     titleHi: '🗺️ वायु-प्रवाह प्रदूषण फैलाव मानचित्र',
-    caption: 'Our primary innovation — interactive GIS pollution visualization',
-    captionHi: 'हमारा मुख्य नवाचार — इंटरैक्टिव जीआईएस प्रदूषण विज़ुअलाइज़ेशन',
-    narration: 'This is one of our two primary innovations — Wind-Aware Pollution Flow Mapping. The interactive map shows real OpenStreetMap tiles with pollution heatmap overlays, sensor markers, and illustrative wind direction vectors. Each sensor marker shows live PM2.5 values. Click any sensor for detailed readings.',
+    caption: 'Interactive GIS street-level pollution visualization',
+    captionHi: 'इंटरैक्टिव जीआईएस सड़क-स्तरीय प्रदूषण मानचित्र',
+    narration: 'Our Wind-Aware Pollution Flow Map renders real OpenStreetMap tiles with spatial heatmap overlays, IoT sensor markers, and wind direction vectors showing potential dispersion trajectories across neighborhoods.',
     narrationHi: 'यह हमारा प्रमुख नवाचार है — हवा के रुख के साथ प्रदूषण का फैलाव नक्शा। यह इंटरैक्टिव जीआईएस मैप प्रदूषण का हीटमैप, सेंसर मार्कर्स और हवा की दिशा दिखाता है। हर सेंसर पर क्लिक करके आप उस गली का विस्तृत पीएम2.5 डेटा देख सकते हैं।',
-    duration: 11000,
+    duration: 10000,
   },
   {
     id: 4, route: '/sensors',
-    title: '📡 Smart Sensor Network',
+    title: '📡 Smart IoT Sensor Network',
     titleHi: '📡 स्मार्ट आईओटी सेंसर नेटवर्क',
-    caption: 'Our second primary innovation — IoT environmental monitoring',
-    captionHi: 'हमारा दूसरा मुख्य नवाचार — आईओटी पर्यावरणीय निगरानी',
-    narration: 'Our second core innovation is the Smart Sensor Network. Each sensor in the network reports PM2.5, PM10, temperature, humidity, battery status, and calibration information. Sensors are classified as Online, Offline, Suspected Malfunction, or Needs Calibration.',
-    narrationHi: 'हमारा दूसरा मुख्य नवाचार है स्मार्ट सेंसर नेटवर्क। नेटवर्क का हर सेंसर पीएम2.5, पीएम10, तापमान, नमी, बैटरी और कैलिब्रेशन स्थिति रिपोर्ट करता है। इससे फॉल्टी या ऑफलाइन सेंसर तुरंत पहचाने जा सकते हैं।',
+    caption: 'IoT environmental monitoring with calibration audits',
+    captionHi: 'आईओटी पर्यावरणीय निगरानी व स्वचालित कैलिब्रेशन',
+    narration: 'The Smart Sensor Network monitors optical PM2.5, PM10, temperature, humidity, and battery health across all Delhi wards, with automated hygrothermal humidity calibration curves.',
+    narrationHi: 'स्मार्ट सेंसर नेटवर्क दिल्ली के सभी वार्डों में पीएम2.5, पीएम10, तापमान, नमी और बैटरी की स्थिति की निगरानी करता है। सर्दियों के कोहरे में यह ऑटोमैटिक नमी करेक्शन लगाकर सही आंकड़े देता है।',
     duration: 9000,
   },
   {
-    id: 5, route: '/critical-zones',
-    title: '🚨 Critical Pollution Zones',
+    id: 5, route: '/canyon',
+    title: '🏙️ 3D LiDAR Micro-Canyon Dispersion',
+    titleHi: '🏙️ 3डी लिडार शहरी कैन्यन फैलाव मॉडल',
+    caption: 'Aerodynamic street vortex trapping & building geometry',
+    captionHi: 'इमारतों के बीच वायु-भंवर और सड़क स्तर पर जहरीला धुआं',
+    narration: 'The 3D LiDAR Micro-Canyon module models urban aerodynamic vortex trapping based on Oke 1988 meteorology. When building height exceeds street width (H/W > 0.7), wind enters the skimming regime, creating a stationary recirculating eddy that traps vehicle exhaust at pedestrian sidewalk level — up to 5x higher than rooftop air.',
+    narrationHi: '3डी लिडार शहरी कैन्यन सेक्शन ऊंची इमारतों के बीच हवा के भंवर और धुएं के जमाव को दिखाता है। जब इमारतों की ऊंचाई सड़क की चौड़ाई से ज्यादा होती है, तो हवा छत के ऊपर से निकल जाती है और सड़क स्तर पर एक गोल भंवर बन जाता है, जिससे नीचे चलने वाले नागरिकों को छत के मुकाबले 5 गुना अधिक जहरीली हवा सांस में लेनी पड़ती है।',
+    duration: 12000,
+  },
+  {
+    id: 6, route: '/critical-zones',
+    title: '🚨 Critical Hotspot Zones',
     titleHi: '🚨 क्रिटिकल प्रदूषण हॉटस्पॉट क्षेत्र',
-    caption: 'Automated zone identification with transparent alert rationale',
+    caption: 'Automated zone identification with transparent rationale',
     captionHi: 'पारदर्शी अलर्ट कारणों के साथ स्वचालित अति-संवेदनशील क्षेत्र पहचान',
-    narration: 'The Critical Zones module automatically identifies areas requiring environmental attention. Every alert includes the measured value, the threshold it exceeded, the timestamp, severity level, and the reason for the alert.',
+    narration: 'The Critical Zones module automatically identifies areas requiring urgent mitigation. Every alert includes measured values, standard NAAQS thresholds, severity levels, and transparent evidence.',
     narrationHi: 'क्रिटिकल ज़ोन मॉड्यूल स्वचालित रूप से उन इलाकों की पहचान करता है जहां प्रदूषण खतरनाक स्तर पर है। हर चेतावनी में मापा गया मान, सुरक्षित सीमा, समय और अलर्ट का ठोस वैज्ञानिक कारण पारदर्शी रूप से दर्ज होता है।',
     duration: 9000,
   },
   {
-    id: 6, route: '/satellite',
-    title: '🛰️ Pan-India Satellite Intelligence',
+    id: 7, route: '/satellite',
+    title: '🛰️ Pan-India Satellite Radar',
     titleHi: '🛰️ अखिल भारतीय उपग्रह खुफिया नक्शा',
     caption: 'ISRO INSAT-3DR AOD, Sentinel-5P NO2 & Farm Fires',
     captionHi: 'इसरो उपग्रह एरोसोल धुंध, नाइट्रोजन डाइऑक्साइड और पराली की आग',
-    narration: 'The Pan-India Satellite section combines ISRO INSAT-3DR geostationary scans with Copernicus Sentinel-5P TROPOMI and NASA VIIRS fire anomaly detectors, tracking regional smog across the entire Indo-Gangetic Plain.',
+    narration: 'The Satellite Intelligence section fuses ISRO INSAT-3DR geostationary scans with Copernicus Sentinel-5P TROPOMI and NASA VIIRS thermal fire anomalies, tracking regional smog across India.',
     narrationHi: 'उपग्रह खुफिया सेक्शन इसरो के इनसैट-3डीआर और यूरोपियन सेंटिनल-5पी डेटा को मिलाकर पूरे भारत में फैले स्मॉग, औद्योगिक गैसों और पंजाब-हरियाणा में पराली जलाने की थर्मल हॉटस्पॉट्स को लाइव ट्रैक करता है।',
     duration: 10000,
   },
   {
-    id: 7, route: '/diwali',
-    title: '🎆 Diwali Smog & Acoustic Detector',
+    id: 8, route: '/diwali',
+    title: '🎆 Diwali Chemical & Acoustic Detector',
     titleHi: '🎆 दिवाली स्मॉग व पटाखे धमाका डिटेक्टर',
     caption: 'Chemical Speciation & Acoustic Shockwave Forensic Intelligence',
     captionHi: 'रासायनिक स्पेक्ट्रोस्कोपी और अल्ट्रासोनिक ध्वनि शॉकवेव डिटेक्टर',
-    narration: 'The Diwali Intelligence module features our unique AI Pyrotechnic Chemical & Acoustic Burst Detector. It differentiates illegal fireworks from traffic exhaust by detecting Barium (+840%) and Strontium surges paired with >95 dB acoustic shockwaves.',
+    narration: 'Our proprietary Diwali detector isolates illegal fireworks from traffic exhaust by identifying stoichiometric surges in Barium (+840%) and Strontium paired with >95 dB acoustic microphone shockwaves.',
     narrationHi: 'दिवाली इंटेलिजेंस सेक्शन में हमारा अनूठा एआई पायरोटेक्निक केमिकल और साउंड शॉकवेव डिटेक्टर है। यह बेरियम और स्ट्रॉन्शियम केमिकल तथा 95 डेसिबल से अधिक के धमाकों को पकड़कर पटाखों के प्रदूषण को सामान्य ट्रैफिक से अलग करता है।',
     duration: 11000,
   },
   {
-    id: 8, route: '/weather',
+    id: 9, route: '/health',
+    title: '🫁 Precision Predictive Health Engine',
+    titleHi: '🫁 सटीक व्यक्तिगत स्वास्थ्य एवं पल्मोनरी सुरक्षा',
+    caption: 'Personalized vulnerability cohorts & diurnal safety windows',
+    captionHi: 'व्यक्तिगत स्वास्थ्य जोखिम प्रोफाइल और सुरक्षित व्यायाम समय',
+    narration: 'Precision Health alerts tailor advisories for pediatric, asthma, cardiac, and geriatric cohorts. It visualizes particulate deposition depth in lungs, recommends certified N95 masks, and calculates indoor HEPA CADR.',
+    narrationHi: 'सटीक स्वास्थ्य सेक्शन बच्चों, अस्थमा, हृदय रोगियों और बुजुर्गों के लिए अलग-अलग सलाह देता है। यह फेफड़ों में कणों के असर को समझाता है, N95 मास्क की प्रभावशीलता बताता है और कमरे के लिए एयर प्यूरीफायर की क्षमता की गणना करता है।',
+    duration: 11000,
+  },
+  {
+    id: 10, route: '/weather',
     title: '🌤️ Weather Intelligence & Inversion',
     titleHi: '🌤️ मौसम विज्ञान और तापमान उलटाव (इनवर्जन)',
-    caption: 'Meteorological integration and pollution correlation',
+    caption: 'Meteorological telemetry and thermal inversion dynamics',
     captionHi: 'मौसम डेटा और प्रदूषण फैलाव का सहसंबंध',
-    narration: 'The Weather Intelligence module integrates meteorological telemetry. The interactive wind compass shows direction and speed, illustrating how winter thermal inversion traps cold air and fine particulates near ground level.',
+    narration: 'The Weather module integrates meteorological wind velocity and temperature, illustrating how winter thermal inversion traps stagnant cold air and fine particulates near ground level.',
     narrationHi: 'मौसम इंटेलिजेंस सेक्शन हवा की रफ्तार और तापमान दिखाता है। यह समझाता है कि कैसे सर्दियों में थर्मल इनवर्जन की वजह से ठंडी हवा जमीन के पास भारी होकर जहरीले धुएं को जमा कर देती है।',
     duration: 9000,
   },
   {
-    id: 9, route: '/community',
-    title: '👥 Community Pollution Reporting',
-    titleHi: '👥 जनभागीदारी व नागरिक प्रदूषण रिपोर्टिंग',
-    caption: 'Citizen environmental monitoring with moderation',
+    id: 11, route: '/community',
+    title: '👥 Citizen Reporting & Balcony Host Hub',
+    titleHi: '👥 जनभागीदारी, रिपोर्टिंग व बालकनी सेंसर',
+    caption: 'Crowdsourced ground surveillance with multi-citizen verification',
     captionHi: 'सत्यापित नागरिक निगरानी और त्वरित समाधान कार्रवाई',
-    narration: 'Citizens can report visible pollution sources including garbage burning, construction dust, and industrial smoke. Reports go through transparent moderation workflows to mobilize municipal enforcement.',
-    narrationHi: 'नागरिक कूड़ा जलाने, निर्माण धूल और औद्योगिक धुएं की तुरंत फोटो और जीपीएस लोकेशन के साथ रिपोर्ट कर सकते हैं। सत्यापित रिपोर्टों पर नगर निगम द्वारा एंटी-स्मॉग गन और जांच दल भेजे जाते हैं।',
-    duration: 9000,
+    narration: 'Citizens can report visible pollution sources and pledge residential balconies to host community sensors. Multi-citizen confirmations trigger prioritized municipal anti-smog gun dispatches.',
+    narrationHi: 'नागरिक कूड़ा जलाने, निर्माण धूल और औद्योगिक धुएं की तुरंत फोटो और जीपीएस लोकेशन के साथ रिपोर्ट कर सकते हैं और बालकनी सेंसर होस्ट कर सकते हैं। सत्यापित रिपोर्टों पर नगर निगम द्वारा एंटी-स्मॉग गन भेजी जाती है।',
+    duration: 9500,
   },
   {
-    id: 10, route: '/rewards',
-    title: '🏆 PollutionMitra Rewards & XP',
-    titleHi: '🏆 पॉल्यूशनमित्र रिवॉर्ड्स और ग्रीन पॉइंट्स',
-    caption: 'Quality-weighted gamification for environmental participation',
-    captionHi: 'पर्यावरण सुधार में भागीदारी के लिए ग्रीन रिवॉर्ड्स',
-    narration: 'The Rewards system incentivizes quality environmental reporting. Contributors earn XP points, level up badges, and climb their ward leaderboard for verified civic contributions.',
-    narrationHi: 'रिवॉर्ड्स सिस्टम नागरिकों को सकारात्मक योगदान के लिए प्रोत्साहित करता है। सही प्रदूषण रिपोर्टिंग और वृक्षारोपण पर एक्सपी पॉइंट्स और ग्रीन वार्ड बैज मिलते हैं।',
-    duration: 9000,
-  },
-  {
-    id: 11, route: '/routes',
+    id: 12, route: '/routes',
     title: '🚲 Smart Eco-Mobility Routes',
     titleHi: '🚲 स्मार्ट इको-मोबिलिटी स्वच्छ मार्ग',
     caption: 'Minimize cumulative inhaled particulate dosage',
     captionHi: 'फेफड़ों में जाने वाले जहरीले कणों की मात्रा को कम करें',
-    narration: 'Smart Eco-Routes calculates walking and cycling corridors that reduce cumulative inhaled particulate dosage by up to 58%, routing commuters through tree-lined green paths rather than congested highways.',
+    narration: 'Smart Eco-Routes calculates walking and cycling corridors that reduce cumulative inhaled particulate dosage by up to 58%, guiding commuters along tree-canopied residential lanes.',
     narrationHi: 'स्मार्ट इको-रूट्स पैदल और साइकिल चलने वालों के लिए ऐसे रास्ते चुनता है जहां सांस में जाने वाला प्रदूषण 58% तक कम हो जाता है, जिससे अस्थमा और हृदय रोगियों की सुरक्षा होती है।',
     duration: 10000,
   },
   {
-    id: 12, route: '/copilot',
+    id: 13, route: '/copilot',
     title: '🤖 AI Environmental Copilot',
     titleHi: '🤖 एआई पर्यावरण कोपायलट',
-    caption: 'Intelligent atmospheric and clinical health assistant',
+    caption: 'Natural conversational assistant for air quality inquiries',
     captionHi: 'बुद्धिमान वायु गुणवत्ता और स्वास्थ्य सलाहकार',
     narration: 'The AI Copilot answers questions about live sensor readings, clinical N95 mask advice, morning exercise safety, and Diwali forensics with natural conversation and voice interaction.',
     narrationHi: 'हमारा एआई कोपायलट आपके सभी सवालों का उत्तर देता है — जैसे आज कौन सा मास्क पहनें, सुबह दौड़ना सुरक्षित है या नहीं, और दिवाली डिटेक्टर कैसे काम करता है।',
-    duration: 10000,
-  },
-  {
-    id: 13, route: '/innovations',
-    title: '💡 Upcoming Innovations & 3D Canyon',
-    titleHi: '💡 3डी लिडार शहरी कैन्यन और नवाचार',
-    caption: 'Computer vision, acoustic intelligence, and urban aerodynamics',
-    captionHi: 'कंप्यूटर विज़न, ध्वनि विश्लेषण और 3डी बिल्डिंग वायु-भंवर मॉडल',
-    narration: 'Explore our cutting-edge prototypes including YOLOv8 traffic CCTV emission quantification, multilingual voice interaction, and 3D LiDAR urban micro-canyon vortex simulations.',
-    narrationHi: 'यहां आप हमारे उन्नत प्रोटोटाइप देख सकते हैं — जैसे एआई ट्रैफिक कैमरा विश्लेषण, बहुभाषी वॉयस और ऊंची इमारतों के बीच फंसे धुएं का 3डी लिडार वायु-भंवर सिमुलेशन।',
-    duration: 11000,
+    duration: 9500,
   },
   {
     id: 14, route: '/dashboard',
-    title: '🌿 PollutionMitra — Summary',
+    title: '🌿 PollutionMitra — Mission Summary',
     titleHi: '🌿 पॉल्यूशनमित्र — निष्कर्ष एवं विज़न',
     caption: 'Air Quality, Street by Street',
     captionHi: 'वायु गुणवत्ता, हर गली और चौराहे पर',
-    narration: 'Thank you for exploring PollutionMitra. By combining street-level IoT, satellite remote sensing, chemical speciation, and clean-air mobility routing, we make clean air actionable for every citizen.',
-    narrationHi: 'पॉल्यूशनमित्र का दौरा करने के लिए धन्यवाद। जमीनी आईओटी सेंसर, उपग्रह डेटा, केमिकल स्पेक्ट्रोस्कोपी और स्वच्छ मार्ग नेविगेशन को जोड़कर हम हर नागरिक के लिए स्वच्छ हवा को सुलभ बनाते हैं।',
+    narration: 'Thank you for exploring PollutionMitra. By fusing hyper-local IoT networks, satellite remote sensing, chemical speciation, and micro-canyon CFD modeling, we make clean air actionable for every citizen.',
+    narrationHi: 'पॉल्यूशनमित्र का दौरा करने के लिए धन्यवाद। जमीनी आईओटी सेंसर, उपग्रह डेटा, केमिकल स्पेक्ट्रोस्कोपी और 3डी लिडार शहरी मॉडलों को जोड़कर हम हर नागरिक के लिए स्वच्छ हवा को सुलभ बनाते हैं।',
     duration: 12000,
   },
 ];
@@ -163,15 +166,15 @@ interface GuidedTourProps {
 
 export default function GuidedTour({ onClose }: GuidedTourProps) {
   const [lang, setLang] = useState<'en' | 'hi'>('en');
+  const [hasChosenLang, setHasChosenLang] = useState<boolean>(false);
   const [stepIndex, setStepIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
   const [showCaptions, setShowCaptions] = useState(true);
   const [speed, setSpeed] = useState(1);
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
-  const timerRef = useRef<any>(null);
   const progressRef = useRef<any>(null);
 
   const currentStep = TOUR_STEPS[stepIndex];
@@ -181,22 +184,52 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
   const currentCaption = lang === 'hi' ? currentStep.captionHi : currentStep.caption;
   const currentNarration = lang === 'hi' ? currentStep.narrationHi : currentStep.narration;
 
-  const speak = (text: string) => {
-    if (!voiceAvailable || muted) return;
-    window.speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.rate = speed;
-    utt.pitch = 1;
-    utt.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
-    utteranceRef.current = utt;
-    window.speechSynthesis.speak(utt);
+  // Find best available TTS voice
+  const getBestVoice = (targetLang: 'en' | 'hi') => {
+    if (!voiceAvailable) return null;
+    const voices = window.speechSynthesis.getVoices();
+    if (targetLang === 'hi') {
+      const hiVoice = voices.find(v =>
+        v.lang.startsWith('hi') ||
+        v.name.toLowerCase().includes('hindi') ||
+        v.name.toLowerCase().includes('lekha') ||
+        v.name.toLowerCase().includes('neerja')
+      );
+      if (hiVoice) return hiVoice;
+      // Secondary fallback for Indian accent voice
+      const inVoice = voices.find(v => v.lang === 'en-IN' || v.name.toLowerCase().includes('india'));
+      if (inVoice) return inVoice;
+    }
+    return voices.find(v => v.lang === 'en-IN' || v.lang.startsWith('en')) || null;
   };
 
-  const startStep = (idx: number) => {
+  const speak = (text: string, targetLang: 'en' | 'hi') => {
+    if (!voiceAvailable || muted) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(text);
+      utt.rate = speed;
+      utt.pitch = 1;
+      const voice = getBestVoice(targetLang);
+      if (voice) {
+        utt.voice = voice;
+      }
+      utt.lang = targetLang === 'hi' ? 'hi-IN' : 'en-IN';
+      utt.onerror = () => {
+        // Non-fatal TTS error; captions remain fully visible
+      };
+      utteranceRef.current = utt;
+      window.speechSynthesis.speak(utt);
+    } catch {
+      // Audio speech synthesis fallback
+    }
+  };
+
+  const startStep = (idx: number, targetLang: 'en' | 'hi' = lang) => {
     const step = TOUR_STEPS[idx];
     if (!step) return;
     navigate(step.route);
-    speak(lang === 'hi' ? step.narrationHi : step.narration);
+    speak(targetLang === 'hi' ? step.narrationHi : step.narration, targetLang);
     setProgress(0);
 
     // Progress bar
@@ -217,22 +250,26 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
     }, interval);
   };
 
-  // Re-speak if language changes while playing
+  // Launch tour in selected language
+  const selectLanguageAndStart = (chosenLang: 'en' | 'hi') => {
+    setLang(chosenLang);
+    setHasChosenLang(true);
+    setStepIndex(0);
+    setPlaying(true);
+    startStep(0, chosenLang);
+  };
+
+  // Switch language during tour
   const handleLanguageChange = (newLang: 'en' | 'hi') => {
     setLang(newLang);
-    if (voiceAvailable && !muted && playing) {
-      window.speechSynthesis.cancel();
-      const textToSpeak = newLang === 'hi' ? currentStep.narrationHi : currentStep.narration;
-      const utt = new SpeechSynthesisUtterance(textToSpeak);
-      utt.rate = speed;
-      utt.lang = newLang === 'hi' ? 'hi-IN' : 'en-IN';
-      window.speechSynthesis.speak(utt);
+    if (playing) {
+      startStep(stepIndex, newLang);
     }
   };
 
   useEffect(() => {
-    if (playing) {
-      startStep(stepIndex);
+    if (hasChosenLang && playing) {
+      startStep(stepIndex, lang);
     } else {
       clearInterval(progressRef.current);
       if (voiceAvailable) window.speechSynthesis.cancel();
@@ -252,15 +289,19 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
   const handlePrev = () => {
     clearInterval(progressRef.current);
     if (voiceAvailable) window.speechSynthesis.cancel();
-    setStepIndex(i => Math.max(0, i - 1));
+    const newIdx = Math.max(0, stepIndex - 1);
+    setStepIndex(newIdx);
     setPlaying(true);
+    startStep(newIdx, lang);
   };
 
   const handleNext = () => {
     clearInterval(progressRef.current);
     if (voiceAvailable) window.speechSynthesis.cancel();
-    setStepIndex(i => Math.min(TOUR_STEPS.length - 1, i + 1));
+    const newIdx = Math.min(TOUR_STEPS.length - 1, stepIndex + 1);
+    setStepIndex(newIdx);
     setPlaying(true);
+    startStep(newIdx, lang);
   };
 
   const handlePlayPause = () => {
@@ -269,152 +310,235 @@ export default function GuidedTour({ onClose }: GuidedTourProps) {
       if (voiceAvailable) window.speechSynthesis.cancel();
     } else {
       setPlaying(true);
+      startStep(stepIndex, lang);
     }
   };
 
   const handleMute = () => {
     setMuted(!muted);
-    if (!muted && voiceAvailable) window.speechSynthesis.cancel();
-    else if (muted) speak(currentStep.narration);
+    if (!muted && voiceAvailable) {
+      window.speechSynthesis.cancel();
+    } else if (muted) {
+      speak(lang === 'hi' ? currentStep.narrationHi : currentStep.narration, lang);
+    }
   };
 
   const handleRestart = () => {
-    clearInterval(progressRef.current);
-    if (voiceAvailable) window.speechSynthesis.cancel();
     setStepIndex(0);
     setPlaying(true);
+    startStep(0, lang);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center pointer-events-none">
-      {/* Semi-transparent overlay at top to dim content slightly */}
-      <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+    <div className="fixed inset-0 z-50 pointer-events-none flex flex-col justify-end">
+      {/* 1. UPFRONT LANGUAGE SELECTION MODAL */}
+      {!hasChosenLang ? (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 pointer-events-auto">
+          <div className="bg-navy-900 border-2 border-cyan-500/50 rounded-2xl p-6 sm:p-8 max-w-lg w-full text-center space-y-6 shadow-2xl animate-fade-in">
+            <div className="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-300 mx-auto text-3xl">
+              🌿
+            </div>
 
-      {/* Tour HUD */}
-      <div className="relative w-full max-w-3xl mx-4 mb-6 pointer-events-auto">
-        {/* Step info card */}
-        <div className="bg-navy-900/95 backdrop-blur-md border border-cyan-500/30 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/10">
-          {/* Progress bar */}
-          <div className="h-1 bg-navy-800 relative">
-            <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-none"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+            <div className="space-y-1.5">
+              <h2 className="text-xl sm:text-2xl font-black text-white">
+                PollutionMitra Guided Tour
+              </h2>
+              <p className="text-sm text-cyan-300 font-semibold">
+                पॉल्यूशनमित्र गाइडेड टूर में आपका स्वागत है
+              </p>
+              <p className="text-xs text-slate-400 pt-1">
+                Select your preferred language to begin the interactive walkthrough:
+              </p>
+            </div>
 
-          <div className="p-5">
-            {/* Header */}
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="badge badge-demo">GUIDED TOUR</span>
-                  <span className="text-xs text-slate-400">Step {stepIndex + 1} of {TOUR_STEPS.length}</span>
-
-                  {/* Language Selector: English / Hindi */}
-                  <div className="flex items-center bg-navy-800 rounded-lg p-0.5 border border-navy-700 ml-2">
-                    <button
-                      onClick={() => handleLanguageChange('en')}
-                      className={`px-2.5 py-0.5 rounded text-xs font-bold transition-all ${
-                        lang === 'en'
-                          ? 'bg-cyan-500 text-white shadow'
-                          : 'text-slate-400 hover:text-white'
-                      }`}
-                      title="Switch to English"
-                    >
-                      EN
-                    </button>
-                    <button
-                      onClick={() => handleLanguageChange('hi')}
-                      className={`px-2.5 py-0.5 rounded text-xs font-bold transition-all ${
-                        lang === 'hi'
-                          ? 'bg-amber-500 text-white shadow'
-                          : 'text-slate-400 hover:text-white'
-                      }`}
-                      title="हिन्दी में समझें"
-                    >
-                      हिन्दी
-                    </button>
-                  </div>
+            {/* Language Selection Buttons */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+              <button
+                onClick={() => selectLanguageAndStart('hi')}
+                className="p-4 rounded-xl bg-gradient-to-br from-amber-600/30 to-navy-800 border-2 border-amber-500 hover:border-amber-400 hover:scale-[1.02] text-left transition-all cursor-pointer shadow-lg shadow-amber-500/10 group"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-2xl">🇮🇳</span>
+                  <span className="badge bg-amber-500 text-navy-950 font-bold text-[10px]">अनुशंसित</span>
                 </div>
-                <h2 className="text-xl font-bold text-white">{currentTitle}</h2>
-                {showCaptions && (
-                  <p className="text-sm text-cyan-400 mt-1">{currentCaption}</p>
-                )}
-              </div>
-              <button onClick={onClose} className="text-slate-500 hover:text-slate-300 ml-4 flex-shrink-0 p-1">
-                <X size={20} />
+                <div className="text-base font-black text-white group-hover:text-amber-300">
+                  हिन्दी में समझें
+                </div>
+                <div className="text-[11px] text-slate-300 mt-1 leading-snug">
+                  पूरी व्याख्या और ऑडियो विवरण शुद्ध हिन्दी में सुनें
+                </div>
+              </button>
+
+              <button
+                onClick={() => selectLanguageAndStart('en')}
+                className="p-4 rounded-xl bg-gradient-to-br from-cyan-600/20 to-navy-800 border-2 border-cyan-500/50 hover:border-cyan-400 hover:scale-[1.02] text-left transition-all cursor-pointer shadow-lg shadow-cyan-500/10 group"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-2xl">🇬🇧</span>
+                  <span className="badge bg-cyan-500/20 text-cyan-300 font-mono text-[10px]">ENGLISH</span>
+                </div>
+                <div className="text-base font-black text-white group-hover:text-cyan-300">
+                  English Walkthrough
+                </div>
+                <div className="text-[11px] text-slate-300 mt-1 leading-snug">
+                  Full audio tour with standard technical environmental terminology
+                </div>
               </button>
             </div>
 
-            {/* Narration text (captions) */}
-            {showCaptions && (
-              <div className="bg-navy-800 rounded-xl p-3 mb-4 max-h-24 overflow-y-auto border border-navy-700">
-                <p className="text-sm text-slate-200 leading-relaxed font-normal">{currentNarration}</p>
-              </div>
-            )}
-
-            {/* Step dots */}
-            <div className="flex gap-1 mb-4 flex-wrap">
-              {TOUR_STEPS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => { setStepIndex(i); setPlaying(true); }}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    i === stepIndex ? 'bg-cyan-400 w-4' :
-                    i < stepIndex ? 'bg-emerald-500' : 'bg-navy-700'
-                  }`}
-                />
-              ))}
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <button onClick={handleRestart} className="btn-secondary text-xs py-1.5 px-2.5">
-                <RotateCcw size={14} />
-                Restart
-              </button>
-              <button onClick={handlePrev} disabled={stepIndex === 0} className="btn-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
-                <SkipBack size={14} />
-                Prev
-              </button>
-              <button onClick={handlePlayPause} className="btn-primary text-xs py-1.5 px-4">
-                {playing ? <Pause size={14} /> : <Play size={14} />}
-                {playing ? 'Pause' : 'Resume'}
-              </button>
-              <button onClick={handleNext} disabled={stepIndex === TOUR_STEPS.length - 1} className="btn-secondary text-xs py-1.5 px-2.5 disabled:opacity-40">
-                Next
-                <SkipForward size={14} />
-              </button>
-              <div className="flex-1" />
+            <div className="pt-2 border-t border-navy-800 flex justify-center">
               <button
-                onClick={handleMute}
-                className={`btn-secondary text-xs py-1.5 px-2.5 ${muted ? 'text-slate-500' : 'text-emerald-400'}`}
-                title={voiceAvailable ? (muted ? 'Unmute narration' : 'Mute narration') : 'Voice not supported in this browser'}
+                onClick={onClose}
+                className="text-xs text-slate-400 hover:text-white transition-all"
               >
-                {muted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                {voiceAvailable ? (muted ? 'Unmute' : 'Narration') : 'No Voice'}
+                Skip Tour &amp; Explore Dashboard Directly ✕
               </button>
-              <button
-                onClick={() => setShowCaptions(!showCaptions)}
-                className={`btn-secondary text-xs py-1.5 px-2.5 ${showCaptions ? 'text-cyan-400' : 'text-slate-500'}`}
-              >
-                {showCaptions ? 'Hide Text' : 'Show Text'}
-              </button>
-              <select
-                value={speed}
-                onChange={e => setSpeed(Number(e.target.value))}
-                className="select-field text-xs py-1.5 px-2"
-              >
-                <option value={0.75}>0.75×</option>
-                <option value={1}>1×</option>
-                <option value={1.25}>1.25×</option>
-                <option value={1.5}>1.5×</option>
-              </select>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        /* 2. ACTIVE TOUR HUD */
+        <div className="relative w-full max-w-3xl mx-auto mb-6 pointer-events-auto px-4">
+          <div className="bg-navy-900/95 backdrop-blur-md border border-cyan-500/40 rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/10">
+            {/* Progress bar */}
+            <div className="h-1.5 bg-navy-800 relative">
+              <div
+                className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 transition-all duration-150"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+
+            <div className="p-5">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-3 gap-2">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className="badge badge-demo">GUIDED TOUR</span>
+                    <span className="text-xs text-slate-400 font-mono">
+                      Step {stepIndex + 1} of {TOUR_STEPS.length}
+                    </span>
+
+                    {/* Language Switcher Pill */}
+                    <div className="flex items-center bg-navy-950 rounded-lg p-0.5 border border-navy-700 ml-2">
+                      <button
+                        onClick={() => handleLanguageChange('en')}
+                        className={`px-2.5 py-0.5 rounded text-xs font-bold transition-all cursor-pointer ${
+                          lang === 'en'
+                            ? 'bg-cyan-500 text-navy-950 shadow'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                        title="Switch to English"
+                      >
+                        EN
+                      </button>
+                      <button
+                        onClick={() => handleLanguageChange('hi')}
+                        className={`px-2.5 py-0.5 rounded text-xs font-bold transition-all cursor-pointer ${
+                          lang === 'hi'
+                            ? 'bg-amber-500 text-navy-950 shadow'
+                            : 'text-slate-400 hover:text-white'
+                        }`}
+                        title="हिन्दी में समझें"
+                      >
+                        हिन्दी
+                      </button>
+                    </div>
+                  </div>
+                  <h2 className="text-lg sm:text-xl font-bold text-white">{currentTitle}</h2>
+                  {showCaptions && (
+                    <p className="text-xs sm:text-sm text-cyan-400 mt-0.5 font-medium">{currentCaption}</p>
+                  )}
+                </div>
+                <button
+                  onClick={onClose}
+                  className="text-slate-400 hover:text-white ml-2 p-1.5 rounded-lg hover:bg-navy-800 cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Narration text (captions) */}
+              {showCaptions && (
+                <div className="bg-navy-950/90 rounded-xl p-3.5 mb-4 max-h-24 overflow-y-auto border border-navy-700/80">
+                  <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+                    {currentNarration}
+                  </p>
+                </div>
+              )}
+
+              {/* Step indicator dots */}
+              <div className="flex gap-1 mb-4 flex-wrap">
+                {TOUR_STEPS.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setStepIndex(i);
+                      setPlaying(true);
+                      startStep(i, lang);
+                    }}
+                    className={`h-2 rounded-full transition-all cursor-pointer ${
+                      i === stepIndex ? 'bg-cyan-400 w-5' :
+                      i < stepIndex ? 'bg-emerald-500 w-2' : 'bg-navy-700 w-2'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Controls */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <button onClick={handleRestart} className="btn-secondary text-xs py-1.5 px-2.5 cursor-pointer">
+                  <RotateCcw size={13} />
+                  Restart
+                </button>
+                <button
+                  onClick={handlePrev}
+                  disabled={stepIndex === 0}
+                  className="btn-secondary text-xs py-1.5 px-2.5 disabled:opacity-40 cursor-pointer"
+                >
+                  <SkipBack size={13} />
+                  Prev
+                </button>
+                <button onClick={handlePlayPause} className="btn-primary text-xs py-1.5 px-4 cursor-pointer">
+                  {playing ? <Pause size={13} /> : <Play size={13} />}
+                  {playing ? 'Pause' : 'Resume'}
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={stepIndex === TOUR_STEPS.length - 1}
+                  className="btn-secondary text-xs py-1.5 px-2.5 disabled:opacity-40 cursor-pointer"
+                >
+                  Next
+                  <SkipForward size={13} />
+                </button>
+                <div className="flex-1" />
+                <button
+                  onClick={handleMute}
+                  className={`btn-secondary text-xs py-1.5 px-2.5 cursor-pointer ${muted ? 'text-slate-500' : 'text-emerald-400'}`}
+                  title={voiceAvailable ? (muted ? 'Unmute voice narration' : 'Mute narration') : 'Voice not supported in this browser'}
+                >
+                  {muted ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                  {voiceAvailable ? (muted ? 'Unmute' : 'Voice') : 'Captions Only'}
+                </button>
+                <button
+                  onClick={() => setShowCaptions(!showCaptions)}
+                  className={`btn-secondary text-xs py-1.5 px-2.5 cursor-pointer ${showCaptions ? 'text-cyan-400' : 'text-slate-500'}`}
+                >
+                  {showCaptions ? 'Hide Text' : 'Show Text'}
+                </button>
+                <select
+                  value={speed}
+                  onChange={e => setSpeed(Number(e.target.value))}
+                  className="select-field text-xs py-1 px-1.5 cursor-pointer"
+                >
+                  <option value={0.75}>0.75×</option>
+                  <option value={1}>1×</option>
+                  <option value={1.25}>1.25×</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-

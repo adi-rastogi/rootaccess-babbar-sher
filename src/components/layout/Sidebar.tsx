@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Map, Radio, AlertTriangle, Sparkles,
   Cloud, Users, Trophy, TrendingUp, FlaskConical, Bot,
   Route, Lightbulb, ShieldCheck, X, ChevronLeft, ChevronRight,
-  Leaf, Satellite, Stethoscope
+  Leaf, Satellite, Stethoscope, Box
 } from 'lucide-react';
 import { useApp } from '../../App';
 
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { to: '/map', icon: Map, label: 'Pollution Flow Map', section: 'core' },
   { to: '/sensors', icon: Radio, label: 'Sensor Network', section: 'core' },
   { to: '/critical-zones', icon: AlertTriangle, label: 'Critical Zones', section: 'core' },
+  { to: '/canyon', icon: Box, label: '3D LiDAR Canyon', section: 'core' },
   { to: '/satellite', icon: Satellite, label: 'Satellite India Radar', section: 'analytics' },
   { to: '/diwali', icon: Sparkles, label: 'Diwali Analytics', section: 'analytics' },
   { to: '/health', icon: Stethoscope, label: 'Precision Health', section: 'analytics' },
