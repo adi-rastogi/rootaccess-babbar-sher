@@ -34,7 +34,7 @@ The platform integrates dual-stream telemetry from the World Air Quality Index (
 ### 2. Data Infrastructure and Integration
 * **WAQI (World Air Quality Index) Stream:** Continuous telemetry across active monitoring stations in Delhi NCR, providing Individual Air Quality Index (IAQI) metrics for PM2.5, PM10, NO2, SO2, CO, O3, temperature, relative humidity, and wind vectors.
 * **OpenAQ v3 API:** Regulatory reference monitor data from the Central Pollution Control Board (CPCB) and Delhi Pollution Control Committee (DPCC), including Anand Vihar, Punjabi Bagh, R.K. Puram, ITO, and DTU.
-* **Client Caching Architecture:** In-memory Time-To-Live (TTL) cache (120-second invalidation window) with request debouncing to optimize API request quotas while maintaining data freshness.
+* **Client Caching Architecture:** High-frequency in-memory Time-To-Live (TTL) cache (10-second window with 12-second automated background polling) with request debouncing for rapid 10-15 second telemetry updates.
 * **Offline Resiliency:** Deterministic mathematical fallback schema maintaining continuous system availability during upstream network anomalies.
 * **Local Persistence:** Browser `localStorage` and `sessionStorage` APIs for user preferences, municipal report confirmations, and simulation state.
 

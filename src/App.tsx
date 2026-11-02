@@ -85,12 +85,12 @@ export default function App() {
     }
   };
 
-  // Fetch live real-time data upon startup and set recurring poll every 2 minutes
+  // Fetch live real-time data upon startup and set recurring poll every 12 seconds (10-15s window)
   useEffect(() => {
     refreshLiveData(false);
     const interval = setInterval(() => {
       refreshLiveData(false);
-    }, 120000);
+    }, 12000);
     return () => clearInterval(interval);
   }, []);
 

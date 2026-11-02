@@ -84,9 +84,9 @@ export interface AirQualityIntelligence {
   sourceAttribution: string;
 }
 
-// In-memory cache with 2-minute TTL
+// In-memory cache with 10-second TTL for rapid 10-15s telemetry synchronization
 let cachedIntelligence: { data: AirQualityIntelligence; timestamp: number } | null = null;
-const CACHE_TTL_MS = 2 * 60 * 1000;
+const CACHE_TTL_MS = 10 * 1000;
 
 export function getLiveAQICategory(aqi: number) {
   if (aqi <= 50) {

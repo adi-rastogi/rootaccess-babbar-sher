@@ -99,7 +99,7 @@ PollutionMitra integrates two premier global environmental telemetry services:
    - **Regulatory Verification:** References official government stations operated by **CPCB (Central Pollution Control Board)** and **DPCC (Delhi Pollution Control Committee)**.
    - **Verified Locations:** Anand Vihar (DPCC), Punjabi Bagh (DPCC), RK Puram (DPCC), Income Tax Office (CPCB), and DTU (CPCB).
 
-*Data is fetched live with an adaptive 2-minute memory cache to prevent rate-limiting while providing second-by-second updates.*`;
+*Data is fetched live with a 10-15 second telemetry synchronization cycle for rapid updates.*`;
   }
 
   // 2c. Current Live Delhi AQI
