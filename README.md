@@ -20,7 +20,7 @@ The platform integrates dual-stream telemetry from the World Air Quality Index (
 
 ---
 
-## Technical Specifications & Architecture
+## Technical Specifications & Architecture.
 
 ### 1. Programming Languages and Frameworks
 * **TypeScript (v5.5):** Strict type enforcement across telemetry data structures, GIS coordinate transformations, and mathematical modeling engines.
